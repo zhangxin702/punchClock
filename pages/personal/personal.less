@@ -1,0 +1,93 @@
+.user_info_wrap{
+    height: 500rpx;
+    background-color: antiquewhite;
+    .user_img_wrap
+    {
+        position: relative;
+        .user_bg{
+            height: 500rpx;
+            width: 100%;
+            //高斯模糊
+            filter: blur(10rpx);
+        }
+        .user_info{
+            .user_icon{
+                position: absolute;
+                top: 150rpx;
+                right:40rpx;
+                width: 275rpx;
+                height: 275rpx;
+                border-radius: 50%;
+                 //为了让他们显示图层
+                z-index:1;
+            }
+            .user_name{
+                position: absolute;
+                left: 100rpx;
+                top:50%;
+                font-size: 70rpx;
+                color: #fff;
+                 //为了让他们显示图层
+                z-index:1;
+            }
+        }
+    }
+    .user_btn{
+        position:absolute;
+        left:50%;
+        transform: translateX(-50%);
+        top: 200rpx;
+        z-index: 1;
+        navigator{
+            border:8rpx outset white;
+            color:gray;
+            font-size: 38rpx;
+            font-weight: bold;
+            padding: 30rpx;
+            border-radius: 10rpx;
+        }
+    }
+}
+.user_content{
+    .user_main{
+        position: relative;
+        .wrap_all{
+            position: absolute;
+            width: 90%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            .num_wrap{
+                background-color: white;
+                flex: 1;
+                text-align: center;
+                .num{
+                    color:rgb(207, 207, 49);
+                }
+                .name{
+                    color:grey;
+                }
+            }
+        }
+    }
+}
+.act_wrap{
+    margin-top: 150rpx;
+    .control
+    {
+        margin-top: 30rpx;
+        display: flex;
+        .blank{
+            flex:1;
+        }
+        navigator{
+            flex:6;
+            justify-content: space-around;
+            border:8rpx outset white;
+            font-size: 38rpx;
+            border-radius: 10rpx;
+            padding: 30rpx;
+            text-align: center;
+        }
+    }
+}

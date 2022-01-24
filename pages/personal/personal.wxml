@@ -1,0 +1,46 @@
+<view class="user_info_wrap">
+    <view wx:if="{{userInfo.avatarUrl}}" class="user_img_wrap">
+        <image class="user_bg" src="{{userInfo.avatarUrl}}"></image>
+        <view class="user_info">
+            <view class="user_name">{{userInfo.nickName}}</view>
+            <image class="user_icon" src="{{userInfo.avatarUrl}}"></image>
+        </view>
+    </view>
+    <view wx:else class="user_btn">
+        <navigator url="/pages/register/register">注册</navigator>
+    </view>
+</view>
+
+<view class="user_content">
+    <view class="user_main">
+        <view class="wrap_all">
+            <view class="num_wrap">
+                <view wx:if="{{actInfo}}" class="num">{{actInfo.participate}}</view>
+                <view wx:else class="num">0</view>
+                <view class="name">已参与活动数</view>
+            </view>
+            <view class="num_wrap">
+                <view wx:if="{{actInfo}}" class="num">{{actInfo.organize}}</view>
+                <view wx:else class="num">0</view>
+                <view class="name">已参与组织数</view>
+            </view>
+        </view>
+    </view>
+</view>
+<view class="act_wrap" wx:if="{{userInfo}}">
+    <view class="control">
+        <view class="blank"></view>
+        <navigator>已组织活动</navigator>
+        <view class="blank"></view>
+    </view>
+    <view class="control">
+        <view class="blank"></view>
+        <navigator>已参与活动</navigator>
+        <view class="blank"></view>
+    </view>
+    <view class="control">
+        <view class="blank"></view>
+        <navigator>数据分析</navigator>
+        <view class="blank"></view>
+    </view>
+</view>
