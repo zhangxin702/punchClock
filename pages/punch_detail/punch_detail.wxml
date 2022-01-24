@@ -1,0 +1,22 @@
+<view class="active_image">
+	<image src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"></image>
+</view>
+<view class="actives_info">
+	<view class="actives_name">{{activity.Theme}}</view>
+	<view class="actives_time">开始时间:{{startTime}}</view>
+	<view class="actives_time">结束时间:{{endTime}}</view>
+	<view class="actives_time">参与人数:{{activity.userCounts}}</view>
+</view>
+<view class="actives_introduce">{{activity.actContent}}</view>
+<!-- 上传图片 -->
+<view style="width: 90%; margin-left:5%;">
+	<addImage
+	 count="{{count}}"
+	 images="{{images}}"
+	 addedCount="{{addedCount}}"
+	 bind:chooseImage="chooseImage"
+	 bind:deleteImage="deleteImage"
+	></addImage>
+</view>
+<button style=" ">确定打卡</button>
+

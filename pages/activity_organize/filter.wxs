@@ -1,0 +1,10 @@
+var time = function(startime,endtime){
+  var bijiao = getDate(startime) - getDate("{{activeDateEnd}}"); //判断结束时间减去当前时间 ，如果当前时间大于0则为True
+  // 6.27   - 5.28
+  console.log
+  return bijiao > 0 ? true : false;
+}
+ 
+module.exports = {
+  time: time
+}

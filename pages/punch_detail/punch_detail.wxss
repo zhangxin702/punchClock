@@ -1,0 +1,28 @@
+.active_image image {
+  height: 50vw;
+  text-align: center;
+  width: 100%;
+
+}
+
+.actives_time {
+ 
+  font-size: 32rpx;
+  font-weight: 200;
+  color: orange;font-size: 30rpx;
+  
+}
+.actives_info{
+  padding: 10rpx 30rpx;
+  border-top: 1px solid #ccc;
+  border-bottom: 5px solid #dedede;
+  font-weight: 800;
+  font-size: 50rpx;
+}
+.actives_introduce{
+  background-color: #ececec;
+  margin: auto;
+  height: 300rpx;
+  padding: 15rpx;
+  color: #8b8b8b;
+}

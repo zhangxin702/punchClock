@@ -1,0 +1,68 @@
+.active_info{padding: 20rpx 42rpx;margin: 20rpx;}
+.activeName{  display: block;padding: 0rpx 16rpx;width: 260rpx ;height: 270rpx;}
+.activeTime{text-align: center;}
+.name{
+  padding: 20rpx 0rpx 0rpx 10rpx;
+  text-align: center;
+  width: 100%;
+  margin: auto auto;
+  display: block;
+  font-weight: 600;
+}
+.detailText{
+
+width: auto;
+height: 300rpx;
+padding-left: 20rpx;
+border-radius: 10rpx
+;
+ 
+ }
+ .card{
+  width: 100%;
+  /* margin-left: 5%; */
+  height: 300rpx;
+  background: #cceaf8;
+  border-radius: 10rpx;
+  box-shadow: 5px 5px 5px #cdcfcf;
+  border-bottom-right-radius: 60rpx;
+ }
+ .add{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+  width: 50%;
+  height: 80rpx;
+  border: 5rpx rgb(167, 165, 165) dashed ;
+  margin: auto auto;
+  background-color: rgb(216, 214, 214);
+
+  text-align: center;
+ /* padding-top: 30rpx; */
+
+
+  
+
+
+ }
+ .card_1{
+  width: 100%;
+  /* margin-left: 5%; */
+  height: 480rpx;
+  background:  #cceaf8;
+  border-radius: 40rpx;
+  box-shadow: 5px 5px 5px #cdcfcf;
+  border-bottom-right-radius: 60rpx;
+  
+ }
+
+ .kongbai{
+
+  padding: 30rpx;
+}
+.btn{
+  width: 80%;
+ 
+  background-color: #9cd2eb;
+  color: white;
+}

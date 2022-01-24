@@ -123,3 +123,36 @@ export const register = (openId, nickName, gender, selfIntro, avatarUrl) => {
       });
   });
 };
+
+export const actTableGetAll = ({ order }) => {
+  return new Promise((resolve, reject) => {
+    var db = wx.cloud.database().collection("ActTable");
+    if (order == 0) {
+      db = db.orderBy("nowTime", "asc");
+    } else if (order == 1) {
+      db = db.orderBy("userCounts", "desc");
+    }
+    db.get({
+      success: (res) => {
+        resolve(res);
+      },
+      fail: (err) => {
+        reject(err);
+      },
+    });
+  });
+};
+
+export const actTableById = ({ id }) => {
+  return new Promise((resolve, reject) => {
+    var db = wx.cloud.database().collection("ActTable").doc(id);
+    db.get({
+      success: (res) => {
+        resolve(res);
+      },
+      fail: (err) => {
+        reject(err);
+      },
+    });
+  });
+};

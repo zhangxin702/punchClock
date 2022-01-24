@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "addImage_1": "../../components/addImage_1/addImage_1"
+  },
+  "navigationBarTitleText": "设置活动"
+}

@@ -1,0 +1,48 @@
+
+.images-box {
+ 
+  border-radius: 10rpx;
+  width: 100%;
+  text-align: center;
+
+ 
+}
+
+.imageCount {
+  height: 80rpx;
+  line-height: 80rpx;
+ 
+}
+
+.addRemark{
+  width: auto;
+  height: 200rpx;
+  
+  border: 1px #9a9a9a solid;
+
+}
+.images {
+  height: 400rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.addImageIcon{
+  text-align: center;
+  /* text-align:center; */
+align-items:center;
+justify-content: center;
+  display: flex;
+  line-height: 200rpx;
+  background: #cceaf8;
+  
+}
+.addImageIconHover{
+  background-color: #C0C4CC;
+  text-align: center;
+}
+.image {
+  width: 100%;
+  border-radius: 10rpx;
+  height: 100%;
+}

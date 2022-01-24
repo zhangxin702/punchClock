@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+   
+    "SearchInput":"../../components/SearchInput/SearchInput"
+  },
+  "navigationBarTitleText": "打卡"
+
+
+}

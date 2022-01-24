@@ -1,0 +1,9 @@
+/* 设置轮播图的长宽高 */
+.index_swiper swiper {
+  width: 750rpx;
+  height: 330rpx;
+}
+/* 设置轮播图里面图片的大小 */
+.index_swiper swiper image {
+  width: 100%;
+}

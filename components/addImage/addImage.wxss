@@ -1,0 +1,36 @@
+
+.images-box {
+  border-radius: 10rpx;
+  width: 100%;
+}
+
+.imageCount {
+  height: 80rpx;
+  line-height: 80rpx;
+}
+.addRemark{
+  width: auto;
+  height: 200rpx;
+  margin: 10rpx 10rpx;
+  border: 1px #9a9a9a solid;
+  padding: 10rpx 10rpx;
+}
+.images {
+  height: 240rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.addImageIcon{
+  text-align: center;
+  line-height: 200rpx;
+  background-color: #f7f7f7;
+}
+.addImageIconHover{
+  background-color: #C0C4CC;
+}
+.image {
+  width: 30%;
+  border-radius: 10rpx;
+  height: 200rpx;
+}

@@ -1,0 +1,23 @@
+{
+  "name": "punchclock",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhangxin702/punchClock.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhangxin702/punchClock/issues"
+  },
+  "homepage": "https://github.com/zhangxin702/punchClock#readme",
+  "dependencies": {
+    "weui-miniprogram": "^1.2.3"
+  }
+}

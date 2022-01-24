@@ -1,0 +1,82 @@
+<!-- pages/index/index.wxml -->
+<view class="swiper-tab">
+	<view
+	 class="tab-item {{currentTab==0 ? 'on' : ''}}"
+	 data-current="0"
+	 bindtap="swichNav"
+	>
+		最新
+	</view>
+	<view
+	 class="tab-item {{currentTab==1 ? 'on' : ''}}"
+	 data-current="1"
+	 bindtap="swichNav"
+	>
+		最热
+	</view>
+</view>
+<swiper
+ current="{{currentTab}}"
+ class="swiper"
+ duration="300"
+ style="height:{{winHeight - 30}}px"
+ bindchange="bindChange"
+>
+	<!-- 打卡页面 -->
+	<swiper-item>
+		<!-- 搜索框 -->
+		<SearchInput></SearchInput>
+		<!-- 搜索框 -->
+		<!-- 活动列表 -->
+		<!-- 将来有数据库可解开以下注释 -->
+		<navigator
+		 class="actives_item"
+		 wx:for="{{actList}}"
+		 wx:key="actId"
+		 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
+		>
+			<view class="actives_img">
+				<image
+				 mode="widthFix" style="border-radius: 20rpx;"
+				 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
+				></image>
+			</view>
+			<view class="actives_info">
+				<view class="actives_name">{{item.actTheme}}</view>
+				<view class="actives_price">开始时间：{{item.startTime}}</view>
+				<view class="actives_price">参与人数：{{item.userCounts}}</view>
+			</view>
+		</navigator>
+		<!-- 活动列表 -->
+	</swiper-item>
+	<!-- 打卡页面 -->
+	<!-- 创建活动页面 -->
+	<swiper-item class="second_page">
+		<!-- 搜索框 -->
+		<SearchInput></SearchInput>
+		<!-- 搜索框 -->
+		<!-- 活动列表 -->
+		<!-- 将来有数据库可解开以下注释 -->
+		<navigator
+		 class="actives_item"
+		 wx:for="{{actList}}"
+		 wx:key="actId"
+		 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
+		>
+			<view class="actives_img">
+				<image
+				 mode="widthFix"
+				 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
+				></image>
+			</view>
+			<view class="actives_info">
+				<view class="actives_name">{{item.actTheme}}</view>
+				<view class="actives_price">开始时间：{{item.startTime}}</view>
+				<view class="actives_price">参与人数：{{item.userCounts}}</view>
+			</view>
+		</navigator>
+		<!-- 活动列表 -->
+	</swiper-item>
+	<!-- 创建活动页面 -->
+</swiper>
+

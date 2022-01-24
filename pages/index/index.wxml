@@ -1,0 +1,25 @@
+<!-- 轮播图 -->
+<view class="index_swiper">
+        <swiper autoplay="{{true}}" interval="3000" circular="{{true}}" indicator-dots="{{true}}">
+            <swiper-item >
+                <navigator open-type="navigate">
+                    <image src="https://i0.hdslb.com/bfs/feed-admin/bbd518c8607fbc2866b6461c3b32df0426cee33d.jpg@880w_388h_1c_95q" mode="widthFix" />
+                </navigator>
+            </swiper-item>
+            <swiper-item >
+                <navigator open-type="navigate">
+                    <image src="https://i0.hdslb.com/bfs/feed-admin/575ae0727e11217276eadd49bac639629c6694f2.png@880w_388h_1c_95q" mode="widthFix" />
+                </navigator>
+            </swiper-item>
+            <swiper-item >
+                <navigator open-type="navigate">
+                    <image src="https://i2.hdslb.com/bfs/archive/936acf0475f1eb4f916cc4ec54ca63f0dbd7eade.jpg@309w_174h_1c_100q.webp" mode="widthFix" />
+                </navigator>
+            </swiper-item>
+        </swiper>
+    </view>
+<!-- 轮播图 -->
+
+<!-- 搜索框 -->
+<SearchInput></SearchInput>
+<!-- 搜索框 -->

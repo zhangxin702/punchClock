@@ -1,0 +1,105 @@
+
+<view class="active_info">
+			<!-- 活动名字 -->
+      <view class="card">
+        <text  class="name">活动名称</text>
+      	<view class="activeName">
+				
+				<textarea
+				bindblur="bindTextAreaBlurName"
+				 auto-focus
+				 bindinput="textinput"
+				 type="text"
+         style="width: 600rpx;height: 220rpx;"
+				 placeholder="限定在80字"
+				 maxlength ="80"
+				 
+				 
+
+				 
+
+				></textarea>
+			</view>
+      </view>
+	
+			<!-- 活动名字 -->
+<view class="kongbai"></view>
+			<!-- 开展时间 -->
+      <view class="card">	 <text  class="name">时间设置</text>
+			<view class="activeTime" style="margin-top: 10rpx;">
+
+				<picker
+				 mode="date"
+				 value="{{selectedActiveDate}}"
+				 field="day"
+				 bindchange="dateChange"
+				>
+					<view>开展时间 : {{selectedActiveDate}}</view>
+				</picker>
+			</view>
+			<!-- 截至时间 -->
+			<view class="kongbai"></view>
+			<view class="activeTime">
+
+<picker
+ mode="date"
+ value="{{activeDateEnd}}"
+ field="day"
+ bindchange="dateEnd"
+>
+	<view>截至时间 : {{activeDateEnd}}</view>
+
+
+</picker>
+</view>
+<!-- 截至时间 -->
+			</view>
+			
+			<view class="kongbai"></view>
+			<!-- 开展时间 -->
+<!-- 活动简介 -->
+	<view class="card">
+		<text  class="name">活动介绍</text>
+		<textarea
+			 class="detailText"
+			 auto-focus
+				 bindinput="textinput"
+				 type="text"
+         style="width: 600rpx;height: 220rpx;"
+			 bindblur="bindTextAreaBlur"
+			 value="{{details}}"
+			>
+
+</textarea>
+
+	</view>
+
+		
+			<!-- 活动简介 -->
+		</view>
+		<view class="kongbai"></view>
+
+	<view style="width: 85%; margin-left:7%;">
+		<view class="card_1">
+			<addImage_1
+			 count="{{count}}"
+			 images="{{images}}"
+			 addedCount="{{addedCount}}"
+			 bind:chooseImage="chooseImage"
+			 bind:deleteImage="deleteImage"
+			></addImage_1>
+		</view>
+</view>
+   <view class="kongbai"></view>
+	 <view class="add" bindtap="addInfo"><image src="../../images/add.png" style="width: 50rpx ;height: 50rpx;"></image>
+	 添加</view>
+<view class="kongbai"></view>
+		<!-- 确认按钮 -->
+		<button
+		class="btn"
+	
+	
+		 style="margin_top:20rpx">确定
+		</button>
+		<!-- 确认按钮 -->
+

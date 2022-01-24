@@ -1,0 +1,16 @@
+<view class="images-box">
+  <view class="imageCount">
+    <text>上传图片：</text>
+    <text style="color:#909399">{{addedCount}}/{{count}}</text>
+  </view>
+  <view class="images">
+    <block wx:for="{{images}}" wx:key="index">
+      <image class="image" mode="aspectFill" src="{{item}}" bindtap="previewImage" data-index="{{index}}" bindlongpress="deleteImage"></image>
+    </block>
+    <view wx:if="{{addedCount<3}}" class="image addImageIcon" hover-class="addImageIconHover" hover-stay-time="200" bindtap="chooseImage">
+      <mp-icon type="field" icon="add" color="gray" size="{{40}}"></mp-icon>
+    </view>
+  </view>
+
+ 
+</view>

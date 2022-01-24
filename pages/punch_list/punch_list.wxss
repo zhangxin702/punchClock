@@ -1,0 +1,84 @@
+/* pages/index/index.wxss */
+.swiper-tab {
+  width: 100%;
+  text-align: center;
+  line-height: 80rpx;
+  border-bottom: 1px solid #000;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.tab-item {
+  flex: 1;
+  font-size: 30rpx;
+  display: inline-block;
+  color: #777777;
+}
+.on {
+  color: red;
+  border-bottom: 5rpx solid red;
+}
+.swiper {
+  display: block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+.swiper .first_page {
+  text-align: center;
+  padding-top: 100rpx;
+}
+
+.active_info {
+  padding: 20rpx 42rpx;
+}
+.activeName {
+  padding: 16rpx 0;
+  display: flex;
+  border-bottom: 1px solid #eee;
+  margin: 16rpx 0;
+}
+
+.detailText {
+  background-color: #f7f7f7;
+  margin-top: 10rpx;
+  width: auto;
+  height: 200rpx;
+  padding: 20rpx;
+}
+
+/* 活动列表页 */
+.first_tab {
+  margin: 20rpx;
+}
+.actives_item {
+  display: flex;
+  border-bottom: 1rpx solid #ccc;
+  height: 180rpx;
+}
+.actives_item .actives_img {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10rpx;
+}
+.actives_item .actives_img image {
+  width: 90%;
+}
+.actives_item .actives_info {
+  display: flex;
+  flex: 3;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.actives_item .actives_info .actives_name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.actives_item .actives_info .actives_price {
+  color: #dd3300;
+  font-size: 20rpx;
+}

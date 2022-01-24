@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "addImage_1": "../../components/addImage_1/addImage_1",
+    "SearchInput":"../../components/SearchInput/SearchInput"
+  },
+  "navigationBarTitleText": "活动列表"
+}
