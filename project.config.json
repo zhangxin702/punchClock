@@ -45,7 +45,7 @@
   "compileType": "miniprogram",
   "libVersion": "2.21.4",
   "appid": "wx59f8e4a4e9eb665d",
-  "projectname": "zhang-zhang",
+  "projectname": "punchClock",
   "debugOptions": {
     "hidedInDevtools": []
   },
