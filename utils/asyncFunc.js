@@ -71,7 +71,7 @@ export const getOrganizeNum = (db, openId) => {
   });
 };
 
-export const register = (openId, nickName, gender, selfIntro, avatarUrl) => {
+export const register = (openId, nickName, gender, selfIntro, avatarPath) => {
   /**
    * 注册用户
    * openId: 用户的唯一标识
@@ -83,10 +83,13 @@ export const register = (openId, nickName, gender, selfIntro, avatarUrl) => {
 
   return new Promise((resolve, reject) => {
     const cloudPath = "avatar/" + openId + ".jpg";
+    let avatarUrl = null;
     wx.cloud.upLoadFile({
       cloudPath: cloudPath,
       filePath: avatarUrl,
       success: (res) => {
+        console.log(res);
+        avatarUrl = res.data.filePath;
         console.log("照片上传成功√");
       },
       fail: (err) => {
@@ -102,7 +105,7 @@ export const register = (openId, nickName, gender, selfIntro, avatarUrl) => {
           nickName: nickName,
           gender: gender,
           selfIntro: selfIntro,
-          avatarUrl: cloudPath,
+          avatarUrl: avatarUrl,
         },
       })
       .then((res) => {

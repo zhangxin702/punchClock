@@ -7,7 +7,7 @@ Page({
     nickName: null,
     gender: null,
     selfIntro: null,
-    avatarUrl: null,
+    avatarPath: null,
   },
 
   onShow() {
@@ -67,7 +67,7 @@ Page({
       sourceType: ["album", "camera"],
       success: (res) => {
         this.setData({
-          avatarUrl: res.tempFilePaths,
+          avatarPath: res.tempFilePaths[0],
         });
       },
     });
@@ -86,7 +86,7 @@ Page({
       wx.showToast({
         title: "未填写性别",
       });
-    } else if (!this.data.avatar) {
+    } else if (!this.data.avatarPath) {
       wx.showToast({
         title: "未选择头像",
       });
@@ -101,8 +101,8 @@ Page({
       const nickName = this.data.nickName;
       const gender = this.data.gender;
       const selfIntro = this.data.selfIntro;
-      const avatarUrl = this.data.avatarUrl;
-      await register(openId, nickName, gender, selfIntro, avatarUrl);
+      const avatarPath = this.data.avatarPath;
+      await register(openId, nickName, gender, selfIntro, avatarPath);
     }
   },
 });
