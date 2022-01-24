@@ -1,4 +1,4 @@
-// pages/personal/personal.js
+// 个人页
 import { getUserInfo, getParticipateNum, getOrganizeNum } from "../../utils/asyncFunc.js";
 
 Page({

@@ -1,3 +1,4 @@
+// 注册页
 import { getUserInfo, register } from "../../utils/asyncFunc.js";
 
 Page({
