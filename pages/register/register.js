@@ -1,16 +1,47 @@
-// 注册页
-import { getUserInfo, register } from "../../utils/asyncFunc.js";
+import { register } from "../../utils/asyncFunc.js";
 
+// 注册页
 Page({
   data: {
-    openId: null,
-    nickName: null,
-    gender: null,
-    selfIntro: null,
     avatarPath: null,
+    // 上传图片设置
+    images: [],
+    count: 1,
+    addedCount: 0,
   },
 
-  onShow() {
+  // 上传图片有关函数
+  chooseImage() {
+    var that = this;
+    wx.chooseImage({
+      count: 3 - that.data.addedCount,
+      sizeType: ["compressed"], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ["album", "camera"], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+        that.setData({
+          images: that.data.images.concat(res.tempFilePaths),
+          addedCount: that.data.addedCount + res.tempFilePaths.length,
+          avatarPath: res.tempFilePaths[0],
+        });
+      },
+    });
+  },
+
+  // 删除图片
+  deleteImage(e) {
+    this.data.images.splice(e.detail, 1);
+    this.setData({
+      images: this.data.images,
+      addedCount: this.data.addedCount - 1,
+    });
+  },
+
+  async handleSubmit(e) {
+    /**
+     *  提交注册信息
+     */
+
     // wx.cloud
     //   .callFunction({
     //     name: "getOpenId",
@@ -21,88 +52,30 @@ Page({
     //       openId: res.result
     //     })
     //   });
-    this.setData({
-      openId: "user-1",
-    });
-  },
 
-  handleTextNickName(e) {
-    /**
-     *  记录输入的昵称
-     */
+    const openId = "user-11";
+    const { nickName, gender, selfIntro } = e.detail.value;
 
-    this.setData({
-      nickName: e.detail.value,
-    });
-  },
-
-  handleTextGender(e) {
-    /**
-     *  记录输入的性别
-     */
-
-    this.setData({
-      gender: e.detail.value,
-    });
-  },
-
-  handleTextSelfIntro(e) {
-    /**
-     *  记录输入的自我介绍
-     */
-
-    this.setData({
-      selfIntro: e.detail.value,
-    });
-  },
-
-  handleChooseImage() {
-    /**
-     *  上传头像图片
-     */
-
-    wx.chooseImage({
-      count: 1,
-      sizeType: ["original", "compressed"],
-      sourceType: ["album", "camera"],
-      success: (res) => {
-        this.setData({
-          avatarPath: res.tempFilePaths[0],
-        });
-      },
-    });
-  },
-
-  handleSubmit() {
-    /**
-     *  提交注册信息
-     */
-
-    if (!this.data.nickName) {
+    if (nickName == "") {
       wx.showToast({
         title: "未填写昵称",
       });
-    } else if (!this.data.gender) {
+    } else if (gender == "") {
       wx.showToast({
         title: "未填写性别",
       });
-    } else if (!this.data.avatarPath) {
+    } else if (this.data.avatarPath == "") {
       wx.showToast({
         title: "未选择头像",
       });
     } else {
-      if (!this.data.selfIntro) {
+      if (selfIntro == "") {
         this.setData({
           selfIntro: "该用户很懒，没有填自我介绍~",
         });
       }
 
-      const openId = this.data.openId;
-      const nickName = this.data.nickName;
-      const gender = this.data.gender;
-      const selfIntro = this.data.selfIntro;
-      const avatarPath = this.data.avatarPath;
-      await register(openId, nickName, gender, selfIntro, avatarPath);
+      await register(openId, nickName, gender, selfIntro, this.data.avatarPath);
     }
   },
 });

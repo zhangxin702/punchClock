@@ -1,0 +1,27 @@
+.table form .nickName_wrap {
+  text-align: center;
+  margin-top: 30rpx;
+}
+.table form .nickName_wrap .nickName_item {
+  border: 3rpx solid gray;
+}
+.table form .gender_wrap {
+  margin-top: 50rpx;
+  display: flex;
+  justify-content: center;
+}
+.table form .selfIntro_wrap {
+  margin-top: 50rpx;
+  text-align: center;
+}
+.table form .selfIntro_wrap .selfIntro_item {
+  display: flex;
+  justify-content: center;
+}
+.table form .selfIntro_wrap .selfIntro_item textarea {
+  border: 3rpx solid gray;
+}
+.table form .addImage {
+  margin-top: 100rpx;
+  margin-bottom: 140rpx;
+}

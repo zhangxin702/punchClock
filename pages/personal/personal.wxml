@@ -28,14 +28,14 @@
     </view>
 </view>
 <view class="act_wrap" wx:if="{{userInfo}}">
-    <view class="control">
+    <!-- <view class="control">
         <view class="blank"></view>
         <navigator>已组织活动</navigator>
         <view class="blank"></view>
-    </view>
+    </view> -->
     <view class="control">
         <view class="blank"></view>
-        <navigator>已参与活动</navigator>
+        <navigator>已参与/已组织活动</navigator>
         <view class="blank"></view>
     </view>
     <view class="control">

@@ -84,15 +84,16 @@ export const register = (openId, nickName, gender, selfIntro, avatarPath) => {
   return new Promise((resolve, reject) => {
     const cloudPath = "avatar/" + openId + ".jpg";
     let avatarUrl = null;
-    wx.cloud.upLoadFile({
+    wx.cloud.uploadFile({
       cloudPath: cloudPath,
-      filePath: avatarUrl,
+      filePath: avatarPath,
       success: (res) => {
         console.log(res);
         avatarUrl = res.data.filePath;
         console.log("照片上传成功√");
       },
       fail: (err) => {
+        console.log(err);
         console.log("照片上传失败×");
       },
     });
@@ -115,6 +116,7 @@ export const register = (openId, nickName, gender, selfIntro, avatarPath) => {
           duration: 100,
         });
         console.log("注册成功√");
+        resolve(res);
       })
       .catch((err) => {
         wx.showToast({
@@ -123,6 +125,7 @@ export const register = (openId, nickName, gender, selfIntro, avatarPath) => {
           duration: 100,
         });
         console.log("注册失败×");
+        reject(err);
       });
   });
 };

@@ -1,1 +1,6 @@
-{}
+{
+  "usingComponents": {
+    "addImage2": "../../components/addImage/addImage"
+  },
+  "navigationBarTitleText":"注册页面"
+}

@@ -1,7 +1,9 @@
 {
   "pages": [
+    "pages/register/register",
     "pages/personal/personal",
-    "pages/register/register"
+    "pages/activity_punch/activity_punch",
+    "pages/punch/punch"
   ],
   "window": {
     "backgroundTextStyle": "light",
