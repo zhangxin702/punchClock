@@ -1,5 +1,5 @@
 // pages/punch_list/punch_list.js
-import { actTableGetAll } from '../../utils/asyncFunc.js';
+import { actTableGetAll } from '../../async/async.js';
 Page({
   /**
    * 页面的初始数据

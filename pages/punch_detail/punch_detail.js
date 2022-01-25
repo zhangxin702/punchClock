@@ -1,5 +1,5 @@
 // pages/punch_detail/punch_detail.js
-import { actTableById } from "../../utils/asyncFunc.js";
+import { actTableById } from "../../async/async.js";
 Page({
   /**
    * 页面的初始数据

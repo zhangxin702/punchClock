@@ -1,5 +1,5 @@
 // 个人页
-import { getUserInfo, getParticipateNum, getOrganizeNum } from "../../utils/asyncFunc.js";
+import { getUserInfo, getParticipateNum, getOrganizeNum } from "../../async/async.js";
 
 Page({
   data: {

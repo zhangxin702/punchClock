@@ -1,4 +1,4 @@
-import { register } from "../../utils/asyncFunc.js";
+import { register } from "../../async/async.js";
 
 // 注册页
 Page({
