@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/location_choose/location_choose",
     "pages/register/register",
     "pages/personal/personal",
     "pages/activity_punch/activity_punch",

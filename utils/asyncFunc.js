@@ -162,3 +162,5 @@ export const actTableById = ({ id }) => {
     });
   });
 };
+
+// export const getLocation = ()
