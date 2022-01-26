@@ -1,6 +1,9 @@
 {
   "usingComponents": {
-    "addImage_1": "../../components/addImage_1/addImage_1"
+    "addImage_1": "../../components/addImage_1/addImage_1",
+    "rui-picker": "../../components/picker/picker",
+    "rui-panel": "../../components/panel/panel",
+    "rui-flex": "../../components/flex/flex"
   },
   "navigationBarTitleText": "设置活动"
 }
