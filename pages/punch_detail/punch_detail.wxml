@@ -6,17 +6,11 @@
 	<view class="actives_time">开始时间:{{startTime}}</view>
 	<view class="actives_time">结束时间:{{endTime}}</view>
 	<view class="actives_time">参与人数:{{activity.userCounts}}</view>
+	<view class="actives_time">最低打卡次数:{{punch_num}}</view>
 </view>
+<view class="kongbai"></view>
 <view class="actives_introduce">{{activity.actContent}}</view>
-<!-- 上传图片 -->
-<view style="width: 90%; margin-left:5%;">
-	<addImage
-	 count="{{count}}"
-	 images="{{images}}"
-	 addedCount="{{addedCount}}"
-	 bind:chooseImage="chooseImage"
-	 bind:deleteImage="deleteImage"
-	></addImage>
-</view>
-<button style=" ">确定打卡</button>
+<view class="kongbai"></view>
+<navigator url="../punch_ing/punch_ing"><button style="background-color:#ececec;">参与打卡</button></navigator>
+
 

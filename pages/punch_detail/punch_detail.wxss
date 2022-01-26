@@ -26,3 +26,6 @@
   padding: 15rpx;
   color: #8b8b8b;
 }
+.kongbai{
+  padding: 20rpx;
+}

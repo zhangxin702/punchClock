@@ -1,6 +1,6 @@
 {
   "usingComponents": {
-    "addImage": "../../components/addImage/addImage"
+  
   },
   "navigationBarTitleText": "活动详情"
 
