@@ -38,10 +38,10 @@
 				 class="head"
 				 bindtap="toCropper"
 				>
-					<block wx:if="{{src}}">
+					<block wx:if="{{avatarPath}}">
 						<image
 						 mode="widthFix"
-						 src="{{src}}"
+						 src="{{avatarPath}}"
 						></image>
 					</block>
 					<block wx:else>

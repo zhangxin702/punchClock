@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/register/register",
     "pages/index/index",
     "pages/activity_punch/activity_punch" ,
     "pages/activity_organize/activity_organize" ,
@@ -7,7 +8,6 @@
     "pages/punch_detail/punch_detail",
     "pages/punch_list/punch_list",
     "pages/punch/punch",  
-    "pages/register/register",
     "pages/personal/personal",
     "pages/cropper/cropper"
   ],
@@ -37,7 +37,7 @@
     },{
       "selectedIconPath": "images/user1.png",
       "iconPath": "images/user.png",
-      "pagePath": "pages/user/user"  ,
+      "pagePath": "pages/personal/personal"  ,
       "text": "我的"
     }
     ]

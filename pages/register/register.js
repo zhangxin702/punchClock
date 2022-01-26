@@ -3,19 +3,13 @@ import { register } from "../../async/async.js";
 // 注册页
 Page({
   data: {
-    avatarPath: null,
-    // 上传图片设置
-    images: [],
-    count: 1,
-    addedCount: 0,
-    //以下src是为了方便cropper接口传递所设
-    src:'',
+    avatarPath: null, //为了方便cropper接口传递所设
   },
 
   toCropper() {
     wx.navigateTo({
-      url:  `../../pages/cropper/cropper?imgSrc=${this.data.src}`
-    })
+      url: `../../pages/cropper/cropper?imgSrc=${this.data.src}`,
+    });
   },
 
   onShow() {
@@ -29,40 +23,13 @@ Page({
     //       openId: res.result
     //     })
     //   });
-    const app = getApp()
+    const app = getApp();
     if (app.globalData.imgSrc) {
       this.setData({
-        src: app.globalData.imgSrc
-      })
+        avatarPath: app.globalData.imgSrc,
+      });
     }
     console.log(app.globalData.imgSrc);
-  },
-
-  // 上传图片有关函数
-  chooseImage() {
-    var that = this;
-    wx.chooseImage({
-      count: 3 - that.data.addedCount,
-      sizeType: ["compressed"], // 可以指定是原图还是压缩图，默认二者都有
-      sourceType: ["album", "camera"], // 可以指定来源是相册还是相机，默认二者都有
-      success: function (res) {
-        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-        that.setData({
-          images: that.data.images.concat(res.tempFilePaths),
-          addedCount: that.data.addedCount + res.tempFilePaths.length,
-          avatarPath: res.tempFilePaths[0],
-        });
-      },
-    });
-  },
-
-  // 删除图片
-  deleteImage(e) {
-    this.data.images.splice(e.detail, 1);
-    this.setData({
-      images: this.data.images,
-      addedCount: this.data.addedCount - 1,
-    });
   },
 
   async handleSubmit(e) {
