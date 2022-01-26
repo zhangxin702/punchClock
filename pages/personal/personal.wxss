@@ -35,7 +35,7 @@
   z-index: 1;
 }
 .user_info_wrap .user_btn navigator {
-  border: 8rpx outset white;
+  border: 8rpx outset wheat;
   color: gray;
   font-size: 38rpx;
   font-weight: bold;
@@ -73,12 +73,15 @@
 .act_wrap .control .blank {
   flex: 1;
 }
-.act_wrap .control navigator {
+.act_wrap .control .navigator_item {
   flex: 6;
   justify-content: space-around;
-  border: 8rpx outset white;
+  border: 5rpx solid #eeecec;
   font-size: 38rpx;
-  border-radius: 10rpx;
-  padding: 30rpx;
+  border-radius: 30rpx;
+  box-shadow: 6rpx 6rpx 10rpx #ababad, -3rpx -3rpx 10rpx #e0dede;
   text-align: center;
+}
+.act_wrap .control .navigator_item navigator {
+  padding: 30rpx;
 }

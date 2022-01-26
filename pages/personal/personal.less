@@ -39,7 +39,7 @@
         top: 200rpx;
         z-index: 1;
         navigator{
-            border:8rpx outset white;
+            border:8rpx outset wheat;
             color:gray;
             font-size: 38rpx;
             font-weight: bold;
@@ -80,14 +80,18 @@
         .blank{
             flex:1;
         }
-        navigator{
+        .navigator_item{
             flex:6;
             justify-content: space-around;
-            border:8rpx outset white;
+            border:5rpx solid rgb(238, 236, 236);
             font-size: 38rpx;
-            border-radius: 10rpx;
-            padding: 30rpx;
+            border-radius: 30rpx;
+            box-shadow: 6rpx 6rpx 10rpx rgb(171, 171, 173),
+            -3rpx -3rpx 10rpx rgb(224, 222, 222);
             text-align: center;
+            navigator{
+                padding: 30rpx;
+            }
         }
     }
 }
