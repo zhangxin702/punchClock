@@ -1,0 +1,22 @@
+<view class="kongbai"></view>
+<!-- 上传图片 -->
+<view style="width: 90%; margin-left:5%;">
+	<addImage
+	 count="{{count}}"
+	 images="{{images}}"
+	 addedCount="{{addedCount}}"
+	 bind:chooseImage="chooseImage"
+	 bind:deleteImage="deleteImage"
+	></addImage>
+</view>
+<view class="kongbai"></view>
+
+
+
+<!-- 上传文件 -->
+<button bindtap="chooseMessageFile" style="background-color: grey;color: white;" >+上传文件</button>
+<view class="kongbai">
+</view>
+
+<!-- 上传文件 -->
+<button type="primary">完成打卡</button>

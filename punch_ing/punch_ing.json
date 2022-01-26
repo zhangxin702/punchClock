@@ -1,0 +1,5 @@
+{
+  "usingComponents": {  "addImage": "../../components/addImage/addImage"},
+  "navigationBarTitleText": "打卡时刻"
+
+}
