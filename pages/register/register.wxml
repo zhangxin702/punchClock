@@ -1,30 +1,61 @@
 <view class="table">
-    <form bindsubmit="handleSubmit">
-        <view class="nickName_wrap">
-            <text>昵称</text>
-            <view class="nickName_item">
-                <input type="test" name="nickName" value="" placeholder="请输入昵称" />
-            </view>
-        </view>
-        <view class="gender_wrap">
-            <text>性别</text>
-            <view class="gender_item">
-                <radio-group name="gender">
-                    <radio value="0">男</radio>
-                    <radio value="1">女</radio>
-                </radio-group>
-            </view>
-        </view>
-        <view class="selfIntro_wrap">
-            <text>自我介绍</text>
-            <view class="selfIntro_item">
-                <textarea name="selfIntro" placeholder="请输入自我介绍" maxlength="-1"></textarea>
-            </view>
-        </view>
-        <view class="addImage">
-            <text>上传用户图片</text>
-            <addImage2 count="{{count}}" images="{{images}}" addedCount="{{addedCount}}" bind:chooseImage="chooseImage" bind:deleteImage="deleteImage"></addImage2>
-        </view>
-        <button form-type="submit" type="primary">注册</button>
-    </form>
+	<form bindsubmit="handleSubmit">
+		<view class="nickName_wrap">
+			<text>昵称</text>
+			<view class="nickName_item">
+				<input
+				 type="test"
+				 name="nickName"
+				 value=""
+				 placeholder="请输入昵称"
+				/>
+			</view>
+		</view>
+		<view class="gender_wrap">
+			<text>性别</text>
+			<view class="gender_item">
+				<radio-group name="gender">
+					<radio value="0">男</radio>
+					<radio value="1">女</radio>
+				</radio-group>
+			</view>
+		</view>
+		<view class="selfIntro_wrap">
+			<text>自我介绍</text>
+			<view class="selfIntro_item">
+				<textarea
+				 name="selfIntro"
+				 placeholder="请输入自我介绍"
+				 maxlength="-1"
+				></textarea>
+			</view>
+		</view>
+		<view class="addImage">
+			<text>上传用户图片</text>
+			<!-- 以下就是image-cropper插件，能够使图片自由放大放小 -->
+			<view class="intro">
+				<view
+				 class="head"
+				 bindtap="toCropper"
+				>
+					<block wx:if="{{src}}">
+						<image
+						 mode="widthFix"
+						 src="{{src}}"
+						></image>
+					</block>
+					<block wx:else>
+						点击裁剪
+					</block>
+				</view>
+			</view>
+			<!-- <addImage2 count="{{count}}" images="{{images}}" addedCount="{{addedCount}}" bind:chooseImage="chooseImage" bind:deleteImage="deleteImage"></addImage2> -->
+		</view>
+		<button
+		 form-type="submit"
+		 type="primary"
+		>注册
+		</button>
+	</form>
 </view>
+

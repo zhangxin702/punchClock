@@ -8,6 +8,34 @@ Page({
     images: [],
     count: 1,
     addedCount: 0,
+    //以下src是为了方便cropper接口传递所设
+    src:'',
+  },
+
+  toCropper() {
+    wx.navigateTo({
+      url:  `../../pages/cropper/cropper?imgSrc=${this.data.src}`
+    })
+  },
+
+  onShow() {
+    // wx.cloud
+    //   .callFunction({
+    //     name: "getOpenId",
+    //   })
+    //   .then((res) => {
+    //     console.log("openId: ", res.result);
+    //     this.setData({
+    //       openId: res.result
+    //     })
+    //   });
+    const app = getApp()
+    if (app.globalData.imgSrc) {
+      this.setData({
+        src: app.globalData.imgSrc
+      })
+    }
+    console.log(app.globalData.imgSrc);
   },
 
   // 上传图片有关函数
