@@ -1,1 +1,3 @@
-/* pages/punch_ing/punch_ing.wxss */
+.kongbai{
+  padding: 20rpx;
+}
