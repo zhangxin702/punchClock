@@ -1,1 +1,37 @@
 /* pages/activity_punch/activity_punch.wxss */
+/* 以下页面由于跟心莹差不多，所以跟着心莹格式，等到数据库做好或者后续设计好后后继续做 */
+  /* 活动列表页 */
+  .first_tab {
+    margin: 20rpx;
+  }
+.actives_item {
+    display: flex;
+    border-bottom: 1rpx solid #ccc;
+    height: 180rpx;
+  }
+.actives_item .actives_img {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+.actives_item .actives_img image {
+    width: 90%;
+  }
+  .actives_item .actives_info {
+    display: flex;
+    flex: 3;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+.actives_item .actives_info .actives_name {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+.actives_item .actives_info .actives_price {
+    color:#dd3300 ;
+    font-size: 20rpx;
+  }
+  

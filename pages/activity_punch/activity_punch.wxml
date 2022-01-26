@@ -1,2 +1,98 @@
-<!--pages/activity_punch/activity_punch.wxml-->
-<text>pages/activity_punch/activity_punch.wxml</text>
+<!-- 监听自定义事件 -->
+<tabs
+ tabs="{{tabs}}"
+ bind:tabsItemChange="handleTabsItemChange"
+>
+	<block wx:if="{{tabs[0].isActive}}">
+    <!-- 以下页面由于跟心莹差不多，所以跟着心莹格式，等到数据库做好或者后续设计好后后继续做 -->
+		<view class="first_tab">
+			<navigator
+			 class="actives_item"
+			 url="/pages/punch_detail/punch_detail?goods_id={{item.goods_id}}"
+			>
+				<view class="actives_img">
+					<image
+					 mode="widthFix"
+					 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
+					></image>
+				</view>
+				<view class="actives_info">
+					<view class="actives_name">校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑</view>
+					<view class="actives_price">开展时间:2021-1-23</view>
+				</view>
+			</navigator>
+		</view>
+		<view class="first_tab">
+			<navigator
+			 class="actives_item"
+			 url="/pages/punch_detail/punch_detail?goods_id={{item.goods_id}}"
+			>
+				<view class="actives_img">
+					<image
+					 mode="widthFix"
+					 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
+					></image>
+				</view>
+				<view class="actives_info">
+					<view class="actives_name">校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑</view>
+					<view class="actives_price">开展时间:2021-1-23</view>
+				</view>
+			</navigator>
+		</view>
+		<view class="first_tab">
+			<navigator
+			 class="actives_item"
+			 url="/pages/punch_detail/punch_detail?goods_id={{item.goods_id}}"
+			>
+				<view class="actives_img">
+					<image
+					 mode="widthFix"
+					 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
+					></image>
+				</view>
+				<view class="actives_info">
+					<view class="actives_name">校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑</view>
+					<view class="actives_price">开展时间:2021-1-23</view>
+				</view>
+			</navigator>
+		</view>
+		<view class="first_tab">
+			<navigator
+			 class="actives_item"
+			 url="/pages/punch_detail/punch_detail?goods_id={{item.goods_id}}"
+			>
+				<view class="actives_img">
+					<image
+					 mode="widthFix"
+					 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
+					></image>
+				</view>
+				<view class="actives_info">
+					<view class="actives_name">校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑</view>
+					<view class="actives_price">开展时间:2021-1-23</view>
+				</view>
+			</navigator>
+		</view>
+		<view class="first_tab">
+			<navigator
+			 class="actives_item"
+			 url="/pages/punch_detail/punch_detail?goods_id={{item.goods_id}}"
+			>
+				<view class="actives_img">
+					<image
+					 mode="widthFix"
+					 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
+					></image>
+				</view>
+				<view class="actives_info">
+					<view class="actives_name">校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑</view>
+					<view class="actives_price">开展时间:2021-1-23</view>
+				</view>
+			</navigator>
+		</view>
+	</block>
+	<block wx:else>
+		2
+	</block>
+</tabs>
+
