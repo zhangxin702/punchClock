@@ -8,7 +8,8 @@
     "pages/punch_list/punch_list",
     "pages/punch/punch",  
     "pages/register/register",
-    "pages/personal/personal"
+    "pages/personal/personal",
+    "pages/cropper/cropper"
   ],
   "window": {
     "backgroundTextStyle": "light",
