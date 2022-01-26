@@ -4,7 +4,7 @@ Component({
     // 图片总数量
     count: {
       type: Number,
-      value: 3,
+      value: 2,
       observers: function (newVal, oldVal) {}
     },
     // 图片临时访问路径集合

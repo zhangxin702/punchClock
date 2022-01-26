@@ -1,0 +1,4 @@
+<!--component/flex/flex.wxml-->
+<view class='rui-flex-content rui-class'>
+  <slot name="flexchild"></slot>
+</view>

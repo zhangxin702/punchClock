@@ -1,0 +1,5 @@
+<!--component/panel/panel.wxml-->
+<view class='rui-panel-content rui-class'>
+  <view wx:if="{{title}}" class='rui-panel-title'>{{title}}</view>
+  <view class='rui-panel-right' bindtap='rightTap'><slot></slot></view>
+</view>

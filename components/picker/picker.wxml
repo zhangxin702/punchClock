@@ -1,0 +1,5 @@
+<!--component/picker/picker.wxml-->
+<picker class='rui-picker rui-class' mode="multiSelector" range="{{times}}" value="{{timesIndex}}" disabled="{{disabled}}" bindchange='changeDate' bindcancel="cancelDate" bindcolumnchange="columnchangeDate">
+  {{value}}
+</picker>
+
