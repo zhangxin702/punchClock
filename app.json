@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/register/register",
     "pages/index/index",
+    "pages/register/register",
     "pages/activity_punch/activity_punch" ,
     "pages/activity_organize/activity_organize" ,
     "pages/punch_ing/punch_ing",
@@ -9,7 +9,8 @@
     "pages/punch_list/punch_list",
     "pages/punch/punch",  
     "pages/personal/personal",
-    "pages/cropper/cropper"
+    "pages/cropper/cropper",
+    "pages/analysis/analysis"
   ],
   "window": {
     "backgroundTextStyle": "light",

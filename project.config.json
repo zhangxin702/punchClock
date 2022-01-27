@@ -43,7 +43,7 @@
     "useCompilerPlugins": false
   },
   "compileType": "miniprogram",
-  "libVersion": "2.21.4",
+  "libVersion": "2.21.0",
   "appid": "wx59f8e4a4e9eb665d",
   "projectname": "punchClock",
   "debugOptions": {

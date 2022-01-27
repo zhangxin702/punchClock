@@ -1,6 +1,6 @@
 <view class="user_info_wrap">
 	<view
-	 wx:if="{{userInfo.avatarUrl}}"
+	 wx:if="{{userInfo}}"
 	 class="user_img_wrap"
 	>
 		<image
@@ -50,7 +50,7 @@
 				 class="num"
 				>0
 				</view>
-				<view class="name">已参与组织数</view>
+				<view class="name">已组织活动数</view>
 			</view>
 		</view>
 	</view>

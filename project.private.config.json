@@ -109,14 +109,20 @@
           "scene": null
         },
         {
-          "name": "pages/user/user",
-          "pathName": "pages/user/user",
+          "name": "个人页",
+          "pathName": "pages/personal/personal",
           "query": "",
           "scene": null
         },
         {
-          "name": "pages/index/index",
+          "name": "主页",
           "pathName": "pages/index/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "数据分析页",
+          "pathName": "pages/analysis/analysis",
           "query": "",
           "scene": null
         }

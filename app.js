@@ -1,4 +1,4 @@
-import { getUserInfo } from "async/async.js";
+import { getUserInfo } from "./async/async.js";
 App({
   async onLaunch() {
     wx.cloud.init({

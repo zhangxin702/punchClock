@@ -1,4 +1,5 @@
 import { register } from "../../async/async.js";
+const app = getApp();
 
 // 注册页
 Page({
@@ -13,17 +14,6 @@ Page({
   },
 
   onShow() {
-    // wx.cloud
-    //   .callFunction({
-    //     name: "getOpenId",
-    //   })
-    //   .then((res) => {
-    //     console.log("openId: ", res.result);
-    //     this.setData({
-    //       openId: res.result
-    //     })
-    //   });
-    const app = getApp();
     if (app.globalData.imgSrc) {
       this.setData({
         avatarPath: app.globalData.imgSrc,
@@ -37,17 +27,7 @@ Page({
      *  提交注册信息
      */
 
-    // wx.cloud
-    //   .callFunction({
-    //     name: "getOpenId",
-    //   })
-    //   .then((res) => {
-    //     console.log("openId: ", res.result);
-    //     this.setData({
-    //       openId: res.result
-    //     })
-    //   });
-
+    // const openId = app.globalData.userInfo.openId;
     const openId = "user-11";
     const { nickName, gender, selfIntro } = e.detail.value;
 
