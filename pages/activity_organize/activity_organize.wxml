@@ -20,40 +20,57 @@
 	<!-- 设置时间 -->
 	<view class="card">
 		<text class="name">时间设置</text>
-		
+
 		<rui-flex rui-class="rui-flex">
-  <text slot="flexchild">开始时间：</text>
-  <rui-picker slot="flexchild"
-	 start="2018-03-15 10:45:00"
-	end="2050-03-15 10:45:00" 
-	value="{{startTime}}" 
-	fields="second" 
-	bindchangedatepicker="changeStartDate"></rui-picker>
-</rui-flex>
-<rui-flex rui-class="rui-flex">
-  <text slot="flexchild">结束时间：</text>
-  <rui-picker slot="flexchild" 
-	start="2000-03-15 10:45:00" 
-	end="2050-03-15 10:45:00" 
-	value="{{ endTime}}" 
-	fields="second" 
-	bindchangedatepicker="changeEndDate"></rui-picker>
-</rui-flex>
+			<text slot="flexchild">开始时间：</text>
+			<rui-picker
+			 slot="flexchild"
+			 start="2022-00-00 00:00:00"
+			 end="2050-00-00 00:00:00"
+			 value="{{startTimeString}}"
+			 fields="second"
+			 bindchangedatepicker="changeStartDate"
+			></rui-picker>
+		</rui-flex>
+		<rui-flex rui-class="rui-flex">
+			<text slot="flexchild">结束时间：</text>
+			<rui-picker
+			 slot="flexchild"
+			 start="2022-00-00 00:00:00"
+			 end="2050-00-00 00:00:00"
+			 value="{{ endTimeString}}"
+			 fields="second"
+			 bindchangedatepicker="changeEndDate"
+			></rui-picker>
+		</rui-flex>
 	</view>
 	<view class="kongbai"></view>
 	<view class="card_2">
 		<text class="name">最低打卡次数</text>
-	
-  <view class="tui-gallery-list">
-    <view class="tui-number-group" >
-      <view class="tui-number-cell" bindtap="nextNum">-</view>
-      <input class="tui-number-cell" type="punch_num" value='{{punch_num}}' bindblur="num_blur"></input>
-      <view class="tui-number-cell" bindtap="prevNum">+</view>
-    </view>
-  </view>
-</view>
 
-<view class="kongbai"></view>
+		<view class="tui-gallery-list">
+			<view class="tui-number-group">
+				<view
+				 class="tui-number-cell"
+				 bindtap="nextNum"
+				>-
+				</view>
+				<input
+				 class="tui-number-cell"
+				 type="punch_num"
+				 value='{{punch_num}}'
+				 bindblur="num_blur"
+				></input>
+				<view
+				 class="tui-number-cell"
+				 bindtap="prevNum"
+				>+
+				</view>
+			</view>
+		</view>
+	</view>
+
+	<view class="kongbai"></view>
 	<!-- 活动简介 -->
 	<view class="card">
 		<text class="name">活动介绍</text>
@@ -70,7 +87,7 @@
 	</view>
 	<!-- 活动简介 -->
 	<view class="kongbai">
-		</view>
+	</view>
 	<!-- 活动公告 -->
 	<view class="card">
 		<text class="name">活动公告</text>
@@ -85,7 +102,7 @@
 		 bindblur="bindBlurAnnounce"
 		></textarea>
 	</view>
-		<!-- 活动公告 -->
+	<!-- 活动公告 -->
 
 </view>
 

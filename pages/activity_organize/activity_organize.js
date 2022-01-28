@@ -15,19 +15,21 @@ Page({
     count: 1,
     addedCount: 0,
     tempFilePaths: [],
-  
+
     // 活动简介
     active_introduce: '',
-   
+
     // 活动名字
     active_name: '',
     // 活动时间，具体到秒
-    startTime: '2019-03-15 10:45:45',
-    endTime: '2022-08-15 10:45:23',
-// 活动公告
-    active_announce:'',
+    startTime: '',
+    startTimeString: '0000-00-00 00:00:00',
+    endTime: '',
+    endTimeString: '0000-00-00 00:00:00',
+    // 活动公告
+    active_announce: '',
     //最低打卡次数
-    punch_num : 1
+    punch_num: 1,
   },
 
   // 打卡次数设置
@@ -39,30 +41,36 @@ Page({
     });
     // console.log(this.Date.active_announce)
   },
-  
-  prevNum(){
-    this.setData({punch_num: this.data.punch_num + 1 });
+
+  prevNum() {
+    this.setData({ punch_num: this.data.punch_num + 1 });
   },
-  nextNum(){
-    this.setData({punch_num: this.punch_num - 1 });
+  nextNum() {
+    this.setData({ punch_num: this.punch_num - 1 });
   },
 
-
-// 打卡次数设置
-
+  // 打卡次数设置
 
   // 改变时间
-  changeStartDate(e){
-    console.log(e.detail.value)
-    this.setData({ startTime: e.detail.value})
+  changeStartDate(e) {
+    let res = new Date(e.detail.value.replace(/-/g, '/'));
+    this.setData({
+      startTime: res,
+      startTimeString: res.toLocaleString(),
+    });
   },
-  changeEndDate(e){
-    console.log(e.detail.value)
-    this.setData({ endTime: e.detail.value})
-    
+  changeEndDate(e) {
+    let res = new Date(e.detail.value.replace(/-/g, '/'));
+    this.setData({
+      endTime: res,
+      endTimeString: res.toLocaleString(),
+    });
   },
   async submit() {
-    if (this.data. endTime < this.data. startTime) {
+    if (
+      this.data.endTime <= this.data.startTime ||
+      this.data.startTime < new Date()
+    ) {
       await showToast({
         title: '您选择的时间有误，请重新选择',
       });
@@ -80,7 +88,7 @@ Page({
       });
       return;
     }
-    if (this.data. active_announce === '') {
+    if (this.data.active_announce === '') {
       await showToast({
         title: '当前活动公告为空，请输入活动介绍',
       });
@@ -89,16 +97,18 @@ Page({
 
     var res = await uploadFile({
       tempFilePath: this.data.tempFilePaths[0],
+      cloudPath: 'punchImage/' + this.data.tempFilePaths[0].split('/').pop(),
     });
     var ree = await actTableInsert({
       actTheme: this.data.active_name,
       actContent: this.data.active_introduce,
-      nowTime: new Date(),
-      startTime: this.data.selectedActivexDate,
-      endTime: this.data.activeDateEnd,
-      actImg: res.fileID,
+      createTime: new Date(),
+      startTime: this.data.startTime,
+      endTime: this.data.endTime,
+      imageCloud: res.fileID,
+      punchTimes: this.data.punch_num,
+      announcement: this.data.active_announce,
     });
-
   },
 
   // 上传图片有关函数
@@ -120,10 +130,9 @@ Page({
     this.setData({
       images: this.data.images,
       addedCount: this.data.addedCount - 1,
+      tempFilePaths: [],
     });
   },
-
-
 
   // 活动简介设置  输入框失去焦点时,即触发事件
   bindTextAreaBlur: function (e) {
@@ -141,8 +150,8 @@ Page({
       active_name: e.detail.value,
     });
   },
-   // 活动公告设置  输入框失去焦点时,即触发事件
-   bindBlurAnnounce: function (e) {
+  // 活动公告设置  输入框失去焦点时,即触发事件
+  bindBlurAnnounce: function (e) {
     console.log(e.detail.value);
     var that = this;
     that.setData({

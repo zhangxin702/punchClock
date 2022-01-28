@@ -1,5 +1,5 @@
 // pages/punch_list/punch_list.js
-import { actTableGetAll } from '../../async/async.js';
+import { actTableGetAll } from '../../async/index.js';
 Page({
   /**
    * 页面的初始数据
@@ -36,7 +36,7 @@ Page({
     this.setData({
       actList: res.data.map((v) => ({
         ...v,
-        startTime: v.startTime.toLocaleString(),
+        createTime: v.createTime.toLocaleString(),
       })),
     });
   },

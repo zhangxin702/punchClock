@@ -37,13 +37,14 @@
 		>
 			<view class="actives_img">
 				<image
-				 mode="widthFix" style="border-radius: 20rpx;"
-				 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
+				 mode="widthFix"
+				 style="border-radius: 20rpx;"
+				 src="{{item.actImg}}?{{item.actImg}}:https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
 				></image>
 			</view>
 			<view class="actives_info">
 				<view class="actives_name">{{item.actTheme}}</view>
-				<view class="actives_price">开始时间：{{item.startTime}}</view>
+				<view class="actives_price">创建时间：{{item.createTime}}</view>
 				<view class="actives_price">参与人数：{{item.userCounts}}</view>
 			</view>
 		</navigator>
@@ -66,12 +67,12 @@
 			<view class="actives_img">
 				<image
 				 mode="widthFix"
-				 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
+				 src="{{item.actImg}}?{{item.actImg}}:https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
 				></image>
 			</view>
 			<view class="actives_info">
 				<view class="actives_name">{{item.actTheme}}</view>
-				<view class="actives_price">开始时间：{{item.startTime}}</view>
+				<view class="actives_price">创建时间：{{item.createTime}}</view>
 				<view class="actives_price">参与人数：{{item.userCounts}}</view>
 			</view>
 		</navigator>

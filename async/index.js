@@ -2,7 +2,7 @@ export const actTableGetAll = ({ order }) => {
   return new Promise((resolve, reject) => {
     var db = wx.cloud.database().collection('ActTable');
     if (order == 0) {
-      db = db.orderBy('nowTime', 'asc');
+      db = db.orderBy('createTime', 'asc');
     } else if (order == 1) {
       db = db.orderBy('userCounts', 'desc');
     }
@@ -52,14 +52,14 @@ export const chooseImage = ({ addedCount }) => {
  * @param {选择图片路径} param0
  * @returns
  */
-export const uploadFile = ({ tempFilePath }) => {
+export const uploadFile = ({ tempFilePath, cloudPath }) => {
   wx.showLoading({
     title: '添加中',
     mask: true,
   });
   return new Promise((resolve, reject) => {
     wx.cloud.uploadFile({
-      cloudPath: 'punchImage/nihao.jpg',
+      cloudPath: cloudPath,
       filePath: tempFilePath,
       success: (res) => {
         resolve(res);
@@ -90,10 +90,12 @@ export const showToast = ({ title }) => {
 export const actTableInsert = ({
   actTheme,
   actContent,
-  nowTime,
+  createTime,
   startTime,
   endTime,
   imageCloud,
+  punchTimes,
+  announcement,
 }) => {
   return new Promise((resolve, reject) => {
     var db = wx.cloud.database().collection('ActTable');
@@ -101,10 +103,15 @@ export const actTableInsert = ({
       data: {
         actTheme: actTheme,
         actContent: actContent,
-        nowTime: nowTime,
+        createTime: createTime,
         startTime: startTime,
         endTime: endTime,
         actImg: imageCloud,
+        announcement: announcement,
+        label: '',
+        punchTimes: punchTimes,
+        userCounts: '',
+        userIds: '',
       },
       success: (res) => {
         showToast({ title: '添加成功' });
