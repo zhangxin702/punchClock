@@ -1,5 +1,6 @@
 // pages/punch_detail/punch_detail.js
 import { actTableById } from '../../async/index.js';
+import { formatTime } from '../../utils/util.js';
 Page({
   /**
    * 页面的初始数据
@@ -8,10 +9,9 @@ Page({
     //商品
     activity: '',
     startTime: '',
-    punch_num:1,
+    punch_num: 1,
     endTime: '',
     // 上传图片设置
- 
   },
   /**
    * 生命周期函数--监听页面加载
@@ -23,8 +23,8 @@ Page({
     var res = await actTableById({
       id: actId,
     });
-    var start = res.data.startTime.toLocaleString();
-    var end = res.data.endTime.toLocaleString();
+    var start = formatTime({ date: res.data.startTime });
+    var end = formatTime({ date: res.data.endTime });
 
     this.setData({
       activity: res.data,
@@ -32,6 +32,4 @@ Page({
       endTime: end,
     });
   },
-
-  
 });

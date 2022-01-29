@@ -1,4 +1,5 @@
 // pages/punch_list/punch_list.js
+import { formatTime } from '../../utils/util.js';
 import { actTableGetAll } from '../../async/index.js';
 Page({
   /**
@@ -36,7 +37,7 @@ Page({
     this.setData({
       actList: res.data.map((v) => ({
         ...v,
-        createTime: v.createTime.toLocaleString(),
+        createTime: formatTime({ date: v.createTime }),
       })),
     });
   },

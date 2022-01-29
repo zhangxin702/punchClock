@@ -1,5 +1,5 @@
 <view class="active_image">
-	<image src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"></image>
+	<image src="{{activity.actImg?activity.actImg:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"></image>
 </view>
 <view class="actives_info">
 	<view class="actives_name">{{activity.Theme}}</view>
@@ -11,6 +11,7 @@
 <view class="kongbai"></view>
 <view class="actives_introduce">{{activity.actContent}}</view>
 <view class="kongbai"></view>
-<navigator url="../punch_ing/punch_ing"><button style="background-color:#ececec;">参与打卡</button></navigator>
-
+<navigator url="../punch_ing/punch_ing">
+	<button style="background-color:#ececec;">参与打卡</button>
+</navigator>
 

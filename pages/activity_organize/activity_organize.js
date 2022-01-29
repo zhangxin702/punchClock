@@ -4,6 +4,7 @@ import {
   showToast,
   actTableInsert,
 } from '../../async/index.js';
+import { formatTime } from '../../utils/util.js';
 
 Page({
   /**
@@ -23,9 +24,9 @@ Page({
     active_name: '',
     // 活动时间，具体到秒
     startTime: '',
-    startTimeString: '0000-00-00 00:00:00',
+    startTimeString: '0000/00/00 00:00:00',
     endTime: '',
-    endTimeString: '0000-00-00 00:00:00',
+    endTimeString: '0000/00/00 00:00:00',
     // 活动公告
     active_announce: '',
     //最低打卡次数
@@ -56,14 +57,14 @@ Page({
     let res = new Date(e.detail.value.replace(/-/g, '/'));
     this.setData({
       startTime: res,
-      startTimeString: res.toLocaleString(),
+      startTimeString: formatTime({ date: res }),
     });
   },
   changeEndDate(e) {
     let res = new Date(e.detail.value.replace(/-/g, '/'));
     this.setData({
       endTime: res,
-      endTimeString: res.toLocaleString(),
+      endTimeString: formatTime({ date: res }),
     });
   },
   async submit() {

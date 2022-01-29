@@ -110,8 +110,8 @@ export const actTableInsert = ({
         announcement: announcement,
         label: '',
         punchTimes: punchTimes,
-        userCounts: '',
-        userIds: '',
+        userCounts: 0,
+        userIds: [],
       },
       success: (res) => {
         showToast({ title: '添加成功' });
