@@ -82,7 +82,7 @@
 	<view class="control">
 		<view class="blank"></view>
 		<view class="navigator_item">
-			<navigator>数据分析</navigator>
+			<navigator url="/pages/analysis/analysis">数据分析</navigator>
 		</view>
 		<view class="blank"></view>
 	</view>
