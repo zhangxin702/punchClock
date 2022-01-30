@@ -44,10 +44,10 @@ Page({
   },
 
   prevNum() {
-    this.setData({ punch_num: this.data.punch_num + 1 });
+    this.setData({ punch_num: this.data.punch_num +1 });
   },
   nextNum() {
-    this.setData({ punch_num: this.punch_num - 1 });
+    this.setData({ punch_num: this.data.punch_num -1 });
   },
 
   // 打卡次数设置
