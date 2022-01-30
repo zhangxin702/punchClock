@@ -137,6 +137,12 @@
           "pathName": "pages/punch_ing/punch_ing",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "pages/home/home",
+          "pathName": "pages/home/home",
+          "query": "",
+          "scene": null
         }
       ]
     }

@@ -24,9 +24,7 @@
 >
 	<!-- 打卡页面 -->
 	<swiper-item>
-		<!-- 搜索框 -->
-		<SearchInput></SearchInput>
-		<!-- 搜索框 -->
+
 		<!-- 活动列表 -->
 		<!-- 将来有数据库可解开以下注释 -->
 		<navigator
@@ -53,9 +51,7 @@
 	<!-- 打卡页面 -->
 	<!-- 创建活动页面 -->
 	<swiper-item class="second_page">
-		<!-- 搜索框 -->
-		<SearchInput></SearchInput>
-		<!-- 搜索框 -->
+
 		<!-- 活动列表 -->
 		<!-- 将来有数据库可解开以下注释 -->
 		<navigator
