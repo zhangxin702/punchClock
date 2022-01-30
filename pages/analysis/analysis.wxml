@@ -1,2 +1,20 @@
-<!--pages/analysis/analysis.wxml-->
-<text>pages/analysis/analysis.wxml</text>
+<view class="label">
+	<view class="blank"></view>
+	<view class="control">
+		<view class="label_title">最热门活动标签</view>
+		<view class="label_content">
+			<view class="blank"></view>
+			<view class="control">
+				<view
+				 class="label_item"
+				 wx:for="{{maxLabels}}"
+				 wx:key="*this"
+				>"{{item}}"
+				</view>
+			</view>
+			<view class="blank"></view>
+		</view>
+	</view>
+	<view class="blank"></view>
+</view>
+

@@ -2,7 +2,9 @@ import { getRatioInPunch, countDayNum, countPunchedTimes, countMaxLabels } from 
 const app = getApp();
 
 Page({
-  data: {},
+  data: {
+    maxLabels:[]
+  },
 
   async onShow() {
     // const openId = app.globalData.userInfo.openId,
@@ -22,5 +24,8 @@ Page({
 
     const maxLabels = await countMaxLabels(db, openId);
     console.log("最多的标签：", maxLabels);
+    this.setData({
+      maxLabels
+    })
   },
 });
