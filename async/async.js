@@ -70,6 +70,121 @@ export const getOrganizeNum = (db, openId) => {
   });
 };
 
+//以下因为权限不够,可能要写到云函数
+export const getParticipatePunch = (db,openId) => {
+  /**
+   * 获取用户参与的活动
+   * db: 数据库的引用
+   */
+  return new Promise((resolve, reject) => {
+    const _ = db.command;
+    const $ = db.command.aggregate;
+    // db.collection('ActTable').aggregate()
+    // .lookup({
+    //   from: 'PunchTable',
+    //   // let: {
+    //   //   order_actid: '$_id',
+    //   // },
+    //   // pipeline: $.pipeline()
+    //   // .match(_.expr($.and([
+    //   //   $.eq(['$actId', '$$order_actid']),
+    //   //   $.eq(['$openId', openId])
+    //   // ])))
+    //   // .done(),
+    //   localField: '_id',
+    //   foreignField: 'actId',
+    //   as: 'punchList',
+    // })
+    // .match({
+    //   openId:openId
+    // })
+    // .end()
+    // .then(res => {
+    //   console.log(res);
+    // })
+    // .catch(err=> {
+    //   console.error(err);
+    // })
+  });
+};
+
+// export const uploadImage=(openID,avatarPath)=>{
+//   /**
+//      * 注册用户
+//      * openId: 用户的唯一标识
+//      * nickName: 昵称
+//      * gender: 性别
+//      * selfIntro: 自我介绍
+//      * avatarUrl: 头像
+//      */
+//     return new Promise((resolve, reject) => {
+//       const cloudPath = "avatar/" + openID + ".jpg";
+//       let avatarUrl = null;
+//       wx.cloud.uploadFile({
+//         cloudPath: cloudPath,
+//         filePath: avatarPath,
+//         success: (res) => {
+//           console.log(res.fileID);
+//           resolve(res.fileID);
+//           console.log("照片上传成功√");
+//         },
+//         fail: (err) => {
+//           reject(err);
+//           console.log(err);
+//           console.log("照片上传失败×");
+//           wx.showToast({
+//             title: "图片上传失败",
+//             icon: "fail",
+//             duration: 100,
+//           });
+//         },
+//       });
+//     });
+//   };
+
+// export const register = (openId, nickName, gender, selfIntro, avatarUrl) => {
+//   /**
+//    * 注册用户
+//    * openId: 用户的唯一标识
+//    * nickName: 昵称
+//    * gender: 性别
+//    * selfIntro: 自我介绍
+//    * avatarUrl: 头像
+//    */
+//   return new Promise((resolve, reject) => {
+//     console.log("地址:"+avatarUrl);
+//     let db = wx.cloud.database();
+//     db.collection("UserTable")
+//       .add({
+//         data: {
+//           openId: openId,
+//           nickName: nickName,
+//           gender: gender,
+//           selfIntro: selfIntro,
+//           avatarUrl: avatarUrl,
+//         },
+//       })
+//       .then((res) => {
+//         wx.showToast({
+//           title: "注册成功",
+//           icon: "success",
+//           duration: 100,
+//         });
+//         console.log("注册成功√");
+//         resolve(res);
+//       })
+//       .catch((err) => {
+//         wx.showToast({
+//           title: "注册失败",
+//           icon: "fail",
+//           duration: 100,
+//         });
+//         console.log("注册失败×");
+//         reject(err);
+//       });
+//   });
+// };
+
 export const register = (openId, nickName, gender, selfIntro, avatarPath) => {
   /**
    * 注册用户
@@ -412,6 +527,8 @@ export const countMaxLabels = (db, openId) => {
         // 逐个获取出现次数最多的几个标签
         for (let i = 0; i < max; i++) {
           label = labels[counts.indexOf(countsCopy[i])];
+          //建议加入深拷贝后加入划线的下一句，否则这种索引方式在同值的情况下会出错
+          //counts[counts.indexOf(countsCopy[i])]=0;
           maxLabels.push(label);
         }
         resolve(maxLabels);
