@@ -71,14 +71,42 @@ export const getOrganizeNum = (db, openId) => {
 };
 
 //以下因为权限不够,可能要写到云函数
-export const getParticipatePunch = (db,openId) => {
+export const getParticipatePunch = (openId) => {
   /**
    * 获取用户参与的活动
    * db: 数据库的引用
    */
   return new Promise((resolve, reject) => {
-    const _ = db.command;
-    const $ = db.command.aggregate;
+    wx.cloud
+      .callFunction({
+        name: "getActData",
+      })
+      .then((res) => {
+        console.log("获取所有活动信息成功√\n", res);
+        const actData = res.result;
+
+        // 对所有活动数据进行分析
+        let actList = [], // 存储活动
+          userIds = null;
+        // 检索所有活动
+        for (let i = 0; i < actData.length; i++) {
+          userIds = actData[i].userIds; // 获取一个活动的所有参与者
+          // 检索这个活动的所有参与者
+          for (let j = 0; j < actData[i].userCounts; j++) {
+            if (userIds[j] == openId) {
+              actList.push(actData[i]);
+              break;
+            }
+          }
+        }
+        resolve(actList);
+      })
+      .catch((err) => {
+        console.log("获取所有活动信息失败×\n", err);
+        reject(err);
+      });
+    // const _ = db.command;
+    // const $ = db.command.aggregate;
     // db.collection('ActTable').aggregate()
     // .lookup({
     //   from: 'PunchTable',

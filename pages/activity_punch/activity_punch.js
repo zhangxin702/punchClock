@@ -1,5 +1,6 @@
 // pages/activity_punch/activity_punch.js
 import {getParticipatePunch} from "../../async/async.js";
+import { formatTime } from '../../utils/util.js';
 const app=getApp();
 Page({
 
@@ -18,7 +19,8 @@ Page({
         name:"已组织活动",
         isActive:false
       }
-    ]
+    ],
+    actList:[]
   },
   //标题点击事件，从组件中传过来
   handleTabsItemChange(e){
@@ -47,6 +49,11 @@ Page({
     })
     const {openId}=app.globalData.userInfo;
     let res = await getParticipatePunch(openId); 
-    console.log(res);
+    this.setData({
+      actList: res.map((v) => ({
+        ...v
+      })),
+    });
+    console.log(this.data.actList);
   },
 })
