@@ -37,8 +37,8 @@
           "scene": null
         },
         {
-          "name": "pages/punch/punch",
-          "pathName": "pages/punch/punch",
+          "name": "打卡时刻",
+          "pathName": "pages/punch_ing/punch_ing",
           "query": "",
           "scene": null
         },
@@ -116,7 +116,7 @@
         },
         {
           "name": "主页",
-          "pathName": "pages/index/index",
+          "pathName": "pages/home/home",
           "query": "",
           "scene": null
         },

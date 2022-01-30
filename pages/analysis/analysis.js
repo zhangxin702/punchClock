@@ -1,31 +1,44 @@
-import { getRatioInPunch, countDayNum, countPunchedTimes, countMaxLabels } from "../../async/async.js";
+import { getSelfPunchedTimes, getSelfPunchedRank, getSeflMaxLabels, getActPunchedTimes, getActUserGender, countActHeldDays, countActHeldNum, getActHotRank } from "../../async/async.js";
 const app = getApp();
 
 Page({
   data: {
-    maxLabels:[]
+    maxLabels: [],
   },
 
   async onShow() {
     // const openId = app.globalData.userInfo.openId,
     const openId = "user-1",
-      // actId = "act-1";
       actId = "1ef3c51361ed7d0c04d6b15c7b9b82b8";
-
-    // const rank = await getRatioInPunch(openId, actId);
-    // console.log("用户的打卡次数超过了: ", rank * 100, "%");
-
     const db = wx.cloud.database();
-    // const { dayNum } = await countDayNum(db, actId);
-    // console.log("活动举办天数：", dayNum);
 
-    // const { punchedTimes } = await countPunchedTimes(db, openId, actId);
+    // const { isFinish, punchedTimes } = await getSelfPunchedTimes(db, openId, actId);
+    // console.log("是否已完成打卡要求：", isFinish);
     // console.log("已打卡次数：", punchedTimes);
 
-    const maxLabels = await countMaxLabels(db, openId);
+    // const rank = await getSelfPunchedRank(openId, actId);
+    // console.log("用户的打卡次数超过了: ", rank * 100, "%");
+
+    const maxLabels = await getSeflMaxLabels(db, openId);
     console.log("最多的标签：", maxLabels);
     this.setData({
-      maxLabels
-    })
+      maxLabels,
+    });
+
+    const { isFinish, punchedTimes } = await getActPunchedTimes(db, actId);
+    console.log("是否已完成打卡要求：\n", isFinish);
+    console.log("打卡次数：\n", punchedTimes);
+
+    const gender = await getActPunchedTimes(db, openId, actId);
+    console.log("男性：", gender[0], "人\n女性：", gender[1]);
+
+    const { isStart, dayNum } = countActHeldDays(db, actId);
+    console.log("活动是否已开始：", isStart);
+    if (isStart) {
+      console.log("活动举办的天数：", dayNum);
+    }
+
+    const { actNum } = await countActHeldNum(db, actId);
+    console.log("活动举办数量：", actNum);
   },
 });

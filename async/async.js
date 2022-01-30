@@ -320,52 +320,8 @@ export const chooseLocation = () => {
 };
 
 // 数据分析相关函数
-export const countDayNum = (db, actId) => {
-  /**
-   * 统计活动到目前为止举办的天数
-   * db: 数据库的引用
-   * actId: 活动的唯一标识
-   *
-   * 返回
-   * isStart: 该活动是否已开始
-   * dayNum: 活动到目前为止举办的天数
-   */
-
-  return new Promise((resolve, reject) => {
-    // 获取活动信息
-    db.collection("ActTable")
-      .doc(actId)
-      .get()
-      .then((res) => {
-        console.log("获取活动信息成功√\n", res);
-        let { startTime, endTime } = res.data;
-        startTime = startTime.getTime(); // 将开始时间转成毫秒
-        endTime = endTime.getTime(); // 将结束时间转成毫秒
-        const currentTime = new Date().getTime(); // 将当前时间转成毫秒
-        if (currentTime < startTime) {
-          // 活动尚未开始
-          resolve({
-            isStart: false,
-          });
-        } else {
-          // 活动已经开始
-          let dayNum = 0;
-          if (currentTime <= endTime) {
-            dayNum = (currentTime - startTime) / 1000 / 600 / 600 / 24; // 转为天数
-          } else {
-            dayNum = (currentTime - endTime) / 1000 / 600 / 600 / 24; // 转为天数
-          }
-          resolve({
-            isStart: true,
-            dayNum: (dayNum + 1).toFixed(0), // 取整
-          });
-        }
-      });
-  });
-};
-
 // 对参与者
-export const countPunchedTimes = (db, openId, actId) => {
+export const getSelfPunchedTimes = (db, openId, actId) => {
   /**
    * 统计参与者在一个活动中的打卡情况，并判断是否完成打卡要求
    * db: 数据库的引用
@@ -383,8 +339,8 @@ export const countPunchedTimes = (db, openId, actId) => {
       .doc(actId)
       .get()
       .then((res) => {
-        console.log("获取活动信息成功√\n", res);
-        const { punchTimes } = res.data; // 提取出打卡次数要求
+        console.log("参与者——获取活动信息成功√\n", res);
+        const { aqPunchTimes } = res.data; // 提取出打卡次数要求
         // 再查询用户的打卡次数
         wx.cloud
           .callFunction({
@@ -395,10 +351,10 @@ export const countPunchedTimes = (db, openId, actId) => {
             },
           })
           .then((res) => {
-            console.log("获取所有打卡数据成功√\n", res);
+            console.log("参与者——获取所有打卡数据成功√\n", res);
             const punchedTimes = res.result.length;
             // 返回数据
-            if (punchedTimes >= punchTimes) {
+            if (punchedTimes >= aqPunchTimes) {
               resolve({
                 isFinish: true,
                 punchedTimes: punchedTimes,
@@ -412,12 +368,12 @@ export const countPunchedTimes = (db, openId, actId) => {
             }
           })
           .catch((err) => {
-            console.log("获取所有打卡数据失败×\n", err);
+            console.log("参与者——获取所有打卡数据失败×\n", err);
             reject(err);
           });
       })
       .catch((err) => {
-        console.log("获取活动信息失败×\n", err);
+        console.log("参与者——获取活动信息失败×\n", err);
         reject(err);
       });
 
@@ -450,7 +406,7 @@ export const countPunchedTimes = (db, openId, actId) => {
   });
 };
 
-export const getRatioInPunch = (openId, actId) => {
+export const getSelfPunchedRank = (openId, actId) => {
   /**
    * 统计参与者在一个活动中相较于其它参与者的打卡情况
    * db: 数据库的引用
@@ -472,7 +428,7 @@ export const getRatioInPunch = (openId, actId) => {
         },
       })
       .then((res) => {
-        console.log("获取所有打卡数据成功√\n", res);
+        console.log("参与者——获取所有打卡数据成功√\n", res);
         const punchData = res.result;
         // 对所有打卡数据进行分析
         let punchTimes = [], // 存储每个用户的打卡次数
@@ -498,17 +454,20 @@ export const getRatioInPunch = (openId, actId) => {
         }
       })
       .catch((err) => {
-        console.log("获取所有打卡数据失败×\n", err);
+        console.log("参与者——获取所有打卡数据失败×\n", err);
         reject(err);
       });
   });
 };
 
-export const countMaxLabels = (db, openId) => {
+export const getSeflMaxLabels = (openId) => {
   /**
    * 统计用户参与得最多的活动标签
    * db: 数据库的引用
    * openId: 用户的唯一标识
+   *
+   * 返回
+   * maxLabels: 返回参与的最多的x个标签，0<=x<=3
    */
 
   return new Promise((resolve, reject) => {
@@ -517,7 +476,7 @@ export const countMaxLabels = (db, openId) => {
         name: "getActData",
       })
       .then((res) => {
-        console.log("获取所有活动信息成功√\n", res);
+        console.log("参与者——获取所有活动信息成功√\n", res);
         const actData = res.result;
 
         // 对所有活动数据进行分析
@@ -562,25 +521,218 @@ export const countMaxLabels = (db, openId) => {
         resolve(maxLabels);
       })
       .catch((err) => {
-        console.log("获取所有活动信息失败×\n", err);
+        console.log("参与者——获取所有活动信息失败×\n", err);
         reject(err);
       });
   });
 };
 
-// // 对举办方
-// export const countPunchOneAct = (openId, actId) => {
-//   /**
-//    * 统计用户在一个活动中的打卡情况，并判断是否完成打卡要求
-//    */
+// 对举办方
+export const getActPunchedTimes = (db, actId) => {
+  /**
+   * 统计一个活动中所有用户的打卡情况，并判断是否完成打卡要求
+   * db: 数据库的引用
+   * actId: 活动的唯一标识
+   *
+   * 返回
+   * isFinish: 是否完成打卡要求的数组
+   * punchedTimes: 用户在活动举办期间打卡的次数的数组
+   */
 
-//   return new Promise((resolve, reject) => {});
-// };
+  return new Promise((resolve, reject) => {
+    db.collection("ActTable")
+      .doc(actId)
+      .get()
+      .then((res) => {
+        console.log("举办方——获取活动信息成功√\n", res);
+        const { qsPunchTimes, userIds } = res.data; // 获取要求的打卡次数和参与的所有用户id
+        let isFinish = [],
+          punchedTimes = [];
 
-// export const countPunchOneAct = (openId, actId) => {
-//   /**
-//    * 统计用户在一个活动中的打卡情况，并判断是否完成打卡要求
-//    */
+        // 对每个用户的所有打卡记录进行检索
+        for (let i = 0; i < userIds.length; i++) {
+          db.collection("PunchTable")
+            .where({
+              openId: userIds[i],
+              actId: actId,
+            })
+            .then((res) => {
+              console.log("举办方——获取用户", userIds[i], "信息成功√\n", res);
+              punchedTimes.push(res.data.length);
+              if (res.data.length >= aqPunchTimes) {
+                isFinish.push(True);
+              } else {
+                isFinish.push(False);
+              }
+              resolve(isFinish, punchedTimes);
+            })
+            .catch((err) => {
+              console.log("举办方——获取用户", userIds[i], "信息失败×\n", err);
+              reject(err);
+            });
+        }
+      })
+      .catch((err) => {
+        console.log("举办方——获取活动信息失败×\n", err);
+        reject(err);
+      });
+  });
+};
 
-//   return new Promise((resolve, reject) => {});
-// };
+export const getActUserGender = (db, openId, actId = null) => {
+  /**
+   * 获取参与活动的用户的性别比
+   * db: 数据库的引用
+   * openId: 用户的唯一标识
+   * actId: 活动的唯一标识，若为空，则获取该用户举办的所有活动的用户性别比
+   *
+   * 返回
+   * gender: gender[0]记录男性的人数，gender[1]记录女性的人数
+   */
+
+  return Promise((resolve, reject) => {
+    db.collection("ActTable")
+      .where({
+        openId: openId,
+        actId: actId,
+      })
+      .then((res) => {
+        console.log("举办方——获取活动信息成功√\n", res);
+        const { userIds } = res.data;
+        let gender = [];
+        gender.push(0).push(0);
+
+        // 逐个用户进行检索
+        for (let i = 0; i < userIds.length; i++) {
+          db.collection("UserTable")
+            .where({
+              openId: userIds[i],
+            })
+            .then((res) => {
+              console.log("举办方——获取用户信息成功√\n", res);
+              gender[res.data.gender]++; // 对应性别计数
+            })
+            .catch((err) => {
+              console.log("举办方——获取用户信息失败×\n", err);
+              reject(err);
+            });
+        }
+        resolve(gender);
+      })
+      .catch((err) => {
+        console.log("举办方——获取活动信息失败×\n", err);
+        reject(err);
+      });
+  });
+};
+
+export const countActHeldDays = (db, actId) => {
+  /**
+   * 统计活动到目前为止举办的天数
+   * db: 数据库的引用
+   * actId: 活动的唯一标识
+   *
+   * 返回
+   * isStart: 该活动是否已开始
+   * dayNum: 活动到目前为止举办的天数
+   */
+
+  return new Promise((resolve, reject) => {
+    // 获取活动信息
+    db.collection("ActTable")
+      .doc(actId)
+      .get()
+      .then((res) => {
+        console.log("获取活动信息成功√\n", res);
+        let { startTime, endTime } = res.data;
+        startTime = startTime.getTime(); // 将开始时间转成毫秒
+        endTime = endTime.getTime(); // 将结束时间转成毫秒
+        const currentTime = new Date().getTime(); // 将当前时间转成毫秒
+        if (currentTime < startTime) {
+          // 活动尚未开始
+          resolve({
+            isStart: false,
+          });
+        } else {
+          // 活动已经开始
+          let dayNum = 0;
+          if (currentTime <= endTime) {
+            dayNum = (currentTime - startTime) / 1000 / 600 / 600 / 24; // 转为天数
+          } else {
+            dayNum = (currentTime - endTime) / 1000 / 600 / 600 / 24; // 转为天数
+          }
+          resolve({
+            isStart: true,
+            dayNum: (dayNum + 1).toFixed(0), // 取整
+          });
+        }
+      });
+  });
+};
+
+export const countActHeldNum = (db, openId) => {
+  /**
+   * 获取用户举办的活动数量
+   * db: 数据库的引用
+   * openId: 用户的唯一标识，若为空，则获取所有人举办的活动数量
+   *
+   * 返回
+   * actNum: 活动数
+   */
+
+  return Promise((resolve, reject) => {
+    db.collection("ActTable")
+      .where({
+        openId: openId,
+      })
+      .then((res) => {
+        console.log("举办方——获取活动信息成功√\n", res);
+        const actNum = res.data.length;
+        resolve(actNum);
+      })
+      .catch((err) => {
+        console.log("举办方——获取活动信息失败×\n", err);
+        reject(err);
+      });
+  });
+};
+
+export const getActHotRank = (db, openId) => {
+  /**
+   * 获取举办的活动名及其对应的排名
+   * db: 数据库的引用
+   * openId: 用户的唯一标识
+   *
+   * 返回
+   * actTheme: 活动主题数组
+   * actPartRank: 活动参与人数排名数组
+   * actPunchRank: 活动打卡数排名数组
+   *
+   * ps
+   * 配合countActHeldNum可以展示成“x/y”的形式
+   */
+
+  return Promise((resolve, reject) => {
+    db.collection("ActTable")
+      .where({
+        openId: openId,
+      })
+      .then((res) => {
+        console.log("举办方——获取活动信息成功√\n", res);
+        const acts = res.data;
+        let actThemes = [],
+          actPartNum = [], // 参与人数
+          actPartRank = [], // 参与人数排名
+          actPunchNum = [], // 打卡数
+          actPunchRank = []; // 打卡数排名
+        //
+        for (let i = 0; i < acts.length; i++) {
+          theme = acts[i].actTheme; // 获取活动主题
+        }
+      })
+      .catch((err) => {
+        console.log("举办方——获取活动信息失败×\n", err);
+        reject(err);
+      });
+  });
+};
