@@ -8,85 +8,20 @@
 		<view class="first_tab">
 			<navigator
 			 class="actives_item"
-			 url="/pages/punch_detail/punch_detail?goods_id={{item.goods_id}}"
+			 wx:for="{{actList}}"
+			 wx:key="actId"
+			 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
 			>
 				<view class="actives_img">
 					<image
 					 mode="widthFix"
-					 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
+					 src="{{item.actImg?item.actImg:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"
 					></image>
 				</view>
 				<view class="actives_info">
-					<view class="actives_name">校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑</view>
-					<view class="actives_price">开展时间:2021-1-23</view>
-				</view>
-			</navigator>
-		</view>
-		<view class="first_tab">
-			<navigator
-			 class="actives_item"
-			 url="/pages/punch_detail/punch_detail?goods_id={{item.goods_id}}"
-			>
-				<view class="actives_img">
-					<image
-					 mode="widthFix"
-					 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
-					></image>
-				</view>
-				<view class="actives_info">
-					<view class="actives_name">校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑</view>
-					<view class="actives_price">开展时间:2021-1-23</view>
-				</view>
-			</navigator>
-		</view>
-		<view class="first_tab">
-			<navigator
-			 class="actives_item"
-			 url="/pages/punch_detail/punch_detail?goods_id={{item.goods_id}}"
-			>
-				<view class="actives_img">
-					<image
-					 mode="widthFix"
-					 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
-					></image>
-				</view>
-				<view class="actives_info">
-					<view class="actives_name">校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑</view>
-					<view class="actives_price">开展时间:2021-1-23</view>
-				</view>
-			</navigator>
-		</view>
-		<view class="first_tab">
-			<navigator
-			 class="actives_item"
-			 url="/pages/punch_detail/punch_detail?goods_id={{item.goods_id}}"
-			>
-				<view class="actives_img">
-					<image
-					 mode="widthFix"
-					 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
-					></image>
-				</view>
-				<view class="actives_info">
-					<view class="actives_name">校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑</view>
-					<view class="actives_price">开展时间:2021-1-23</view>
-				</view>
-			</navigator>
-		</view>
-		<view class="first_tab">
-			<navigator
-			 class="actives_item"
-			 url="/pages/punch_detail/punch_detail?goods_id={{item.goods_id}}"
-			>
-				<view class="actives_img">
-					<image
-					 mode="widthFix"
-					 src="https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp"
-					></image>
-				</view>
-				<view class="actives_info">
-					<view class="actives_name">校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑校园跑</view>
-					<view class="actives_price">开展时间:2021-1-23</view>
+					<view class="actives_name">{{item.actTheme}}</view>
+					<view class="actives_price">创建时间：{{item.createTime}}</view>
+					<view class="actives_price">参与人数：{{item.userCounts}}</view>
 				</view>
 			</navigator>
 		</view>
