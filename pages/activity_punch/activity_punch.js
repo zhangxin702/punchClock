@@ -1,4 +1,6 @@
 // pages/activity_punch/activity_punch.js
+import {getParticipatePunch} from "../../async/async.js";
+const app=getApp();
 Page({
 
   /**
@@ -31,7 +33,7 @@ Page({
     })
   },
   //加载时获取page_id以此确保能够从按钮中走向正确样式
-  onLoad: function (options) {
+  async onLoad(options) {
     //如果没看见上面的组件可以把下面的注释划掉
     //console.log(options);
     const {page_id}=options;
@@ -43,5 +45,8 @@ Page({
     this.setData({
       tabs
     })
+    const {openId}=app.globalData.userInfo;
+    let res = await getParticipatePunch(openId); 
+    console.log(res);
   },
 })
