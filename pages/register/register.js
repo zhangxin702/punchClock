@@ -1,15 +1,17 @@
-import { register } from "../../async/async.js";
+import { register} from "../../async/async.js";
+//import { register ,uploadImage} from "../../async/async.js";
 const app = getApp();
 
 // 注册页
 Page({
   data: {
     avatarPath: null, //为了方便cropper接口传递所设
+    
   },
 
   toCropper() {
     wx.navigateTo({
-      url: `../../pages/cropper/cropper?imgSrc=${this.data.src}`,
+      url: `../../pages/cropper/cropper?imgSrc=${this.data.avatarPath}`,
     });
   },
 
@@ -29,7 +31,8 @@ Page({
 
     // const openId = app.globalData.userInfo.openId;
     const openId = "user-11";
-    const { nickName, gender, selfIntro } = e.detail.value;
+    const { nickName, gender} = e.detail.value;
+    let{selfIntro}=e.detail.value;
 
     if (nickName == "") {
       wx.showToast({
@@ -44,13 +47,23 @@ Page({
         title: "未选择头像",
       });
     } else {
+      wx.showLoading({
+        title: '加载中',
+        mask:true
+      })
       if (selfIntro == "") {
-        this.setData({
-          selfIntro: "该用户很懒，没有填自我介绍~",
-        });
+        // this.setData({
+        //   selfIntro: "该用户很懒，没有填自我介绍~",
+        // });
+        selfIntro="该用户很懒，没有填自我介绍~";
       }
-
+      //建议加下，之前那种写法会产生异步
+      //let avatarUrl=await uploadImage(openId,this.data.avatarPath);
       await register(openId, nickName, gender, selfIntro, this.data.avatarPath);
+      wx.hideLoading();
+      wx.navigateBack({
+        delta: -1,
+      })
     }
   },
 });
