@@ -131,6 +131,12 @@
           "pathName": "pages/punch_detail/punch_detail",
           "query": "actId=1ef3c51361ed7d0c04d6b15e0441ddd9",
           "scene": null
+        },
+        {
+          "name": "pages/punch_ing/punch_ing",
+          "pathName": "pages/punch_ing/punch_ing",
+          "query": "",
+          "scene": null
         }
       ]
     }

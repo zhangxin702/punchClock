@@ -13,19 +13,37 @@
   
 }
 .actives_info{
-  padding: 10rpx 30rpx;
-  border-top: 1px solid #ccc;
-  border-bottom: 5px solid #dedede;
+
+  /* border-top: 1px solid #ccc; */
+  padding-left: 20rpx;
+  border-bottom: 5rpx solid #dedede;
   font-weight: 800;
   font-size: 50rpx;
+  width: 90%;
+  height: 160rpx;
+  margin: auto auto;
+}
+.activity_announce{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ececec;
+  margin: auto;
+  width: 86%;
+  height: 300rpx;
+  padding: 15rpx;
+  border-radius: 20rpx;
+  color: #8b8b8b;
 }
 .actives_introduce{
   background-color: #ececec;
   margin: auto;
+  width: 86%;
   height: 300rpx;
   padding: 15rpx;
+  border-radius: 20rpx;
   color: #8b8b8b;
 }
 .kongbai{
-  padding: 20rpx;
+  padding: 10rpx;
 }

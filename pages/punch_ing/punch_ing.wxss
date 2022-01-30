@@ -1,3 +1,15 @@
 .kongbai{
   padding: 20rpx;
 }
+.content{
+  display: flex;
+  background-color: #ececec;
+  margin: auto;
+  width: 86%;
+  height: 300rpx;
+  padding: 15rpx;
+  border-radius: 20rpx;
+  color: #8b8b8b;
+  justify-content: center;
+  align-items: center;
+}

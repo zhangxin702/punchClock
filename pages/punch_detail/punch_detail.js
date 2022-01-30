@@ -12,6 +12,9 @@ Page({
     punch_num: 1,
     endTime: '',
     // 上传图片设置
+
+    // 活动主题
+   
   },
   /**
    * 生命周期函数--监听页面加载
@@ -25,6 +28,7 @@ Page({
     });
     var start = formatTime({ date: res.data.startTime });
     var end = formatTime({ date: res.data.endTime });
+ 
 
     this.setData({
       activity: res.data,

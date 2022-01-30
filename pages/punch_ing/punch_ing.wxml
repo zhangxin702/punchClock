@@ -1,5 +1,8 @@
 <view class="kongbai"></view>
-<!-- 上传图片 -->
+<!-- content -->
+<view class="content">content</view>
+<view class="kongbai"></view>
+<!-- content -->
 <view style="width: 90%; margin-left:5%;">
 	<addImage
 	 count="{{count}}"

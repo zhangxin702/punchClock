@@ -1,6 +1,6 @@
 {
   "pages": [
-    "pages/index/index",
+    "pages/home/home",
     "pages/register/register",
     "pages/activity_punch/activity_punch" ,
     "pages/activity_organize/activity_organize" ,
@@ -28,7 +28,7 @@
     "list": [{
       "selectedIconPath": "images/index1.png",
       "iconPath": "images/index.png",
-      "pagePath": "pages/index/index",
+      "pagePath": "pages/home/home",
       "text": "首页"
     }, {
       "selectedIconPath": "images/punch1.png",
