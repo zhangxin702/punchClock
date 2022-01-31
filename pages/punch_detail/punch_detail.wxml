@@ -1,5 +1,5 @@
 <view class="active_image">
-	<image src="{{activity.actImg?activity.actImg:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"></image>
+	<image src="{{activity.actImage?activity.actImage:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"></image>
 </view>
 <!-- 主题名 -->
 <view class="actives_name" style="width: 90%;margin: auto;font-weight: 800;  border-bottom: 5rpx solid #dedede;height: 50rpx;">{{activity.Theme}}</view>

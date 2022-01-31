@@ -1,4 +1,4 @@
-import { getSelfPunchedTimes, getSelfPunchedRank, getSeflMaxLabels, getActPunchedTimes, getActUserGender, countActHeldDays, countActHeldNum, getActHotRank } from "../../async/async.js";
+import { getSelfPunchedTimes, getSelfPunchedRank, getSeflMaxLabels, getActPunchedTimes, getActUserGender, countActHeldDays, countActHeldNum, getActHotRankvsSelf } from "../../async/async.js";
 const app = getApp();
 
 Page({
@@ -19,26 +19,29 @@ Page({
     // const rank = await getSelfPunchedRank(openId, actId);
     // console.log("用户的打卡次数超过了: ", rank * 100, "%");
 
-    const maxLabels = await getSeflMaxLabels(db, openId);
-    console.log("最多的标签：", maxLabels);
-    this.setData({
-      maxLabels,
-    });
+    // const maxLabels = await getSeflMaxLabels(openId);
+    // console.log("最多的标签：", maxLabels);
+    // this.setData({
+    //   maxLabels,
+    // });
 
-    const { isFinish, punchedTimes } = await getActPunchedTimes(db, actId);
-    console.log("是否已完成打卡要求：\n", isFinish);
-    console.log("打卡次数：\n", punchedTimes);
+    // const { isFinish, punchedTimes } = await getActPunchedTimes(db, actId);
+    // console.log("是否已完成打卡要求：\n", isFinish);
+    // console.log("打卡次数：\n", punchedTimes);
 
-    const gender = await getActPunchedTimes(db, openId, actId);
-    console.log("男性：", gender[0], "人\n女性：", gender[1]);
+    // const gender = await getActUserGender(db, openId, actId);
+    // console.log("男性：", gender[0], "人\n女性：", gender[1]);
 
-    const { isStart, dayNum } = countActHeldDays(db, actId);
-    console.log("活动是否已开始：", isStart);
-    if (isStart) {
-      console.log("活动举办的天数：", dayNum);
-    }
+    // const { isStart, dayNum } = await countActHeldDays(db, actId);
+    // console.log("活动是否已开始：", isStart);
+    // if (isStart) {
+    //   console.log("活动举办的天数：", dayNum);
+    // }
 
-    const { actNum } = await countActHeldNum(db, actId);
-    console.log("活动举办数量：", actNum);
+    // const actNum = await countActHeldNum(db, openId);
+    // console.log("活动举办数量：", actNum);
+
+    const { actThemes, actUserRank, actPunchRank } = await getActHotRankvsSelf(db, openId);
+    console.log(actThemes, actUserRank, actPunchRank);
   },
 });

@@ -22,6 +22,5 @@ App({
 
   globalData: {
     userInfo: null,
-    imgSrc:null
   },
 });

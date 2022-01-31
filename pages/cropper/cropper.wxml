@@ -1,6 +1,5 @@
 <view style="width:100%;height:500rpx;">
-    <image-cropper id="image-cropper" bindload="cropperload" bindimageload="loadimage" bindtapcut="clickcut" limit_move="{{limit_move}}" disable_rotate="{{disable_rotate}}" width="{{width}}" height="{{height}}" imgSrc="{{src}}" angle="{{angle}}" disable_width="{{disable_width}}" max_width="{{max_width}}" max_height="{{max_height}}" disable_height="{{disable_height}}" disable_ratio="{{disable_ratio}}">
-    </image-cropper>
+    <image-cropper id="image-cropper" bindload="cropperload" bindimageload="loadimage" bindtapcut="clickcut" limit_move="{{limit_move}}" disable_rotate="{{disable_rotate}}" width="{{width}}" height="{{height}}" imgSrc="{{src}}" angle="{{angle}}" disable_width="{{disable_width}}" max_width="{{max_width}}" max_height="{{max_height}}" disable_height="{{disable_height}}" disable_ratio="{{disable_ratio}}"></image-cropper>
 </view>
 <text class="hint">点击中间裁剪框可查看裁剪后的图片</text>
 <view class='bottom'>
@@ -8,7 +7,6 @@
     <switch checked='{{disable_width?true:false}}' bindchange="switchChangeDisableWidth" />
     <text style='color:white;margin-right:5rpx;'>锁定裁剪框高</text>
     <switch checked='{{disable_height?true:false}}' bindchange="switchChangeDisableHeight" /> -->
-
     <!-- 注意：view.blank也是一样。是其他按钮不开启情况下才能用 -->
     <view class="blank"></view>
     <button bindtap='submit'>确定</button>
