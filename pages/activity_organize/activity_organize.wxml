@@ -103,8 +103,24 @@
 		></textarea>
 	</view>
 	<!-- 活动公告 -->
+	<view class="kongbai"></view>
+<!-- 打卡方式选择 -->
+<view class="card">
+	<text class="name">打卡方式</text>
+	<view class="kongbai"></view>
+<!-- 选择方式复选框 -->
+<checkbox-group bindchange="handleCheckboxChange">
+	<label wx:for-items="{{list}}">
+ <!--value值和默认选中状态都是通过数据绑定在js中的-->
+  <checkbox value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
+ </label>
+
+
+</checkbox-group>
 
 </view>
+</view>
+
 
 <view style="width: 85%; margin-left:7%;">
 	<view class="card_1">
@@ -118,6 +134,8 @@
 	</view>
 </view>
 <view class="kongbai"></view>
+<view class="kongbai">
+</view>
 <view class="kongbai">
 </view>
 

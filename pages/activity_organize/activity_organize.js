@@ -11,6 +11,34 @@ Page({
    * 页面的初始数据
    */
   data: {
+  //  选择打卡的方式
+  list:[
+    {
+      id : 1,
+      name:'🖊',
+      value:"word"
+    },
+    {
+      id : 2,
+      name:'📸',
+      value:"picture"
+    },
+    {
+      id : 3,
+      name:'⛳',
+      value:"map"
+    },
+    {
+      id : 3,
+      name:'📁',
+      value:"file"
+    }
+    
+  ],
+  // 复选框选择的value
+  selectList:[],
+  
+
     // 上传图片设置
     images: [],
     count: 1,
@@ -32,7 +60,15 @@ Page({
     //最低打卡次数
     punch_num: 1,
   },
+// 打卡方式复选框 把选择的保持在selectList
+handleCheckboxChange(e){
+  this.setData({
+    selectList: e.detail.value
+  })
 
+  
+  
+},
   // 打卡次数设置
   num_blur: function (e) {
     console.log(e.detail.value);
@@ -42,7 +78,7 @@ Page({
     });
     // console.log(this.Date.active_announce)
   },
-
+ 
   prevNum() {
     this.setData({ punch_num: this.data.punch_num +1 });
   },
