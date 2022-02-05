@@ -1,4 +1,7 @@
 <!-- 监听自定义事件 -->
+<view class="search">
+	<input type="test" value="" placeholder="活动搜索" maxlength="10" bindconfirm="inputBind"/>
+</view>
 <tabs
  tabs="{{tabs}}"
  bind:tabsItemChange="handleTabsItemChange"
@@ -8,7 +11,7 @@
 		<view class="first_tab">
 			<navigator
 			 class="actives_item"
-			 wx:for="{{actList}}"
+			 wx:for="{{showActList}}"
 			 wx:key="actId"
 			 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
 			>
@@ -31,7 +34,7 @@
 		<view class="first_tab">
 			<navigator
 			 class="actives_item"
-			 wx:for="{{organizeList}}"
+			 wx:for="{{showOrganizeList}}"
 			 wx:key="actId"
 			 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
 			>

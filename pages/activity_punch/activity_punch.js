@@ -21,7 +21,9 @@ Page({
       }
     ],
     actList:[],
-    organizeList:[]
+    organizeList:[],
+    showActList:[],
+    showOrganizeList:[]
   },
   //标题点击事件，从组件中传过来
   handleTabsItemChange(e){
@@ -54,6 +56,7 @@ Page({
     this.setData({
       actList: res1.map((v) => ({
         ...v,
+        //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
         createTime: formatTime({ date: new Date(v.createTime) }),
         endTime:formatTime({ date: new Date(v.endTime) }),
         startTime:formatTime({ date: new Date(v.startTime) })
@@ -62,12 +65,55 @@ Page({
     this.setData({
       organizeList: res2.map((v) => ({
         ...v,
+        //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
         createTime: formatTime({ date: new Date(v.createTime) }),
         endTime:formatTime({ date: new Date(v.endTime) }),
         startTime:formatTime({ date: new Date(v.startTime) })
       })),
     })
+    this.setData({
+      showActList:JSON.parse(JSON.stringify(this.data.actList)),//深拷贝防止改变引起总的改变
+      showOrganizeList:JSON.parse(JSON.stringify(this.data.organizeList))//同上
+    })
     console.log(this.data.actList);
     console.log(this.data.organizeList);
   },
+
+  
+  //搜索，按enter键返回值
+  inputBind(e){
+    if(e.detail.value==""){
+      this.setData({
+        showActList:JSON.parse(JSON.stringify(this.data.actList)),//深拷贝防止改变引起总的改变
+        showOrganizeList:JSON.parse(JSON.stringify(this.data.organizeList))//同上
+      })
+    }
+    else{
+      let showActList=[];
+      let showOrganizeList=[];
+      let actTheme=null;
+      let actList=this.data.actList;
+      let organizeList=this.data.organizeList;
+      // 检索所有参与活动
+      for (let i = 0; i < actList.length; i++) {
+        actTheme = actList[i].actTheme; // 获取一个活动的所有参与者
+        // 检索这个活动的所有参与者
+        if(actTheme==e.detail.value){
+          showActList.push(actList[i]);
+        }
+      }
+      //检索所有组织活动
+      for (let i = 0; i < organizeList.length; i++) {
+        actTheme = organizeList[i].actTheme; // 获取一个活动的所有参与者
+        // 检索这个活动的所有参与者
+        if(actTheme==e.detail.value){
+          showOrganizeList.push(organizeList[i]);
+        }
+      }
+      this.setData({
+        showOrganizeList,
+        showActList
+      })
+    }
+  }
 })
