@@ -108,6 +108,40 @@ export const getParticipatePunch = (openId) => {
   });
 };
 
+export const getOrganizePunch = (openId) => {
+  /**
+   * 获取用户参与的活动
+   * db: 数据库的引用
+   */
+  return new Promise((resolve, reject) => {
+    wx.cloud
+      .callFunction({
+        name: "getActData",
+      })
+      .then((res) => {
+        console.log("获取所有活动信息成功√\n", res);
+        const actData = res.result;
+
+        // 对所有活动数据进行分析
+        let actList = [], // 存储活动
+          organizeId = null;
+        // 检索所有活动
+        for (let i = 0; i < actData.length; i++) {
+          organizeId = actData[i].openId; // 获取一个活动的组织者
+          // 检索这个活动的所有组织者
+          if (organizeId == openId) {
+            actList.push(actData[i]);
+          }
+        }
+        resolve(actList);
+      })
+      .catch((err) => {
+        console.log("获取所有活动信息失败×\n", err);
+        reject(err);
+      });
+  });
+};
+
 export const register = (openId, nickName, gender, selfIntro, avatarPath) => {
   /**
    * 注册用户

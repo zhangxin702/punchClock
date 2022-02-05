@@ -1,5 +1,5 @@
 // pages/activity_punch/activity_punch.js
-import {getParticipatePunch} from "../../async/async.js";
+import {getParticipatePunch,getOrganizePunch} from "../../async/async.js";
 import { formatTime } from '../../utils/util.js';
 const app=getApp();
 Page({
@@ -20,7 +20,8 @@ Page({
         isActive:false
       }
     ],
-    actList:[]
+    actList:[],
+    organizeList:[]
   },
   //标题点击事件，从组件中传过来
   handleTabsItemChange(e){
@@ -48,12 +49,25 @@ Page({
       tabs
     })
     const {openId}=app.globalData.userInfo;
-    let res = await getParticipatePunch(openId); 
+    let res1 = await getParticipatePunch(openId);
+    let res2= await getOrganizePunch(openId);
     this.setData({
-      actList: res.map((v) => ({
-        ...v
+      actList: res1.map((v) => ({
+        ...v,
+        createTime: formatTime({ date: new Date(v.createTime) }),
+        endTime:formatTime({ date: new Date(v.endTime) }),
+        startTime:formatTime({ date: new Date(v.startTime) })
       })),
     });
+    this.setData({
+      organizeList: res2.map((v) => ({
+        ...v,
+        createTime: formatTime({ date: new Date(v.createTime) }),
+        endTime:formatTime({ date: new Date(v.endTime) }),
+        startTime:formatTime({ date: new Date(v.startTime) })
+      })),
+    })
     console.log(this.data.actList);
+    console.log(this.data.organizeList);
   },
 })

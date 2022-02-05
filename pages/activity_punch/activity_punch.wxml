@@ -27,7 +27,27 @@
 		</view>
 	</block>
 	<block wx:else>
-		2
+		<!-- 以下页面由于跟心莹差不多，所以跟着心莹格式，等到数据库做好或者后续设计好后后继续做 -->
+		<view class="first_tab">
+			<navigator
+			 class="actives_item"
+			 wx:for="{{organizeList}}"
+			 wx:key="actId"
+			 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
+			>
+				<view class="actives_img">
+					<image
+					 mode="widthFix"
+					 src="{{item.actImage?item.actImage:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"
+					></image>
+				</view>
+				<view class="actives_info">
+					<view class="actives_name">{{item.actTheme}}</view>
+					<view class="actives_price">创建时间：{{item.createTime}}</view>
+					<view class="actives_price">参与人数：{{item.userCounts}}</view>
+				</view>
+			</navigator>
+		</view>
 	</block>
 </tabs>
 
