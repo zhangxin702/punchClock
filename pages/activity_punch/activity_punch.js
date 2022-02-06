@@ -79,42 +79,42 @@ Page({
     console.log(this.data.actList);
     console.log(this.data.organizeList);
   },
-
   
   //搜索，按enter键返回值
   inputBind(e){
-    if(e.detail.value==""){
-      this.setData({
-        showActList:JSON.parse(JSON.stringify(this.data.actList)),//深拷贝防止改变引起总的改变
-        showOrganizeList:JSON.parse(JSON.stringify(this.data.organizeList))//同上
-      })
-    }
-    else{
-      let showActList=[];
-      let showOrganizeList=[];
-      let actTheme=null;
-      let actList=this.data.actList;
-      let organizeList=this.data.organizeList;
-      // 检索所有参与活动
-      for (let i = 0; i < actList.length; i++) {
-        actTheme = actList[i].actTheme; // 获取一个活动的所有参与者
-        // 检索这个活动的所有参与者
-        if(actTheme==e.detail.value){
-          showActList.push(actList[i]);
-        }
-      }
-      //检索所有组织活动
-      for (let i = 0; i < organizeList.length; i++) {
-        actTheme = organizeList[i].actTheme; // 获取一个活动的所有参与者
-        // 检索这个活动的所有参与者
-        if(actTheme==e.detail.value){
-          showOrganizeList.push(organizeList[i]);
-        }
-      }
-      this.setData({
-        showOrganizeList,
-        showActList
-      })
-    }
+    let showActList=[];
+    let showOrganizeList=[];
+    let actTheme=null;
+    let actList=this.data.actList;
+    let organizeList=this.data.organizeList;
+    // 检索所有参与活动
+    for (let i = 0; i < actList.length; i++) {
+      actTheme = actList[i].actTheme; // 获取一个活动的所有参与者
+      // 检索这个活动的所有参与者
+      //.match是匹配字符串
+      if(actTheme.match(e.detail.value)){
+        showActList.push(actList[i]);
+      }
+    }
+    //检索所有组织活动
+    for (let i = 0; i < organizeList.length; i++) {
+      actTheme = organizeList[i].actTheme; // 获取一个活动的所有参与者
+      // 检索这个活动的所有参与者
+      if(actTheme.match(e.detail.value)){
+        showOrganizeList.push(organizeList[i]);
+      }
+    }
+    //两边同时为空的时候，由于是数组只能用length==0去判断
+    if(!showActList.length&&!showOrganizeList.length){
+      wx.showToast({
+        title: '未查询到活动',
+      })
+      showActList=this.data.actList;
+      showOrganizeList=this.data.organizeList;
+    }
+    this.setData({
+      showOrganizeList,
+      showActList
+    })
   }
 })
