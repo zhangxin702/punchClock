@@ -263,7 +263,7 @@ export const getSelfPunchedTimes = (db, openId, actId) => {
    * punchedTimes: 用户在活动举办期间打卡的次数
    */
 
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     // 先查询活动的打卡次数要求
     db.collection("ActTable")
       .doc(actId)
@@ -764,6 +764,65 @@ export const getActHotRankvsAll = (db, openId) => {
       })
       .catch((err) => {
         console.log("举办方——获取举办的活动信息失败×\n", err);
+        reject(err);
+      });
+  });
+};
+
+export const uploadProblem = (openId, text, imagePaths) => {
+  /**
+   * 上传用户的反馈
+   * openId: 用户的唯一标识
+   * context: 反馈的文本内容
+   * imagePath: 图片路径数组
+   */
+
+  return new Promise((resolve, reject) => {
+    let date = new Date();
+    let cloudPaths = [];
+    for (let i = 0; i < imagePaths.length; i++) {
+      cloudPaths.push("feedback/" + imagePaths[i].substr(0, imagePaths[i].length - 4) + i + ".png");
+    }
+
+    // 先把临时文件上传到云存储
+    for (let i = 0; i < imagePaths.length; i++) {
+      wx.cloud
+        .uploadFile({
+          cloudPath: cloudPaths[i],
+          filePath: imagePaths[i],
+        })
+        .then((res) => {
+          console.log("上传图片到云存储成功\n", res);
+        })
+        .catch((err) => {
+          console.log("上传图片到云存储失败×\n", err);
+          reject(err);
+        });
+    }
+
+    // 再把临时文件上传到服务器
+    const db = wx.cloud.database();
+    db.collection("ProbTable")
+      .add({
+        data: {
+          openId: openId,
+          text: text,
+          imagePath: cloudPaths,
+        },
+      })
+      .then((res) => {
+        console.log("上传问题反馈成功√\n", res);
+
+        wx.showToast({
+          title: "反馈已发送",
+        });
+        wx.navigateBack({
+          delta: 1,
+        });
+        resolve(res);
+      })
+      .catch((err) => {
+        console.log("上传问题反馈失败×\n", err);
         reject(err);
       });
   });

@@ -25,6 +25,7 @@ Page({
     showActList:[],
     showOrganizeList:[]
   },
+  
   //标题点击事件，从组件中传过来
   handleTabsItemChange(e){
     //对tabs进行一次生拷贝，以防影响到原来数据

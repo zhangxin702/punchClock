@@ -1,0 +1,73 @@
+page {
+  background-color: #fff;
+}
+.main {
+  padding: 20rpx;
+  margin-top: 36rpx;
+}
+.main .text .text_title {
+  font-size: 36rpx;
+  padding-left: 36rpx;
+  padding-bottom: 16rpx;
+  color: #333;
+}
+.main .text textarea {
+  padding: 36rpx;
+  width: 630rpx;
+  height: 480rpx;
+  background-color: #eeeeee;
+  color: #666;
+  border-radius: 20rpx;
+}
+.main .image {
+  margin-top: 36rpx;
+}
+.main .image .image_title {
+  font-size: 36rpx;
+  padding-left: 36rpx;
+  padding-bottom: 16rpx;
+  color: #333;
+}
+.main .image .image_wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+.main .image .image_wrap button {
+  width: 145rpx;
+  height: 145rpx;
+  font-size: 64rpx;
+  background-color: #eeeeee;
+  color: #333;
+  border-radius: 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 30rpx;
+  margin-bottom: 30rpx;
+}
+.main .image .image_wrap .image_item {
+  width: 145rpx;
+  height: 145rpx;
+  margin-right: 30rpx;
+  margin-bottom: 30rpx;
+  position: relative;
+}
+.main .image .image_wrap .image_item image {
+  width: 100%;
+  height: 100%;
+  border-radius: 20rpx;
+}
+.main .image .image_wrap .image_item icon {
+  position: absolute;
+  top: -30rpx;
+  right: -30rpx;
+}
+.main .submit {
+  margin-top: 20rpx;
+  display: flex;
+  justify-content: flex-end;
+}
+.main .submit button {
+  width: 30%;
+  background-color: #f03939;
+}

@@ -143,6 +143,12 @@
           "pathName": "pages/register/register",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "问题反馈页",
+          "pathName": "pages/feedback/feedback",
+          "query": "",
+          "scene": null
         }
       ]
     }

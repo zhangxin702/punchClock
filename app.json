@@ -2,15 +2,16 @@
   "pages": [
     "pages/home/home",
     "pages/register/register",
-    "pages/activity_punch/activity_punch" ,
-    "pages/activity_organize/activity_organize" ,
+    "pages/activity_punch/activity_punch",
+    "pages/activity_organize/activity_organize",
     "pages/punch_ing/punch_ing",
     "pages/punch_detail/punch_detail",
     "pages/punch_list/punch_list",
-    "pages/punch/punch",  
+    "pages/punch/punch",
     "pages/personal/personal",
     "pages/cropper/cropper",
-    "pages/analysis/analysis"
+    "pages/analysis/analysis",
+    "pages/feedback/feedback"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -20,31 +21,33 @@
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
-
   "tabBar": {
     "color": "#a9b7b7",
     "selectedColor": "#11cd6e",
-    "borderStyle": "black" ,
-    "list": [{
-      "selectedIconPath": "images/index1.png",
-      "iconPath": "images/index.png",
-      "pagePath": "pages/home/home",
-      "text": "首页"
-    }, {
-      "selectedIconPath": "images/punch1.png",
-      "iconPath": "images/punch.png",
-      "pagePath": "pages/punch/punch", 
-      "text": "打卡"
-    },{
-      "selectedIconPath": "images/user1.png",
-      "iconPath": "images/user.png",
-      "pagePath": "pages/personal/personal"  ,
-      "text": "我的"
-    }
+    "borderStyle": "black",
+    "list": [
+      {
+        "selectedIconPath": "images/index1.png",
+        "iconPath": "images/index.png",
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "selectedIconPath": "images/punch1.png",
+        "iconPath": "images/punch.png",
+        "pagePath": "pages/punch/punch",
+        "text": "打卡"
+      },
+      {
+        "selectedIconPath": "images/user1.png",
+        "iconPath": "images/user.png",
+        "pagePath": "pages/personal/personal",
+        "text": "我的"
+      }
     ]
   },
   "permission": {
-    "scope.userLocation":{
+    "scope.userLocation": {
       "desc": "你的位置信息将用于小程序位置接口的效果展示"
     }
   }

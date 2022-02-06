@@ -1,0 +1,37 @@
+<view class="main">
+    <!-- 文本输入 -->
+    <view class="text">
+        <view class="text_title">问题描述</view>
+        <view wx:if="{{text===''}}">
+            <textarea value="{{text}}" bindinput="handleTextInput" placeholder="请在此描述您遇到的问题"></textarea>
+        </view>
+        <view wx:else>
+            <textarea value="{{text}}" bindinput="handleTextInput"></textarea>
+        </view>
+    </view>
+    <!-- 上传图片 -->
+    <view class="image">
+        <view class="image_title">问题图片</view>
+        <view class="image_wrap">
+            <view>
+                <button bindtap="handleChooseImg">+</button>
+            </view>
+            <!-- <view class="image_item" wx:for="{{images}}" wx:key="*this">
+                <image src="{{item}}"></image>
+                <icon bindtap="handleRemoveImg" data-index="{{index}}" type="clear" size="36" color="red"></icon>
+            </view> -->
+            <view wx:for="{{images}}" wx:key="*this">
+                <view class="image_item">
+                    <image src="{{item}}"></image>
+                    <icon bindtap="handleRemoveImg" data-index="{{index}}" type="clear" size="36" color="red"></icon>
+                </view>
+            </view>
+        </view>
+    </view>
+    <!-- 提交问题反馈 -->
+    <view class="submit">
+        <button bindtap="handleSubmit" type="warn">
+            <icon type="success_no_circle" size="23" color="white"></icon>
+        </button>
+    </view>
+</view>
