@@ -10,6 +10,7 @@ Page({
     winHeight: 0,
     currentTab: 0,
     actList: [],
+    pageNum: 0,
   },
 
   /**
@@ -20,7 +21,7 @@ Page({
     /**
      * 获取系统信息
      */
-    this.GetAll(this.data.currentTab);
+    this.GetAll(this.data.currentTab, this.data.pageNum);
     wx.getSystemInfo({
       success: function (res) {
         that.setData({
@@ -30,22 +31,35 @@ Page({
       },
     });
   },
-  async GetAll(order) {
+  async GetAll(order, skip) {
     var res = await actTableGetAll({
       order: order,
+      skip: skip,
+      limit: 3,
     });
+    var addList = res.data.map((v) => ({
+      ...v,
+      createTime: formatTime({ date: v.createTime }),
+    }));
     this.setData({
-      actList: res.data.map((v) => ({
-        ...v,
-        createTime: formatTime({ date: v.createTime }),
-      })),
+      actList: [...this.data.actList, ...addList],
+      pageNum: this.data.pageNum + 3,
     });
+    console.log(this.data.actList);
+  },
+
+  onReachBottom: function (e) {
+    this.GetAll(this.data.currentTab, this.data.pageNum);
   },
 
   // 根据上面选择决定下面内容
   bindChange: function (e) {
-    this.setData({ currentTab: e.detail.current });
-    this.GetAll(e.detail.current);
+    this.setData({
+      currentTab: e.detail.current,
+      pageNum: 0,
+      actList: [],
+    });
+    this.GetAll(e.detail.current, this.data.pageNum);
   },
 
   // tab顶部

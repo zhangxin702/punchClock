@@ -1,8 +1,8 @@
-export const actTableGetAll = ({ order }) => {
+export const actTableGetAll = ({ order, skip, limit }) => {
   return new Promise((resolve, reject) => {
-    var db = wx.cloud.database().collection('ActTable');
+    var db = wx.cloud.database().collection('ActTable').skip(skip).limit(limit);
     if (order == 0) {
-      db = db.orderBy('createTime', 'asc');
+      db = db.orderBy('createTime', 'desc');
     } else if (order == 1) {
       db = db.orderBy('userCounts', 'desc');
     }
@@ -96,6 +96,7 @@ export const actTableInsert = ({
   imageCloud,
   punchTimes,
   announcement,
+  label,
 }) => {
   return new Promise((resolve, reject) => {
     var db = wx.cloud.database().collection('ActTable');
@@ -106,12 +107,13 @@ export const actTableInsert = ({
         createTime: createTime,
         startTime: startTime,
         endTime: endTime,
-        actImg: imageCloud,
+        actImage: imageCloud,
         announcement: announcement,
         label: '',
         punchTimes: punchTimes,
         userCounts: 0,
         userIds: [],
+        label: label,
       },
       success: (res) => {
         showToast({ title: '添加成功' });
