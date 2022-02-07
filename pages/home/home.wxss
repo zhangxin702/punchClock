@@ -1,4 +1,6 @@
+@import"../../utils/font_face.wxss";
 /* 设置轮播图的长宽高 */
+
 .index_swiper swiper {
   width: 750rpx;
   height: 330rpx;
@@ -6,4 +8,33 @@
 /* 设置轮播图里面图片的大小 */
 .index_swiper swiper image {
   width: 100%;
+}
+
+/* 图标导航 */
+.navContainer{
+  margin-top: 20rpx;
+  margin: auto ;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 160rpx;
+  background-color: #d6eefa;
+}
+.navItem{
+  /* flex: 2; */
+  width: 33.3%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.font{
+  color: gray;
+}
+.iconfont{
+  width: 80rpx;
+  height: 80rpx;
+  font-size: 80rpx;
+  color:rgb(151, 52, 39);
+  border-radius: 50%;
 }
