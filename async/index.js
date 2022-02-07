@@ -1,19 +1,30 @@
 export const actTableGetAll = ({ order, skip, limit }) => {
+  wx.showLoading({
+    title: '加载中',
+    mask: true,
+  });
   return new Promise((resolve, reject) => {
-    var db = wx.cloud.database().collection('ActTable').skip(skip).limit(limit);
+    var db = wx.cloud.database().collection('ActTable');
     if (order == 0) {
       db = db.orderBy('createTime', 'desc');
     } else if (order == 1) {
       db = db.orderBy('userCounts', 'desc');
     }
-    db.get({
-      success: (res) => {
-        resolve(res);
-      },
-      fail: (err) => {
-        reject(err);
-      },
-    });
+    db.skip(skip)
+      .limit(limit)
+      .get({
+        success: (res) => {
+          wx.hideLoading();
+          if (res.data.length === 0) {
+            showToast({ title: '没有更多数据啦' });
+          }
+          resolve(res);
+        },
+        fail: (err) => {
+          wx.hideLoading();
+          reject(err);
+        },
+      });
   });
 };
 

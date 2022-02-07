@@ -45,7 +45,7 @@ Page({
       actList: [...this.data.actList, ...addList],
       pageNum: this.data.pageNum + 9,
     });
-    console.log(this.data.actList);
+    wx.stopPullDownRefresh();
   },
 
   onReachBottom: function (e) {
@@ -54,14 +54,9 @@ Page({
 
   // 根据上面选择决定下面内容
   bindChange: function (e) {
-   
-    
     this.setData({
       currentTab: e.detail.current,
-      pageNum: 0,
-      actList: [],
     });
-    this.GetAll(e.detail.current, this.data.pageNum);
   },
 
   // tab顶部
@@ -72,7 +67,7 @@ Page({
         pageNum: 0,
         actList: [],
       });
-      this.GetAll(e.detail.current, this.data.pageNum);
+      this.GetAll(this.data.currentTab, this.data.pageNum);
       return false;
     } else {
       this.setData({
@@ -80,7 +75,15 @@ Page({
         pageNum: 0,
         actList: [],
       });
-      this.GetAll(e.detail.current, this.data.pageNum);
+      this.GetAll(this.data.currentTab, this.data.pageNum);
     }
+  },
+  //下拉刷新事件，存放在页面生命周期中
+  onPullDownRefresh() {
+    this.setData({
+      pageNum: 0,
+      actList: [],
+    });
+    this.GetAll(this.data.currentTab, this.data.pageNum);
   },
 });
