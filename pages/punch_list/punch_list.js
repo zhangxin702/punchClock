@@ -35,7 +35,7 @@ Page({
     var res = await actTableGetAll({
       order: order,
       skip: skip,
-      limit: 3,
+      limit: 9,
     });
     var addList = res.data.map((v) => ({
       ...v,
@@ -43,7 +43,7 @@ Page({
     }));
     this.setData({
       actList: [...this.data.actList, ...addList],
-      pageNum: this.data.pageNum + 3,
+      pageNum: this.data.pageNum + 9,
     });
     console.log(this.data.actList);
   },
@@ -54,6 +54,8 @@ Page({
 
   // 根据上面选择决定下面内容
   bindChange: function (e) {
+   
+    
     this.setData({
       currentTab: e.detail.current,
       pageNum: 0,
@@ -65,11 +67,20 @@ Page({
   // tab顶部
   swichNav: function (e) {
     if (this.data.currentTab === e.target.dataset.current) {
+      this.setData({
+        currentTab: e.detail.current,
+        pageNum: 0,
+        actList: [],
+      });
+      this.GetAll(e.detail.current, this.data.pageNum);
       return false;
     } else {
       this.setData({
         currentTab: e.target.dataset.current,
+        pageNum: 0,
+        actList: [],
       });
+      this.GetAll(e.detail.current, this.data.pageNum);
     }
   },
 });

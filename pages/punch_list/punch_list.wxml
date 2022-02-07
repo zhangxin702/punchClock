@@ -1,5 +1,5 @@
 <!-- pages/index/index.wxml -->
-<view class="swiper-tab">
+<view class="swiper-tab" bindchange="bindChange">
 	<view
 	 class="tab-item {{currentTab==0 ? 'on' : ''}}"
 	 data-current="0"
@@ -15,24 +15,15 @@
 		最热
 	</view>
 </view>
-<swiper
- current="{{currentTab}}"
- class="swiper"
- duration="300"
- style="height:{{winHeight - 30}}px"
- bindchange="bindChange"
->
-	<!-- 打卡页面 -->
-	<swiper-item>
+<view class="out" bindchange="bindChange">
 
-		<!-- 活动列表 -->
-		<!-- 将来有数据库可解开以下注释 -->
+	<view class="inner" wx:if="{{currentTab == 0}}">
 		<navigator
 		 class="actives_item"
 		 wx:for="{{actList}}"
 		 wx:key="actId"
-		 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
-		>
+		 url="/pages/punch_detail/punch_detail?actId={{item._id}}">
+
 			<view class="actives_img">
 				<image
 				 mode="widthFix"
@@ -47,13 +38,12 @@
 			</view>
 		</navigator>
 		<!-- 活动列表 -->
-	</swiper-item>
-	<!-- 打卡页面 -->
-	<!-- 创建活动页面 -->
-	<swiper-item class="second_page">
 
-		<!-- 活动列表 -->
-		<!-- 将来有数据库可解开以下注释 -->
+	</view >
+
+	<view  class="inner" wx:else="{{currentTab == 1}}">
+
+		<scroll-view scroll-y="{{true}}" > 
 		<navigator
 		 class="actives_item"
 		 wx:for="{{actList}}"
@@ -72,8 +62,8 @@
 				<view class="actives_price">参与人数：{{item.userCounts}}</view>
 			</view>
 		</navigator>
-		<!-- 活动列表 -->
-	</swiper-item>
-	<!-- 创建活动页面 -->
-</swiper>
+	</scroll-view> 
+	</view>
+
+</view>
 
