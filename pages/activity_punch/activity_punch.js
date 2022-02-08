@@ -1,5 +1,5 @@
 // pages/activity_punch/activity_punch.js
-import { getParticipatePunch, getOrganizePunch } from '../../async/async.js';
+import { getParticipatePunch, getOrganizePunch, getSelfPunchedTimes } from '../../async/async.js';
 import { formatTime } from '../../utils/util.js';
 const app = getApp();
 Page({
@@ -43,8 +43,13 @@ Page({
   async onLoad(options) {
     //如果没看见上面的组件可以把下面的注释划掉
     //console.log(options);
+    wx.showLoading({
+      title: '加载中',
+      mask:true
+    })
     const { page_id } = options;
     let { tabs } = this.data;
+    const db=wx.cloud.database();
     //因为传过来的是string应该转为Number
     const index = Number(page_id);
     //找哪个是page_id，是的改成isActive为true，否则为false
@@ -55,25 +60,34 @@ Page({
       tabs,
     });
     const { openId } = app.globalData.userInfo;
+    
     let res1 = await getParticipatePunch(openId);
     let res2 = await getOrganizePunch(openId);
+    let actList=res1.map((v) => ({
+      ...v,
+      //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
+      createTime: formatTime({ date: new Date(v.createTime) }),
+      endTime: formatTime({ date: new Date(v.endTime) }),
+      startTime: formatTime({ date: new Date(v.startTime) })
+    }));
+    let organizeList=res2.map((v) => ({
+      ...v,
+      //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
+      createTime: formatTime({ date: new Date(v.createTime) }),
+      endTime: formatTime({ date: new Date(v.endTime) }),
+      startTime: formatTime({ date: new Date(v.startTime) }),
+    }));
+    console.time();
+    for(let i=0;i<actList.length;i++){
+      let res=await getSelfPunchedTimes(db,openId,actList[i]._id);
+      actList[i].isFinish=res.isFinish;
+      actList[i].punchedTimes=res.punchedTimes;
+      console.log("打卡数据");
+    }
+    console.timeEnd();
     this.setData({
-      actList: res1.map((v) => ({
-        ...v,
-        //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
-        createTime: formatTime({ date: new Date(v.createTime) }),
-        endTime: formatTime({ date: new Date(v.endTime) }),
-        startTime: formatTime({ date: new Date(v.startTime) }),
-      })),
-    });
-    this.setData({
-      organizeList: res2.map((v) => ({
-        ...v,
-        //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
-        createTime: formatTime({ date: new Date(v.createTime) }),
-        endTime: formatTime({ date: new Date(v.endTime) }),
-        startTime: formatTime({ date: new Date(v.startTime) }),
-      })),
+      actList,
+      organizeList
     });
     this.setData({
       showActList: JSON.parse(JSON.stringify(this.data.actList)), //深拷贝防止改变引起总的改变
@@ -81,10 +95,15 @@ Page({
     });
     console.log(this.data.actList);
     console.log(this.data.organizeList);
+    wx.hideLoading();
   },
 
   //搜索，按enter键返回值
   inputBind(e) {
+    wx.showLoading({
+      title: '加载中',
+      mask:true
+    })
     let showActList = [];
     let showOrganizeList = [];
     let actTheme = null;
@@ -113,5 +132,6 @@ Page({
       showOrganizeList,
       showActList,
     });
+    wx.hideLoading();
   },
 });
