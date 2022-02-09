@@ -21,9 +21,18 @@ Page({
      * 传图
      */
 
+    let count = 9 - this.data.images.length;
+    if (count <= 0) {
+      wx.showToast({
+        title: "已达最大数量",
+        icon: "error",
+        mask: true,
+      });
+      return;
+    }
     wx.chooseImage({
       // 同时选中的图片数量
-      count: 9,
+      count: count,
       // 图片的格式：原图、压缩
       sizeType: ["original", "compressed"],
       // 图片的来源：相册

@@ -23,8 +23,8 @@
 				</view>
 				<view class="actives_info">
 					<view class="actives_name">{{item.actTheme}}</view>
-					<view class="actives_price" wx:if="{{item.isFinish}}">状态:已完成</view>
-					<view class="actives_price" wx:else>状态:正在进行</view>
+					<view class="actives_price" wx:if="{{item.isFinish}}">状态：已完成</view>
+					<view class="actives_price" wx:else>状态：正在进行</view>
 					<view class="actives_price" wx:if="{{!item.isFinish}}">剩余打卡次数：{{item.punchTimes-item.punchedTimes}}</view>
 				</view>
 			</navigator>

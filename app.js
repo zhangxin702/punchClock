@@ -16,7 +16,13 @@ App({
     //     })
     //   });
     const openId = "user-1";
-    const userInfo = await getUserInfo(openId);
+
+    let userInfo = wx.getStorageSync("userInfo"); // 先查本地缓存
+    // 本地缓存查不到
+    if (!userInfo) {
+      userInfo = await getUserInfo(openId); // 云数据库查
+      await wx.setStorageSync("userInfo", userInfo); // 写本地缓存
+    }
     this.globalData.userInfo = userInfo;
   },
 

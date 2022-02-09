@@ -1,7 +1,7 @@
-// pages/activity_punch/activity_punch.js
-import { getParticipatePunch, getOrganizePunch, getSelfPunchedTimes } from '../../async/async.js';
-import { formatTime } from '../../utils/util.js';
+import { getParticipatePunch, getOrganizePunch, getSelfPunchedTimes } from "../../async/async.js";
+import { formatTime } from "../../utils/util.js";
 const app = getApp();
+
 Page({
   /**
    * 页面的初始数据
@@ -10,12 +10,12 @@ Page({
     tabs: [
       {
         tab_id: 0,
-        name: '已参与活动',
+        name: "已参与活动",
         isActive: true,
       },
       {
         tab_id: 1,
-        name: '已组织活动',
+        name: "已组织活动",
         isActive: false,
       },
     ],
@@ -32,45 +32,43 @@ Page({
     let { index } = e.detail;
     let { tabs } = this.data;
     //找哪个是index，是的改成isActive为true，否则为false
-    tabs.forEach((v, i) =>
-      i === index ? (v.isActive = true) : (v.isActive = false)
-    );
+    tabs.forEach((v, i) => (i === index ? (v.isActive = true) : (v.isActive = false)));
     this.setData({
       tabs,
     });
   },
+
   //加载时获取page_id以此确保能够从按钮中走向正确样式
   async onLoad(options) {
     //如果没看见上面的组件可以把下面的注释划掉
     //console.log(options);
     wx.showLoading({
-      title: '加载中',
-      mask:true
-    })
+      title: "加载中",
+      mask: true,
+    });
+
     const { page_id } = options;
     let { tabs } = this.data;
-    const db=wx.cloud.database();
     //因为传过来的是string应该转为Number
     const index = Number(page_id);
     //找哪个是page_id，是的改成isActive为true，否则为false
-    tabs.forEach((v, i) =>
-      i === index ? (v.isActive = true) : (v.isActive = false)
-    );
+    tabs.forEach((v, i) => (i === index ? (v.isActive = true) : (v.isActive = false)));
     this.setData({
       tabs,
     });
     const { openId } = app.globalData.userInfo;
-    
+
+    const db = wx.cloud.database();
     let res1 = await getParticipatePunch(openId);
     let res2 = await getOrganizePunch(openId);
-    let actList=res1.map((v) => ({
+    let actList = res1.map((v) => ({
       ...v,
       //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
       createTime: formatTime({ date: new Date(v.createTime) }),
       endTime: formatTime({ date: new Date(v.endTime) }),
-      startTime: formatTime({ date: new Date(v.startTime) })
+      startTime: formatTime({ date: new Date(v.startTime) }),
     }));
-    let organizeList=res2.map((v) => ({
+    let organizeList = res2.map((v) => ({
       ...v,
       //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
       createTime: formatTime({ date: new Date(v.createTime) }),
@@ -78,32 +76,44 @@ Page({
       startTime: formatTime({ date: new Date(v.startTime) }),
     }));
     console.time();
-    for(let i=0;i<actList.length;i++){
-      let res=await getSelfPunchedTimes(db,openId,actList[i]._id);
-      actList[i].isFinish=res.isFinish;
-      actList[i].punchedTimes=res.punchedTimes;
-      console.log("打卡数据");
+
+    let punchData = null;
+    await wx.cloud
+      .callFunction({
+        name: "getPunchData",
+        data: {
+          openId: openId,
+        },
+      })
+      .then((res) => {
+        punchData = res.result;
+        console.log("punchData: ", punchData);
+      });
+
+    for (let i = 0; i < actList.length; i++) {
+      let res = await getSelfPunchedTimes(db, openId, actList[i]._id, punchData);
+      actList[i].isFinish = res.isFinish;
+      actList[i].punchedTimes = res.punchedTimes;
     }
     console.timeEnd();
+
     this.setData({
       actList,
-      organizeList
+      organizeList,
+      showActList: JSON.parse(JSON.stringify(actList)), //深拷贝防止改变引起总的改变
+      showOrganizeList: JSON.parse(JSON.stringify(organizeList)), //同上
     });
-    this.setData({
-      showActList: JSON.parse(JSON.stringify(this.data.actList)), //深拷贝防止改变引起总的改变
-      showOrganizeList: JSON.parse(JSON.stringify(this.data.organizeList)), //同上
-    });
-    console.log(this.data.actList);
-    console.log(this.data.organizeList);
+    console.log("actList: ", this.data.actList);
+    console.log("organizeList: ", this.data.organizeList);
     wx.hideLoading();
   },
 
   //搜索，按enter键返回值
   inputBind(e) {
     wx.showLoading({
-      title: '加载中',
-      mask:true
-    })
+      title: "加载中",
+      mask: true,
+    });
     let showActList = [];
     let showOrganizeList = [];
     let actTheme = null;
@@ -123,7 +133,7 @@ Page({
     } //两边同时为空的时候，由于是数组只能用length==0去判断
     if (!showActList.length && !showOrganizeList.length) {
       wx.showToast({
-        title: '未查询到活动',
+        title: "未查询到活动",
       });
       showActList = this.data.actList;
       showOrganizeList = this.data.organizeList;
