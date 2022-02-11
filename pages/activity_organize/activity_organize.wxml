@@ -1,17 +1,17 @@
 <view class="active_info">
 	<!-- 活动名字 -->
-	<view class="card">
+	<view class="card_3">
 		<text class="name">活动名称</text>
 		<view class="activeName">
-			<textarea
+			<input
 			 bindblur="bindTextAreaBlurName"
 			 auto-focus
 			 bindinput="textinput"
 			 type="text"
-			 style="width: 600rpx;height: 220rpx;"
+			 
 			 placeholder="限定在10字"
 			 maxlength="10"
-			></textarea>
+			></input>
 		</view>
 	</view>
 	<!-- 活动名字 -->
@@ -119,10 +119,10 @@
 </checkbox-group>
 
 </view>
-</view>
+<view class="kongbai"></view>
 
-
-<view style="width: 85%; margin-left:7%;">
+<view class="card">
+	<view >
 	<view class="card_1">
 		<addImage_1
 		 count="{{count}}"
@@ -132,12 +132,17 @@
 		 bind:deleteImage="deleteImage"
 		></addImage_1>
 	</view>
+</view></view>
 </view>
+
+
+
 <view class="kongbai"></view>
 <view class="kongbai">
 </view>
 <view class="kongbai">
 </view>
+
 
 <!-- 确认按钮 -->
 <button

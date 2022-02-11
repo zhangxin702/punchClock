@@ -4,8 +4,9 @@ Page({
     resultData: [], // 查询结果
     isFocus: false, // 配合“取消”按钮的
     isActDataGet: false, // 配合handleSearch的
+    inpValue: "",//控制输入框的输入
   },
-
+  timer:-1,//用于全局的timer控制
   onShow() {
     // 进入这个页面就先异步获取全部活动的数据到本地
     let that = this;
@@ -41,10 +42,11 @@ Page({
       this.setData({
         isFocus: true,
       });
+      //刚开始你timer没设初值
       // 清除定时器
-      clearTimeout(timer);
+      clearTimeout(this.timer);
       // 设置定时器
-      timer = setTimeout(() => {
+      this.timer = setTimeout(() => {
         this.handleSearch(str);
       }, 640); // 640ms后执行this.handleSearch(str)
     }
@@ -54,6 +56,7 @@ Page({
     this.setData({
       resultData: [],
       isFocus: false,
+      inpValue: "",
     });
   },
 
@@ -63,8 +66,9 @@ Page({
       mask: true,
     });
 
-    let resultData = null;
-
+    let resultData = [];
+    const {isActDataGet}=this.data;
+    //这里也建议加个this
     // 如果还没获取到全部的活动数据，就阻塞一会儿
     if (!isActDataGet) {
       while (!isActDataGet) {

@@ -19,7 +19,7 @@
 }
 .kongbai{
   margin: 10rpx;
-  padding: 30rpx;
+  /* padding: 30rpx; */
 }
 
 
