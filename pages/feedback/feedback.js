@@ -73,6 +73,6 @@ Page({
       return;
     }
 
-    uploadProblem(app.globalData.userInfo.openId, text, images);
+    uploadProblem(app.globalData.userInfo._id, text, images);
   },
 });

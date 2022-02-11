@@ -56,7 +56,7 @@ Page({
     this.setData({
       tabs,
     });
-    const { openId } = app.globalData.userInfo;
+    const openId = app.globalData.userInfo._id;
 
     const db = wx.cloud.database();
     let res1 = await getParticipatePunch(openId);

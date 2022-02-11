@@ -7,6 +7,7 @@ Page({
     inpValue: "",//控制输入框的输入
   },
   timer:-1,//用于全局的timer控制
+  
   onShow() {
     // 进入这个页面就先异步获取全部活动的数据到本地
     let that = this;

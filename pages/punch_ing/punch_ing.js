@@ -1,4 +1,3 @@
-// pages/punch_ing/punch_ing.js
 import {
   chooseImage,
   chooseMessageFile,
@@ -8,6 +7,7 @@ import {
   showToast,
 } from '../../async/index.js';
 import { getLocation } from '../../async/async.js';
+
 Page({
   /**
    * 页面的初始数据

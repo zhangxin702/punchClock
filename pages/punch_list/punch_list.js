@@ -1,6 +1,6 @@
-// pages/punch_list/punch_list.js
 import { formatTime } from '../../utils/util.js';
 import { actTableGetAll } from '../../async/index.js';
+
 Page({
   /**
    * 页面的初始数据
