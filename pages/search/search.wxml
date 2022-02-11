@@ -1,1 +1,24 @@
-<view class="container"></view>
+<view class="search_head">
+	<input
+	 type="test"
+	 value="{{inpValue}}"
+	 placeholder="活动搜索"
+	 maxlength="10"
+	 bindinput="handleInput"
+	/>
+	<button
+	 hidden="{{!isFocus}}"
+	 bindtap="handleCancel"
+	>取消
+	</button>
+</view>
+<view class="search_content">
+	<navigator
+	 class="search_item"
+	 wx:for="{{resultData}}"
+	 wx:key="_id"
+	 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
+	>{{item.actTheme}}
+	</navigator>
+</view>
+
