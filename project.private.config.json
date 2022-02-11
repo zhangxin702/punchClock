@@ -149,6 +149,12 @@
           "pathName": "pages/feedback/feedback",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "活动搜索页",
+          "pathName": "pages/search/search",
+          "query": "",
+          "scene": null
         }
       ]
     }

@@ -11,7 +11,8 @@
     "pages/personal/personal",
     "pages/cropper/cropper",
     "pages/analysis/analysis",
-    "pages/feedback/feedback"
+    "pages/feedback/feedback",
+    "pages/search/search"
   ],
   "window": {
     "backgroundTextStyle": "light",
