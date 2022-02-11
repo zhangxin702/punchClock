@@ -1,4 +1,4 @@
-
+@import"../../utils/font_face.wxss";
 .images-box {
  
   border-radius: 10rpx;

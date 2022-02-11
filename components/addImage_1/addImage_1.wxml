@@ -5,7 +5,7 @@
       <image class="image" mode="aspectFill" src="{{item}}" bindtap="previewImage" data-index="{{index}}" bindlongpress="deleteImage"></image>
     </block>
     <view wx:if="{{addedCount<1}}" class="image addImageIcon" hover-class="addImageIconHover" hover-stay-time="200" bindtap="chooseImage">
-      <mp-icon type="field" icon="add" color="gray" size="{{60}}"></mp-icon>
+      <text class="iconfont icon-jia"></text>
     </view>
   </view>
   <view class="imageCount">

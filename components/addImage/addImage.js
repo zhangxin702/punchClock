@@ -29,8 +29,11 @@ Component({
   // 组件内部属性
   data: {
   },
+ 
+
   // 方法
   methods: {
+   
     // 选择图片
     chooseImage() {
       this.triggerEvent('chooseImage')

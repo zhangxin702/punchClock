@@ -1,6 +1,6 @@
 <view class="kongbai"></view>
 <!-- content -->
-<view class="content">content</view>
+<view><textarea cols="30" rows="10"  class="content" ></textarea></view>
 <view class="kongbai"></view>
 <!-- content -->
 <view style="width: 90%; margin-left:5%;">

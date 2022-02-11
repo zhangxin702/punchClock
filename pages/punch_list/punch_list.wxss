@@ -61,6 +61,7 @@
 
 width: 100%;
 
+
 }
 navigator{
   display: flex;
@@ -68,6 +69,7 @@ navigator{
   margin: 30rpx;
   width: 100%;
   padding-bottom: 5rpx;
+  height: 140rpx;
   
 
 }
@@ -77,10 +79,16 @@ navigator{
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 10rpx;
+
+ 
+  margin-bottom: 6rpx;
 }
 .inner .actives_img image {
   width: 90%;
+  border-radius: 20rpx;
+  height: 140rpx;
+
+  
 }
 .inner .actives_info {
   display: flex;

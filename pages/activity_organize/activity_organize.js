@@ -11,6 +11,12 @@ Page({
    * 页面的初始数据
    */
   data: {
+
+    show:false,//控制下拉列表的显示隐藏，false隐藏、true显示
+    selectData:['考试','健身','考研','英语','阅读','其他'],//下拉列表的数据
+    index:0,//选择的下拉列表下标
+
+
     //  选择打卡的方式
     list: [
       {
@@ -58,6 +64,21 @@ Page({
     //最低打卡次数
     punch_num: 1,
   },
+
+    // 点击下拉显示框
+    selectTap(){
+      this.setData({
+        show: !this.data.show
+      });
+    },
+    // 点击下拉列表
+    optionTap(e){
+      let Index=e.currentTarget.dataset.index;//获取点击的下拉列表的下标
+      this.setData({
+        index:Index,
+        show:!this.data.show
+      });
+    },
   // 打卡方式复选框 把选择的保持在selectList
   handleCheckboxChange(e) {
     this.setData({
@@ -69,7 +90,7 @@ Page({
     console.log(e.detail.value);
     var that = this;
     that.setData({
-      punch_num: e.detail.value,
+      punch_num: parseInt(e.detail.value),
     });
     // console.log(this.Date.active_announce)
   },
