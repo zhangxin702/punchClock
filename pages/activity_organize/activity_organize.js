@@ -140,7 +140,7 @@ Page({
     }
     var res = await uploadFile({
       tempFilePath: this.data.tempFilePaths[0],
-      cloudPath: 'punchImage/' + this.data.tempFilePaths[0].split('/').pop(),
+      cloudPath: 'actImage/' + this.data.tempFilePaths[0].split('/').pop(),
     });
     var ree = await actTableInsert({
       actTheme: this.data.active_name,
