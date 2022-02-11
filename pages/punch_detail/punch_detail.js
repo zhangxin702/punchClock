@@ -41,20 +41,20 @@ Page({
     let bool = [];
     location = this.data.requires.includes('map');
     if(location){
-      bool.push("定位")
+      bool.push('⛳')
      }
      word = this.data.requires.includes('word');
     if(word){
-     bool.push("文字")
+     bool.push('🖊')
     }
     picture = this.data.requires.includes('picture');
     if(picture){
-    bool.push("上传图片")
+    bool.push('📸')
      }
   
     file = this.data.requires.includes('file');
     if(file){
-    bool.push("上传文件")
+    bool.push('📁')
      }
     console.log(bool);
     console.log(this.data.requires);
