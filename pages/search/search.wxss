@@ -25,13 +25,44 @@
   align-items: center;
   border-radius: 15rpx;
 }
-.search_content .search_item{
-  background-color: #fff;
-  font-size: 26rpx;
-  padding: 15rpx 10rpx;
-  border-bottom: 1rpx solid #ccc;
+.search_content {
 
-  overflow: hidden;/*超出后隐藏 */
-  white-space: nowrap;
-  text-emphasis: ellipsis;/*超出部分显示... */
+  width: 100%;
+  
+}
+navigator{
+  display: flex;
+  border-bottom: 1rpx solid #ccc;
+  margin: 30rpx;
+  width: 100%;
+  padding-bottom: 5rpx;
+  
+
+}
+
+.search_content .actives_img {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10rpx;
+}
+.search_content .actives_img image {
+  width: 90%;
+}
+.search_content .actives_info {
+  display: flex;
+  flex: 3;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.search_content .actives_info .actives_name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.search_content .actives_info .actives_price {
+  color: #dd3300;
+  font-size: 20rpx;
 }
