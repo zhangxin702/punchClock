@@ -126,7 +126,18 @@ Page({
       });
       return;
     }
-
+    if (this.data.selectList.length === 0) {
+      await showToast({
+        title: '当前打卡方式为空，请选取对应打卡方式',
+      });
+      return;
+    }
+    if (this.data.tempFilePaths.length === 0) {
+      await showToast({
+        title: '当前海报为空，请选取海报',
+      });
+      return;
+    }
     var res = await uploadFile({
       tempFilePath: this.data.tempFilePaths[0],
       cloudPath: 'punchImage/' + this.data.tempFilePaths[0].split('/').pop(),
@@ -140,7 +151,7 @@ Page({
       imageCloud: res.fileID,
       punchTimes: this.data.punch_num,
       announcement: this.data.active_announce,
-      label: this.data.selectList,
+      requires: this.data.selectList,
     });
   },
 

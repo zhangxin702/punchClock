@@ -107,7 +107,8 @@ export const actTableInsert = ({
   imageCloud,
   punchTimes,
   announcement,
-  label,
+  requires,
+
 }) => {
   return new Promise((resolve, reject) => {
     var db = wx.cloud.database().collection('ActTable');
@@ -120,11 +121,10 @@ export const actTableInsert = ({
         endTime: endTime,
         actImage: imageCloud,
         announcement: announcement,
-        label: '',
         punchTimes: punchTimes,
         userCounts: 0,
         userIds: [],
-        label: label,
+        requires: requires,
       },
       success: (res) => {
         showToast({ title: '添加成功' });

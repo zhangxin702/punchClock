@@ -155,6 +155,12 @@
           "pathName": "pages/search/search",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "pages/activity_organize/activity_organize",
+          "pathName": "pages/activity_organize/activity_organize",
+          "query": "",
+          "scene": null
         }
       ]
     }
