@@ -2,14 +2,16 @@
 	<image src="{{activity.actImage?activity.actImage:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"></image>
 </view>
 <!-- 主题名 -->
-<view class="actives_name" style="width: 90%;margin: auto;font-weight: 800;  border-bottom: 5rpx solid #dedede;height: 50rpx;">{{activity.Theme}}</view>
+<view
+ class="actives_name"
+ style="width: 90%;margin: auto;font-weight: 800;  border-bottom: 5rpx solid #dedede;height: 50rpx;"
+>
+	{{activity.Theme}}
+</view>
 <view class="kongbai"></view>
-
 <!-- 活动公告 -->
-<view class="activity_announce">{{activity_announce}}</view>
+<view class="activity_announce">{{activity.announcement}}</view>
 <view class="kongbai"></view>
-
-
 <view class="actives_info">
 	<!-- <view class="actives_name"></view> -->
 	<view class="actives_time">开始时间:{{startTime}}</view>
@@ -20,7 +22,7 @@
 <view class="kongbai"></view>
 <view class="actives_introduce">{{activity.actContent}}</view>
 <view class="kongbai"></view>
-<navigator url="../punch_ing/punch_ing">
+<navigator url="../punch_ing/punch_ing?actId={{activity._id}}">
 	<button style="background-color:#ececec;">参与打卡</button>
 </navigator>
 

@@ -1,77 +1,146 @@
 // pages/punch_ing/punch_ing.js
+import {
+  chooseImage,
+  chooseMessageFile,
+  uploadFile,
+  actTableById,
+  punchTableInsert,
+  showToast,
+} from '../../async/index.js';
+import { getLocation } from '../../async/async.js';
 Page({
-
   /**
    * 页面的初始数据
    */
   data: {
-    images: [],
+    actId: '',
     count: 2,
     addedCount: 0,
+    requires: [],
+    bool: [], //判断用的，位置[word,picture,map,file]，值为true或false
+    filePath: '', //选取文件的路径
+    images: [], //选取图片的路径
 
-
+    punchFile: '', //文件
+    punchImages: [], //图片
+    map: '', //位置
+    word: '', //文字
   },
-// 上传图片有关函数
-chooseImage() {
-  var that = this;
-  wx.chooseImage({
-    count: 3 - that.data.addedCount,
-    sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
-    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-    success: function (res) {
-      // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-      that.setData({
-        images: that.data.images.concat(res.tempFilePaths),
-        addedCount: that.data.addedCount + res.tempFilePaths.length,
-      });
-    },
-  });
-},
-// 删除图片
-deleteImage(e) {
-  this.data.images.splice(e.detail, 1);
-  this.setData({
-    images: this.data.images,
-    addedCount: this.data.addedCount - 1,
-  });
-},
+  // 上传图片有关函数
+  async chooseImage() {
+    var res = await chooseImage({});
+    console.log(res);
+    this.setData({
+      images: [...this.data.images, res.tempFilePaths[0]],
+      addedCount: this.data.addedCount + 1,
+    });
+  },
+  // 删除图片
+  deleteImage(e) {
+    this.data.images.splice(e.detail, 1);
+    this.setData({
+      images: this.data.images,
+      addedCount: this.data.addedCount - 1,
+    });
+  },
 
-
-// 上传图片 微信小程序上传聊天记录的文件 功能还没完全实现
-chooseMessageFile: function (e) {
-  var that = this;
-  wx.chooseMessageFile({
-    count: 1,
-    type: 'file',
-    success(res) {
-      var filename = res.tempFiles[0].name
-      console.info(filename);
-      that.setData({filename:filename});
-
-
-      wx.uploadFile({
-        url: app.globalData._server + "/test/object/upload",
-        filePath: res.tempFiles[0].path,
-        name: 'uploadFile',
-        success(res) {
-          //json字符串 需用JSON.parse 转
-        }
-      })
-
-
-
-    }
-  });
-},
+  // 上传文件
+  async chooseMessageFile() {
+    var res = await chooseMessageFile({});
+    this.setData({
+      filePath: res.tempFiles[0].path,
+    });
+    console.log(this.data.filePath);
+  },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(){
-   
+  onLoad: function (e) {
+    this.setData({ actId: e.actId });
+    this.getById();
+  },
+
+  async getById() {
+    var res = await actTableById({
+      id: this.data.actId,
+    });
+    this.setData({
+      requires: res.data.requires,
+    });
+    let word, picture, location, file;
+    word = this.data.requires.includes('word');
+    picture = this.data.requires.includes('picture');
+    location = this.data.requires.includes('map');
+    file = this.data.requires.includes('file');
+    this.setData({
+      bool: [word, picture, location, file],
+    });
+  },
+
+  async location() {
+    let res = await getLocation();
+    this.setData({
+      map: {
+        latitude: res.latitude,
+        longitude: res.longitude,
+      },
+    });
+    console.log(this.data.map);
+  },
+
+  async submit() {
+    if (this.data.bool[0] === true) {
+      if (this.data.word === '') {
+        await showToast({ title: '您还未填写文档，请填写' });
+        return false;
+      }
     }
-
-   
-})
-
-
-  
+    if (this.data.bool[1] === true) {
+      if (this.data.images.length === 0) {
+        await showToast({ title: '您还未上传图片，请上传' });
+        return false;
+      }
+    }
+    if (this.data.bool[2] === true) {
+      if (this.data.map === '') {
+        await showToast({ title: '您还未定位，请定位' });
+        return false;
+      }
+    }
+    if (this.data.bool[3] === true) {
+      if (this.data.filePath === '') {
+        await showToast({ title: '您还未上传文件，请上传' });
+        return false;
+      }
+      if (this.data.bool[1] === true) {
+        for (var i = 0; i < this.data.images.length; i++) {
+          var imgUrl = this.data.images[i];
+          var res = await uploadFile({
+            tempFilePath: imgUrl,
+            cloudPath: 'actImage/' + imgUrl.split('/').pop(),
+          });
+          this.setData({
+            punchImages: [...this.data.punchImages, res.fileID],
+          });
+        }
+        console.log(this.data.punchImages);
+      }
+      var ree = await uploadFile({
+        tempFilePath: this.data.filePath,
+        cloudPath: 'punchFile/' + this.data.filePath.split('/').pop(),
+      });
+      console.log(ree);
+      this.setData({
+        punchFile: ree.fileID,
+      });
+    }
+    // await punchTableInsert({
+    //   actId: this.data.actId,
+    //   punchContent: this.data.word,
+    //   punchFile: this.data.punchFile,
+    //   punchImages: this.data.punchImages,
+    //   punchlocation: this.data.map,
+    //   punchTime: new Date(),
+    // });
+  },
+});

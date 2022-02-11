@@ -13,13 +13,23 @@
 	></addImage>
 </view>
 <view class="kongbai"></view>
-
-
-
 <!-- 上传文件 -->
-<button bindtap="chooseMessageFile" style="background-color: grey;color: white;" >+上传文件</button>
-<view class="kongbai">
-</view>
-
+<button
+ bindtap="chooseMessageFile"
+ style="background-color: grey;color: white;"
+>+上传文件
+</button>
+<view class="kongbai"></view>
+<!-- 定位 我测试用的，如果有更好的按钮就更换 -->
+<button
+ bindtap="location"
+ style="background-color: grey;color: white;"
+>定位
+</button>
 <!-- 上传文件 -->
-<button type="primary">完成打卡</button>
+<button
+ bindtap="submit"
+ type="primary"
+>完成打卡
+</button>
+
