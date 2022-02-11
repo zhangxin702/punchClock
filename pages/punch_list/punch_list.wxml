@@ -18,6 +18,7 @@
 <view class="out" bindchange="bindChange">
 
 	<view class="inner" wx:if="{{currentTab == 0}}">
+		<scroll-view scroll-y="{{true}}" > 
 		<navigator
 		 class="actives_item"
 		 wx:for="{{actList}}"
@@ -38,7 +39,7 @@
 			</view>
 		</navigator>
 		<!-- 活动列表 -->
-
+	</scroll-view> 
 	</view >
 
 	<view  class="inner" wx:else="{{currentTab == 1}}">

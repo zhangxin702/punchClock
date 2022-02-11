@@ -20,7 +20,7 @@
   font-weight: 800;
   font-size: 50rpx;
   width: 90%;
-  height: 160rpx;
+  height: 220rpx;
   margin: auto auto;
 }
 .activity_announce{
@@ -46,4 +46,11 @@
 }
 .kongbai{
   padding: 10rpx;
+}
+.methen{
+  display: flex;
+flex-direction: row;
+}
+text{
+  display: inline;
 }

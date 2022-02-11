@@ -1,3 +1,7 @@
+<!-- 搜索框 -->
+<SearchInput></SearchInput>
+<!-- 搜索框 -->
+
 <!-- 轮播图 -->
 <view class="index_swiper">
         <swiper autoplay="{{true}}" interval="3000" circular="{{true}}" indicator-dots="{{true}}">
@@ -20,40 +24,20 @@
     </view>
 <!-- 轮播图 -->
 
-<!-- 搜索框 -->
-<SearchInput></SearchInput>
-<!-- 搜索框 -->
 
 
 <!-- 图标导航区域 - 分类选择 -->
 <view class="navContainer">
-<view class="navItem" >
-<text class="iconfont icon-jianshen"></text>
-<text class="font">运动</text>
-</view>
-<view class="navItem">
-<text  class="iconfont icon-tubiaozhizuomoban-"></text>
-<text class="font">阅读</text>
-</view>
 
-<view class="navItem">
-<text  class="iconfont icon-kaoshi"></text>
-<text class="font">考试</text>
-</view>
-</view>
-<view class="navContainer">
-<view class="navItem">
-<text class="iconfont icon-kaoyan"> </text>
-<text class="font">考研</text>
-</view>
-<view class="navItem">
-<text class="iconfont icon-yingyu1"></text>
-<text class="font">英语</text>
-</view>
-<view class="navItem">
+<navigator class="navItem" url="../classify/classify?id={{item.id}} " wx:for="{{classify}}">
+    <text class="{{item.class}}"></text>
+<text class="font">{{item.name}}</text>
+</navigator>
 
-<text class="iconfont icon-qita"></text>
-<text class="font">其他</text>
-</view>
+
+  
+
+
+
 </view>
 

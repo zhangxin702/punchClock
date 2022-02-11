@@ -51,8 +51,6 @@ Page({
   onReachBottom: function (e) {
     this.GetAll(this.data.currentTab, this.data.pageNum);
   },
-
-  // 根据上面选择决定下面内容
   bindChange: function (e) {
     this.setData({
       currentTab: e.detail.current,

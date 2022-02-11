@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/home/home",
+    "pages/classify/classify",
     "pages/register/register",
     "pages/activity_punch/activity_punch",
     "pages/activity_organize/activity_organize",

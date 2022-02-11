@@ -9,6 +9,7 @@
 	<block wx:if="{{tabs[0].isActive}}">
     <!-- 以下页面由于跟心莹差不多，所以跟着心莹格式，等到数据库做好或者后续设计好后后继续做 -->
 		<view class="first_tab">
+			<scroll-view scroll-y="{{true}}" > 
 			<navigator
 			 class="actives_item"
 			 wx:for="{{showActList}}"
@@ -28,11 +29,13 @@
 					<view class="actives_price" wx:if="{{!item.isFinish}}">剩余打卡次数：{{item.punchTimes-item.punchedTimes}}</view>
 				</view>
 			</navigator>
+		</scroll-view> 
 		</view>
 	</block>
 	<block wx:else>
 		<!-- 以下页面由于跟心莹差不多，所以跟着心莹格式，等到数据库做好或者后续设计好后后继续做 -->
 		<view class="first_tab">
+			<scroll-view scroll-y="{{true}}" > 
 			<navigator
 			 class="actives_item"
 			 wx:for="{{showOrganizeList}}"
@@ -51,6 +54,7 @@
 					<view class="actives_price">参与人数：{{item.userCounts}}</view>
 				</view>
 			</navigator>
+		</scroll-view> 
 		</view>
 	</block>
 </tabs>

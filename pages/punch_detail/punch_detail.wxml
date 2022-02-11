@@ -6,7 +6,7 @@
  class="actives_name"
  style="width: 90%;margin: auto;font-weight: 800;  border-bottom: 5rpx solid #dedede;height: 50rpx;"
 >
-	{{activity.Theme}}
+	{{activity.actTheme}}
 </view>
 <view class="kongbai"></view>
 <!-- 活动公告 -->
@@ -18,6 +18,7 @@
 	<view class="actives_time">结束时间:{{endTime}}</view>
 	<view class="actives_time">参与人数:{{activity.userCounts}}</view>
 	<view class="actives_time">最低打卡次数:{{punch_num}}</view>
+	<view class="actives_time">打卡方式：{{bool}}</view>
 </view>
 <view class="kongbai"></view>
 <view class="actives_introduce">{{activity.actContent}}</view>

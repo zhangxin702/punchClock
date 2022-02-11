@@ -63,6 +63,12 @@ Page({
     active_announce: '',
     //最低打卡次数
     punch_num: 1,
+
+    // 定位地址
+    address:"",
+    longitude: 0,
+    latitude:0
+
   },
 
     // 点击下拉显示框
@@ -84,6 +90,25 @@ Page({
     this.setData({
       selectList: e.detail.value,
     });
+    if(this.data.selectList.includes("map")){
+      setTimeout(function(){
+        wx.showToast({
+          title: '请选择定位',
+          icon:"none"
+        }),3000
+      })
+      
+      wx.chooseLocation()
+      .then(res =>{
+        console.log(res);
+       
+          this.setData({
+            address:res.address,
+            longitude:res.longitude,
+            latitude:res.latitude
+          })})
+       
+    }
   },
   // 打卡次数设置
   num_blur: function (e) {
