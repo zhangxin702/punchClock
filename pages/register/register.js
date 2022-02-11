@@ -64,8 +64,11 @@ Page({
      *  提交注册信息
      */
 
-    // const openId = app.globalData.userInfo.openId;
-    const openId = "user-11";
+    let openId = null;
+    await wx.cloud.callFunction({ name: "getOpenId" }).then((res) => {
+      openId = res.result;
+    });
+    // console.log("openId: ", openId);
     const { nickName, gender } = e.detail.value;
     let { selfIntro } = e.detail.value;
 
@@ -77,7 +80,7 @@ Page({
       wx.showToast({
         title: "未选择性别",
       });
-    } else if (this.data.avatarPath == "") {
+    } else if (this.data.avatarPath == null) {
       wx.showToast({
         title: "未上传头像",
       });
@@ -89,12 +92,25 @@ Page({
       if (selfIntro == "") {
         selfIntro = "该用户很懒，没有填自我介绍~";
       }
-      await register(openId, nickName, gender, selfIntro, this.data.avatarPath);
-      wx.removeStorage("register"); // 清除register的本地缓存
+
+      const userInfo = await register(openId, nickName, gender, selfIntro, this.data.avatarPath);
       wx.hideLoading();
-      wx.navigateBack({
-        delta: -1,
-      });
+      // 注册成功，返回用户信息
+      if (userInfo) {
+        app.globalData.userInfo = userInfo;
+        wx.setStorageSync("userInfo", userInfo);
+        wx.removeStorageSync("register"); // 清除register的本地缓存
+        wx.navigateBack({
+          delta: -1,
+        });
+      }
+      // 注册失败，返回false
+      else {
+        wx.showToast({
+          title: "注册失败",
+          icon: "fail",
+        });
+      }
     }
   },
 });
