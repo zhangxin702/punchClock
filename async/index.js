@@ -169,12 +169,14 @@ export const punchTableInsert = ({
   punchImages,
   punchlocation,
   punchTime,
+  nickName,
 }) => {
   return new Promise((resolve, reject) => {
     var db = wx.cloud.database().collection('PunchTable');
     db.add({
       data: {
         actId: actId,
+        nickName: nickName,
         punchContent: punchContent,
         punchFile: punchFile,
         punchImages: punchImages,
@@ -182,10 +184,29 @@ export const punchTableInsert = ({
         punchTime: punchTime,
       },
       success: (res) => {
-        showToast({ title: '添加成功' });
+        resolve(res);
       },
       fail: (err) => {
-        showToast({ title: '添加失败' });
+        resolve(err);
+      },
+    });
+  });
+};
+
+export const actTableUpdate = ({ actId, openId }) => {
+  return new Promise((resolve, reject) => {
+    const _ = wx.cloud.database().command;
+    var db = wx.cloud.database().collection('ActTable').doc(actId);
+    db.update({
+      data: {
+        userCounts: _.inc(1),
+        userIds: _.push(openId),
+      },
+      success: (res) => {
+        showToast({ title: '打卡成功' });
+      },
+      fail: (err) => {
+        showToast({ title: '打卡失败' });
       },
       complete: () => {
         wx.hideLoading();

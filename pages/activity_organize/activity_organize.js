@@ -113,7 +113,7 @@ async handleMap(e){
         flag : !this.data.flag
 
       })
-      // console.log(this.data.flag);
+      console.log(this.data.flag);
     }
 
   },

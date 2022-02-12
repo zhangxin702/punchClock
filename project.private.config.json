@@ -207,6 +207,8 @@
         {
           "name": "pages/punch_detail/punch_detail",
           "pathName": "pages/punch_detail/punch_detail",
+          "name": "pages/punch_ing/punch_ing",
+          "pathName": "pages/punch_ing/punch_ing",
           "query": "actId=17e3426e6206247b0d3b908f2f933ba7",
           "scene": null
         },
