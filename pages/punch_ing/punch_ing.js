@@ -189,16 +189,28 @@ Page({
       punchTime: new Date(),
     });
     console.log(this.data.actId, red._id);
+   
     if (!this.data.userIds.includes(red._id)) {
       await actTableUpdate({
         actId: this.data.actId,
         openId: red._id,
       });
     } else {
-      wx.navigateBack({
-        delta: 1,
-      });
+      setTimeout(function(){
+        wx.showToast({
+          title: '打卡成功',
+        })
+       
+      },1000)
+      setTimeout(function(){
+        wx.navigateBack({
+          delta: 1,
+        });
+       
+      },2000)
+     
     }
+    
   },
 
   // 输入框失去焦点时,即触发事件

@@ -4,20 +4,20 @@ Page({
    * 页面的初始数据
    */
   data: {
-    curYear: new Date().getFullYear(), // 年份
-    curMonth: new Date().getMonth(),// 月份 0-11
-    day: new Date().getDate(), // 日期 1-31 若日期超过该月天数，月份自动增加
-    header_show: true, // 主标题是否显示
-    prev: true, // 上一个月按钮是否显示
-    next: true, // 下一个月按钮是否显示
-    // ramark_show:true,
-    // count_txt:true
+  
+    // 活动类型名称
+    name:""
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options);
+    let name = options.name
+    this.setData({
+      name :name
+    })
     
   },
 

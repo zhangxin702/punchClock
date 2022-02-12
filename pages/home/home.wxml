@@ -29,7 +29,7 @@
 <!-- 图标导航区域 - 分类选择 -->
 <view class="navContainer">
 
-<navigator class="navItem" url="../classify/classify?id={{item.id}} " wx:for="{{classify}}">
+<navigator class="navItem" url="../classify/classify?name={{item.name}} " wx:for="{{classify}}">
     <text class="{{item.class}}"></text>
 <text class="font">{{item.name}}</text>
 </navigator>

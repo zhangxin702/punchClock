@@ -212,6 +212,7 @@ async handleMap(e){
       actLocation: this.data.address,
       label: this.data.selectData[this.data.index],
     });
+  
   },
 
   // 上传图片有关函数

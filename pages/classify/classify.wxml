@@ -1,1 +1,1 @@
-<calendar></calendar>
+<view>{{name}}</view>

@@ -205,8 +205,6 @@
           "scene": null
         },
         {
-          "name": "pages/punch_detail/punch_detail",
-          "pathName": "pages/punch_detail/punch_detail",
           "name": "pages/punch_ing/punch_ing",
           "pathName": "pages/punch_ing/punch_ing",
           "query": "actId=17e3426e6206247b0d3b908f2f933ba7",
@@ -233,6 +231,12 @@
         {
           "name": "活动收藏",
           "pathName": "pages/collect/collect",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/punch_list/punch_list",
+          "pathName": "pages/punch_list/punch_list",
           "query": "",
           "scene": null
         }
