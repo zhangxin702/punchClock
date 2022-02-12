@@ -7,7 +7,9 @@
     <block wx:for="{{images}}" wx:key="index">
       <image class="image" mode="aspectFill" src="{{item}}" bindtap="previewImage" data-index="{{index}}" bindlongpress="deleteImage"></image>
     </block>
-    <view wx:if="{{addedCount<2}}" class="image addImageIcon" hover-class="addImageIconHover" hover-stay-time="200" bindtap="chooseImage">
+    <view wx:if="{{addedCount<2}}" class="image addImageIcon" 
+    style="background-image: url('https://i.postimg.cc/wTt4sz18/image.png'); background-size: 100% 100%;background-position: 0px 0px;"
+    hover-class="addImageIconHover" hover-stay-time="200" bindtap="chooseImage">
       <text class="iconfont icon-jia"></text>
     </view>
   </view>

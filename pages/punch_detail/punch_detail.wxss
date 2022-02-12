@@ -20,7 +20,7 @@
   font-weight: 800;
   font-size: 50rpx;
   width: 90%;
-  height: 220rpx;
+  height: 240rpx;
   margin: auto auto;
 }
 .activity_announce{
@@ -39,7 +39,7 @@
   background-color: #ececec;
   margin: auto;
   width: 86%;
-  height: 300rpx;
+  height: 320rpx;
   padding: 15rpx;
   border-radius: 20rpx;
   color: #8b8b8b;

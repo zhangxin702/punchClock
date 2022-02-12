@@ -77,6 +77,7 @@ Page({
     this.setData({
       bool: [word, picture, location, file],
     });
+    
   },
 
   async location() {
