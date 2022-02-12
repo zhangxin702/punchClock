@@ -11,7 +11,7 @@ export const getOpenId = () => {
         resolve(res.result);
       })
       .catch((err) => {
-        resolve(err);
+        resolve();
       });
   });
 };
@@ -41,7 +41,7 @@ export const getUserInfo = (openId) => {
         // console.log("调取用户信息失败×\n", err);
         console.log('查无此人，新用户');
         // reject(err);
-        resolve(err);
+        resolve();
       });
   });
 };

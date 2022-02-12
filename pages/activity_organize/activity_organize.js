@@ -127,7 +127,6 @@ Page({
     this.setData({ punch_num: this.data.punch_num - 1 });
   },
 
-  // 打卡次数设置
 
   // 改变时间
   changeStartDate(e) {
