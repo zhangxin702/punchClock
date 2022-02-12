@@ -16,15 +16,12 @@ Page({
   onShow() {
     wx.cloud
       .callFunction({
-        name: "getUserDataExcel",
+        // name: "getUserDataExcel",
+        // name: "getActDataExcel",
+        name: "getPunchDataExcel",
       })
       .then((res) => {
         console.log("yes\n", res);
-        // wx.downloadFile({
-        //   url: res.result,
-        // })
-        //   .then((res) => {})
-        //   .catch((err) => {});
       })
       .catch((err) => {
         console.log("no\n", err);

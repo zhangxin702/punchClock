@@ -13,31 +13,19 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/activity_organize/activity_organize",
+          "name": "创建活动（activity_organize）",
           "pathName": "pages/index/activity_organize/activity_organize",
           "query": "",
           "scene": null
         },
         {
-          "name": "pages/activity_organize/activity_organize",
-          "pathName": "pages/index/index",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/activity_punch/activity_punch",
+          "name": "活动经历（activity_punch）",
           "pathName": "pages/activity_punch/activity_punch",
           "query": "",
           "scene": null
         },
         {
-          "name": "pages/activity_organize/activity_organize",
-          "pathName": "pages/activity_organize/activity_organize",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "打卡时刻",
+          "name": "打卡时刻（punch_ing）",
           "pathName": "pages/punch_ing/punch_ing",
           "query": "",
           "scene": null
