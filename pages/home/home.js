@@ -12,19 +12,4 @@ Page({
       { id: "006", class: "iconfont icon-qita", name: "其他" },
     ],
   },
-
-  onShow() {
-    wx.cloud
-      .callFunction({
-        // name: "getUserDataExcel",
-        // name: "getActDataExcel",
-        name: "getPunchDataExcel",
-      })
-      .then((res) => {
-        console.log("yes\n", res);
-      })
-      .catch((err) => {
-        console.log("no\n", err);
-      });
-  },
 });

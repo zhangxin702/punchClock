@@ -864,3 +864,19 @@ export const uploadProblem = (openId, text, imagePaths) => {
       });
   });
 };
+
+export const getCollect = (openId) => {
+  /**
+   * 获取收藏的活动
+   */
+
+  const db = wx.cloud.database();
+  db.collection("UserTable").doc(openId).get().then(res=>{
+    console.log("获取用户的收藏成功√\n", res);
+    const {collect} = res;
+    // for
+  }).catch(err=>{
+    console.log("获取用户的收藏失败×\n", err);
+    return err;
+  })
+};
