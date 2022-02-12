@@ -8,7 +8,6 @@ App({
     });
     const openId = await getOpenId();//获取用户openID
     // const openId = 'user-12';
-    console.log(openId);
     let userInfo = await wx.getStorageSync('userInfo'); // 先查本地缓存
     // 本地缓存查不到
     if (!userInfo) {
