@@ -20,6 +20,7 @@ Page({
     bool: [], //判断用的，位置[word,picture,map,file]，值为true或false
     filePath: '', //选取文件的路径
     images: [], //选取图片的路径
+    requireMap: '', //活动位置
 
     punchFile: '', //文件
     punchImages: [], //图片
@@ -66,6 +67,7 @@ Page({
     });
     this.setData({
       requires: res.data.requires,
+      requireMap: res.data.actLocation,
     });
     let word, picture, location, file;
     word = this.data.requires.includes('word');

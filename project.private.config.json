@@ -185,6 +185,12 @@
           "pathName": "pages/activity_organize/activity_organize",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "pages/punch_ing/punch_ing",
+          "pathName": "pages/punch_ing/punch_ing",
+          "query": "actId=54ad1eea62073afb0eff3d135588b711",
+          "scene": null
         }
       ]
     }
