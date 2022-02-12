@@ -21,7 +21,6 @@
 		>
 			<view class="actives_img">
 				<image
-				 mode="widthFix"
 				 src="{{item.actImage?item.actImage:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"
 				></image>
 			</view>
