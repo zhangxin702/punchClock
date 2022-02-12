@@ -1,9 +1,22 @@
 <view class="kongbai"></view>
 <!-- content -->
-<view   class="content" wx:if="{{bool[0]}}"><textarea cols="30" rows="10" placeholder="请在此处输入" ></textarea></view>
+<view
+ class="content"
+ wx:if="{{bool[0]}}"
+>
+	<textarea
+	 cols="30"
+	 rows="10"
+	 placeholder="请在此处输入"
+	 bindblur="bindTextAreaBlur"
+	></textarea>
+</view>
 <view class="kongbai"></view>
 <!-- content -->
-<view style="width: 90%; margin-left:5%;" wx:if="{{bool[1]}}">
+<view
+ style="width: 90%; margin-left:5%;"
+ wx:if="{{bool[1]}}"
+>
 	<addImage
 	 count="{{count}}"
 	 images="{{images}}"
@@ -18,26 +31,26 @@
  bindtap="chooseMessageFile"
  class="file"
  style="background-image: url('https://i.postimg.cc/J4zz5DRH/image.png')"
- 
- wx:if="{{bool[3]}}">+上传文件
+ wx:if="{{bool[3]}}"
+>
+	上传文件
 </view>
 <view class="kongbai"></view>
 <!-- 定位 我测试用的，如果有更好的按钮就更换 -->
-<view class="file"
-style="background-image: url('https://i.postimg.cc/kM8QPHSv/image.png')"
+<view
+ class="file"
+ style="background-image: url('https://i.postimg.cc/kM8QPHSv/image.png')"
  bindtap="location"
- 
-wx:if="{{bool[2]}}">定位
+ wx:if="{{bool[2]}}"
+>
+	定位
 </view>
 <view class="kongbai"></view>
 <!-- 上传文件 -->
 <button
  bindtap="submit"
  class="btn"
-
 >完成打卡
 </button>
 <view class="kongbai"></view>
-
-
 

@@ -8,7 +8,6 @@
 			 auto-focus
 			 bindinput="textinput"
 			 type="text"
-			 
 			 placeholder="限定在10字"
 			 maxlength="10"
 			></input>
@@ -20,7 +19,6 @@
 	<!-- 设置时间 -->
 	<view class="card">
 		<text class="name">时间设置</text>
-
 		<rui-flex rui-class="rui-flex">
 			<text slot="flexchild">开始时间：</text>
 			<rui-picker
@@ -47,7 +45,6 @@
 	<view class="kongbai"></view>
 	<view class="card_2">
 		<text class="name">最低打卡次数</text>
-
 		<view class="tui-gallery-list">
 			<view class="tui-number-group">
 				<view
@@ -69,7 +66,6 @@
 			</view>
 		</view>
 	</view>
-
 	<view class="kongbai"></view>
 	<!-- 活动简介 -->
 	<view class="card">
@@ -86,8 +82,7 @@
 		></textarea>
 	</view>
 	<!-- 活动简介 -->
-	<view class="kongbai">
-	</view>
+	<view class="kongbai"></view>
 	<!-- 活动公告 -->
 	<view class="card">
 		<text class="name">活动公告</text>
@@ -104,43 +99,48 @@
 	</view>
 	<!-- 活动公告 -->
 	<view class="kongbai"></view>
-<!-- 打卡方式选择 -->
-<view class="card_1">
-<view>
-	<text class="name">打卡方式</text>
+	<!-- 打卡方式选择 -->
+	<view class="card_1">
+		<view>
+			<text class="name">打卡方式</text>
+			<view class="kongbai"></view>
+			<!-- 选择方式复选框 -->
+			<checkbox-group
+			 bindchange="handleCheckboxChange"
+			 style="margin: auto;"
+			>
+				<label wx:for-items="{{list}}">
+					<!-- value值和默认选中状态都是通过数据绑定在js中的 -->
+					<checkbox
+					 value="{{item.value}}"
+					 checked="{{item.checked}}"
+					/>
+					{{item.name}}
+				</label>
+			</checkbox-group>
+		</view>
+		<view>
+			<text class="name">活动类型</text>
+			<view class='select_box'>
+				<view
+				 class='select'
+				 catchtap='selectTap'
+				>
+					<text class='select_text'>{{selectData[index]}}</text>
+					<text class='iconfont icon-xiala'></text>
+				</view>
+				<view
+				 class='option_box'
+				 style='height:{{show?(selectData.length>5?300:selectData.length*60):0}}rpx;'
+				>
+					<text class='option' style='{{index==selectData.length-1&&"border:0;"}}' wx:for='{{selectData}}' wx:key='this' data-index='{{index}}' catchtap='optionTap'>
+																								{{item}}
+																				</text>
+				</view>
+			</view>
+		</view>
+	</view>
 	<view class="kongbai"></view>
-
-<!-- 选择方式复选框 -->
-<checkbox-group bindchange="handleCheckboxChange" style="margin: auto;">
-	<label wx:for-items="{{list}}">
- <!--value值和默认选中状态都是通过数据绑定在js中的-->
-  <checkbox value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
- </label>
-
-
-</checkbox-group>
-
-</view>
-<view>
-	<text class="name">活动类型</text>
-
-	<view class='select_box'>
-    <view class='select' catchtap='selectTap'>
-        <text class='select_text'>{{selectData[index]}}</text>
-        <text class='iconfont icon-xiala' ></text>         
-    </view>
-    <view class='option_box' style='height:{{show?(selectData.length>5?300:selectData.length*60):0}}rpx;'>
-        <text class='option' style='{{index==selectData.length-1&&"border:0;"}}' wx:for='{{selectData}}' wx:key='this' data-index='{{index}}' catchtap='optionTap'>{{item}}</text>
-    </view>
-</view>
-</view>
-
-</view>
-
-<view class="kongbai"></view>
-
-
-
 	<view class="card_1">
 		<addImage_1
 		 count="{{count}}"
@@ -149,23 +149,8 @@
 		 bind:chooseImage="chooseImage"
 		 bind:deleteImage="deleteImage"
 		></addImage_1>
-
+	</view>
 </view>
-
-
-
-
-
-</view>
-
-
-
-
-
-
-
-
-
 <!-- 确认按钮 -->
 <button
  class="btn"
