@@ -13,7 +13,8 @@
     "pages/cropper/cropper",
     "pages/analysis/analysis",
     "pages/feedback/feedback",
-    "pages/search/search"
+    "pages/search/search",
+    "pages/collect/collect"
   ],
   "window": {
     "backgroundTextStyle": "light",

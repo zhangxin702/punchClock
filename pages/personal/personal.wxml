@@ -68,14 +68,7 @@
 	<view class="control">
 		<view class="blank"></view>
 		<view class="navigator_item">
-			<navigator url="/pages/activity_punch/activity_punch?page_id=0">已参与活动</navigator>
-		</view>
-		<view class="blank"></view>
-	</view>
-	<view class="control">
-		<view class="blank"></view>
-		<view class="navigator_item">
-			<navigator url="/pages/activity_punch/activity_punch?page_id=1">已组织活动</navigator>
+			<navigator url="/pages/activity_punch/activity_punch?page_id=0">已参与/已组织活动</navigator>
 		</view>
 		<view class="blank"></view>
 	</view>
@@ -83,6 +76,13 @@
 		<view class="blank"></view>
 		<view class="navigator_item">
 			<navigator url="/pages/analysis/analysis">数据分析</navigator>
+		</view>
+		<view class="blank"></view>
+	</view>
+	<view class="control">
+		<view class="blank"></view>
+		<view class="navigator_item">
+			<navigator url="/pages/feedback/feedback">问题反馈</navigator>
 		</view>
 		<view class="blank"></view>
 	</view>

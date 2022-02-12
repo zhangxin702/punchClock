@@ -413,17 +413,16 @@ export const getSeflMaxLabels = (openId) => {
     console.log(openId);
     wx.cloud
       .callFunction({
-        name: "getActData",
+        name: 'getActData',
       })
       .then((res) => {
-        console.log("参与者——获取所有活动信息成功√\n", res);
+        console.log('参与者——获取所有活动信息成功√\n', res);
         const actData = res.result;
-
         // 对所有活动数据进行分析
         let labels = [], // 存储标签名
           counts = [], // 存储标签出现次数
-          userIds = null;
-
+          userIds = null,
+          sum = 0;//总的已参与数量
         // 检索所有活动
         for (let i = 0; i < actData.length; i++) {
           userIds = actData[i].userIds; // 获取一个活动的所有参与者
@@ -443,16 +442,19 @@ export const getSeflMaxLabels = (openId) => {
                   counts[labels.indexOf(actData[i].label[k])]++;
                 }
               }
+              sum++;
               break; // 跳出对这个活动的参与者的检索
             }
           }
         }
 
-        let countsCopy = counts; // 复制一份标签组，并在对其排序完后保持不变
+        let countsCopy =JSON.parse(JSON.stringify(counts)); // 复制一份标签组，并在对其排序完后保持不变
         countsCopy.sort((a, b) => b - a); // 按从大到小排序
         let max = counts.length > 3 ? 3 : counts.length, // 如果标签数不足3个
           maxLabels = [], // 参与最多的x个标签
-          label = null; // 临时存储
+          labelNum = [], //纪录标签的数量
+          label = null, // 临时存储
+          otherSum = 0;
 
         // 逐个获取出现次数最多的几个标签
         for (let i = 0; i < max; i++) {
@@ -460,11 +462,21 @@ export const getSeflMaxLabels = (openId) => {
           //建议加入深拷贝后加入划线的下一句，否则这种索引方式在同值的情况下会出错
           counts[counts.indexOf(countsCopy[i])] = 0; // 保证下一次不会再管它
           maxLabels.push(label);
+          otherSum += countsCopy[i];//临时存储，最后用上面的sum减去他
+          labelNum.push(countsCopy[i]);
         }
-        resolve(maxLabels);
+        if(counts.length>3){
+          maxLabels.push("其他");
+          otherSum = sum - otherSum;
+          labelNum.push(otherSum);
+        }
+        resolve({
+          maxLabels: maxLabels,
+          labelNum: labelNum
+        });
       })
       .catch((err) => {
-        console.log("参与者——获取所有活动信息失败×\n", err);
+        console.log('参与者——获取所有活动信息失败×\n', err);
         reject(err);
       });
   });
@@ -704,11 +716,12 @@ export const getActHotRankvsSelf = (db, openId) => {
         }
 
         // 排位
-        let actUserNumCopy = actUserNum.sort((a, b) => b - a),
-          actPunchNumCopy = actPunchNum.sort((a, b) => b - a);
-        console.log("活动主题：", actThemes);
-        console.log("参与人数：", actUserNum);
-        console.log("打卡次数：", actPunchNum);
+        //以后一定要用深拷贝，浅拷贝还是会根据他的值把原来的也改变
+        let actUserNumCopy = JSON.parse(JSON.stringify(actUserNum.sort((a, b) => b - a))),
+          actPunchNumCopy = JSON.parse(JSON.stringify(actPunchNum.sort((a, b) => b - a)));
+        console.log('活动主题：', actThemes);
+        console.log('参与人数：', actUserNum);
+        console.log('打卡次数：', actPunchNum);
         for (let i = 0; i < actUserNum.length; i++) {
           actUserRank.push(actUserNumCopy.indexOf(actUserNum[i]) + 1);
           actUserNumCopy[actUserNumCopy.indexOf(actUserNum[i])] = -1;
@@ -724,12 +737,14 @@ export const getActHotRankvsSelf = (db, openId) => {
         });
       })
       .catch((err) => {
-        console.log("举办方——获取举办的活动信息失败×\n", err);
+        console.log('举办方——获取举办的活动信息失败×\n', err);
         reject(err);
       });
   });
 };
 
+//真的建议打卡排名还有参与人数排名分成两部分写，用orderby desc不是更好，可以参考index里的函数actTableGetAll
+//这样写的话一次只能获取二十个数据，也只是在这20个数据里排一次序。
 export const getActHotRankvsAll = (db, openId) => {
   /**
    * 获取举办的活动名及其在所有活动中对应的排名
@@ -779,11 +794,11 @@ export const getActHotRankvsAll = (db, openId) => {
         }
 
         // 排位
-        let actUserNumCopy = actUserNum.sort((a, b) => b - a),
-          actPunchNumCopy = actPunchNum.sort((a, b) => b - a);
-        console.log("活动主题：", actThemes);
-        console.log("参与人数：", actUserNum);
-        console.log("打卡次数：", actPunchNum);
+        let actUserNumCopy = JSON.parse(JSON.stringify(actUserNum.sort((a, b) => b - a))),
+          actPunchNumCopy = JSON.parse(JSON.stringify(actUserNum.sort((a, b) => b - a)));
+        console.log('活动主题：', actThemes);
+        console.log('参与人数：', actUserNum);
+        console.log('打卡次数：', actPunchNum);
         for (let i = 0; i < actUserNum.length; i++) {
           actUserRank.push(actUserNumCopy.indexOf(actUserNum[i]));
           actUserNumCopy[actUserNumCopy.indexOf(actUserNum[i])] = -1;
@@ -863,4 +878,20 @@ export const uploadProblem = (openId, text, imagePaths) => {
         reject(err);
       });
   });
+};
+
+export const getCollect = (openId) => {
+  /**
+   * 获取收藏的活动
+   */
+
+  const db = wx.cloud.database();
+  db.collection("UserTable").doc(openId).get().then(res=>{
+    console.log("获取用户的收藏成功√\n", res);
+    const {collect} = res;
+    // for
+  }).catch(err=>{
+    console.log("获取用户的收藏失败×\n", err);
+    return err;
+  })
 };

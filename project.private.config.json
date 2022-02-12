@@ -229,6 +229,12 @@
           "pathName": "pages/activity_organize/activity_organize",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "活动收藏",
+          "pathName": "pages/collect/collect",
+          "query": "",
+          "scene": null
         }
       ]
     }

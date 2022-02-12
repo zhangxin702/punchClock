@@ -6,8 +6,8 @@ App({
       env: 'zhangxinying-1g0quq2g2d68268c',
       // env: wx.cloud.DYNAMIC_CURRENT_ENV,
     });
-    const openId = await getOpenId();//获取用户openID
-    // const openId = 'user-12';
+    // const openId = await getOpenId();//获取用户openID
+    const openId = 'user-1';
     let userInfo = await wx.getStorageSync('userInfo'); // 先查本地缓存
     // 本地缓存查不到
     if (!userInfo) {

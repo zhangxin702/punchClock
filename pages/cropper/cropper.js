@@ -14,6 +14,7 @@ Page({
 
   onLoad: function (options) {
     this.cropper = this.selectComponent("#image-cropper");
+    console.log(options.imgSrc);
     this.setData({
       src: options.imgSrc,
     });
@@ -104,42 +105,6 @@ Page({
     });
   },
 
-  switchChangeDisableRotate(e) {
-    //开启旋转的同时不限制移动
-    if (!e.detail.value) {
-      this.setData({
-        limit_move: false,
-        disable_rotate: e.detail.value,
-      });
-    } else {
-      this.setData({
-        disable_rotate: e.detail.value,
-      });
-    }
-  },
-
-  switchChangeLimitMove(e) {
-    //限制移动的同时锁定旋转
-    if (e.detail.value) {
-      this.setData({
-        disable_rotate: true,
-      });
-    }
-    this.cropper.setLimitMove(e.detail.value);
-  },
-
-  switchChangeDisableWidth(e) {
-    this.setData({
-      disable_width: e.detail.value,
-    });
-  },
-
-  switchChangeDisableHeight(e) {
-    this.setData({
-      disable_height: e.detail.value,
-    });
-  },
-
   submit() {
     this.cropper.getImg((obj) => {
       let pages = getCurrentPages(); // 获取页面栈
@@ -154,60 +119,6 @@ Page({
       }
     });
   },
-
-  rotate() {
-    //在用户旋转的基础上旋转90°
-    this.cropper.setAngle((this.cropper.data.angle += 90));
-  },
-
-  top() {
-    this.data.top = setInterval(() => {
-      this.cropper.setTransform({
-        y: -3,
-      });
-    }, 1000 / 60);
-  },
-
-  bottom() {
-    this.data.bottom = setInterval(() => {
-      this.cropper.setTransform({
-        y: 3,
-      });
-    }, 1000 / 60);
-  },
-
-  left() {
-    this.data.left = setInterval(() => {
-      this.cropper.setTransform({
-        x: -3,
-      });
-    }, 1000 / 60);
-  },
-
-  right() {
-    this.data.right = setInterval(() => {
-      this.cropper.setTransform({
-        x: 3,
-      });
-    }, 1000 / 60);
-  },
-
-  narrow() {
-    this.data.narrow = setInterval(() => {
-      this.cropper.setTransform({
-        scale: -0.02,
-      });
-    }, 1000 / 60);
-  },
-
-  enlarge() {
-    this.data.enlarge = setInterval(() => {
-      this.cropper.setTransform({
-        scale: 0.02,
-      });
-    }, 1000 / 60);
-  },
-
   end(e) {
     clearInterval(this.data[e.currentTarget.dataset.type]);
   },

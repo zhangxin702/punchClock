@@ -45,10 +45,12 @@ navigator{
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 10rpx;
+  margin-bottom: 6rpx;
 }
 .search_content .actives_img image {
   width: 90%;
+  border-radius: 20rpx;
+  height: 140rpx;
 }
 .search_content .actives_info {
   display: flex;

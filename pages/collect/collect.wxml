@@ -1,0 +1,21 @@
+<!-- 监听自定义事件 -->
+<view class="search">
+    <input type="test" value="" placeholder="活动搜索" maxlength="10" bindconfirm="inputBind" />
+</view>
+<view class="first_tab">
+    <scroll-view scroll-y="{{true}}">
+        <navigator class="actives_item" wx:for="{{showActList}}" wx:key="actId" url="/pages/punch_detail/punch_detail?actId={{item._id}}">
+            <view class="actives_img">
+                <image mode="widthFix" src="{{item.actImage?item.actImage:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"></image>
+            </view>
+            <view class="actives_info">
+                <view class="actives_name">{{item.actTheme}}</view>
+                <view class="actives_price" wx:if="{{item.isFinish}}">状态：已完成</view>
+                <view class="actives_price" wx:else>状态：正在进行</view>
+                <view class="actives_price" wx:if="{{!item.isFinish}}">
+                    剩余打卡次数：{{item.punchTimes-item.punchedTimes}}
+                </view>
+            </view>
+        </navigator>
+    </scroll-view>
+</view>
