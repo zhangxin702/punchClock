@@ -215,6 +215,18 @@
           "pathName": "pages/home/home",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "pages/activity_organize/activity_organize",
+          "pathName": "pages/activity_organize/activity_organize",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/activity_organize/activity_organize",
+          "pathName": "pages/activity_organize/activity_organize",
+          "query": "",
+          "scene": null
         }
       ]
     }

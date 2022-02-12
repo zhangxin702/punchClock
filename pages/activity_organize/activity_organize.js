@@ -28,17 +28,18 @@ Page({
         name: '📸',
         value: 'picture',
       },
-      {
-        id: 3,
-        name: '⛳',
-        value: 'map',
-      },
+     
       {
         id: 3,
         name: '📁',
         value: 'file',
-      },
+      }
     ],
+    item: {
+      id: 4,
+      name: '⛳',
+      value: 'map',
+    },
     // 复选框选择的value
     selectList: [],
 
@@ -65,6 +66,9 @@ Page({
 
     // 定位地址
     address: '',
+
+    // 判断是否选择地图
+    flag: true
   },
 
   // 点击下拉显示框
@@ -86,7 +90,11 @@ Page({
     this.setData({
       selectList: e.detail.value,
     });
-    if (this.data.selectList.includes('map')) {
+   
+  },
+async handleMap(e){
+    // console.log(e);
+    if (this.data.flag) {
       setTimeout(async function () {
         await showToast({ title: '请选择定位' }), 3000;
       });
@@ -100,6 +108,14 @@ Page({
       });
       console.log(this.data.address);
     }
+    if(true){
+      this.setData({
+        flag : !this.data.flag
+
+      })
+      // console.log(this.data.flag);
+    }
+
   },
   // 打卡次数设置
   num_blur: function (e) {
