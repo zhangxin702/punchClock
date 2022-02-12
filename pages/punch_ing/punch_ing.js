@@ -5,6 +5,7 @@ import {
   actTableById,
   punchTableInsert,
   showToast,
+  actTableUpdate,
 } from '../../async/index.js';
 import { getLocation } from '../../async/async.js';
 
@@ -21,6 +22,7 @@ Page({
     filePath: '', //选取文件的路径
     images: [], //选取图片的路径
     requireMap: '', //活动位置
+    userIds: [], //活动参与人
 
     punchFile: '', //文件
     punchImages: [], //图片
@@ -51,6 +53,7 @@ Page({
     this.setData({
       filePath: res.tempFiles[0].path,
     });
+    await showToast({ title: '选择文件成功' });
     console.log(this.data.filePath);
   },
   /**
@@ -68,6 +71,7 @@ Page({
     this.setData({
       requires: res.data.requires,
       requireMap: res.data.actLocation,
+      userIds: res.data.userIds,
     });
     let word, picture, location, file;
     word = this.data.requires.includes('word');
@@ -77,21 +81,42 @@ Page({
     this.setData({
       bool: [word, picture, location, file],
     });
-    
   },
 
   async location() {
-    let res = await getLocation();
-    this.setData({
-      map: {
-        latitude: res.latitude,
-        longitude: res.longitude,
-      },
-    });
-    wx.showToast({
-      title: '获取定位成功',
-    })
-    console.log(this.data.map);
+    if (this.data.map === '') {
+      let res = await getLocation();
+      this.setData({
+        map: {
+          latitude: res.latitude,
+          longitude: res.longitude,
+        },
+      });
+    }
+    await showToast({ title: '您已定位成功' });
+  },
+
+  Rad(d) {
+    return (d * Math.PI) / 180.0; //经纬度转换成三角函数中度分表形式。
+  },
+
+  GetDistance(lat1, lng1, lat2, lng2) {
+    //传入两个点的经纬度
+    var radLat1 = this.Rad(lat1);
+    var radLat2 = this.Rad(lat2);
+    var a = radLat1 - radLat2;
+    var b = this.Rad(lng1) - this.Rad(lng2);
+    var s =
+      2 *
+      Math.asin(
+        Math.sqrt(
+          Math.pow(Math.sin(a / 2), 2) +
+            Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)
+        )
+      );
+    s = s * 6378.137; // EARTH_RADIUS;
+    s = Math.round(s * 10000) / 10000; //输出m
+    return s;
   },
 
   async submit() {
@@ -110,6 +135,18 @@ Page({
     if (this.data.bool[2] === true) {
       if (this.data.map === '') {
         await showToast({ title: '您还未定位，请定位' });
+        return false;
+      }
+      let ree = this.GetDistance(
+        this.data.map.latitude,
+        this.data.map.longitude,
+        this.data.requireMap.latitude,
+        this.data.requireMap.longitude
+      );
+      console.log(this.data.map, this.data.requireMap);
+      console.log(ree);
+      if (ree > 300) {
+        await showToast({ title: '您在规定的定位之外，请到达目的地' });
         return false;
       }
     }
@@ -140,13 +177,34 @@ Page({
         punchFile: ree.fileID,
       });
     }
-    // await punchTableInsert({
-    //   actId: this.data.actId,
-    //   punchContent: this.data.word,
-    //   punchFile: this.data.punchFile,
-    //   punchImages: this.data.punchImages,
-    //   punchlocation: this.data.map,
-    //   punchTime: new Date(),
-    // });
+    let red = await wx.getStorageSync('userInfo');
+    console.log(!this.data.userIds.includes(red._id));
+    await punchTableInsert({
+      actId: this.data.actId,
+      nickName: red.nickName,
+      punchContent: this.data.word,
+      punchFile: this.data.punchFile,
+      punchImages: this.data.punchImages,
+      punchlocation: this.data.map,
+      punchTime: new Date(),
+    });
+    console.log(this.data.actId, red._id);
+    if (!this.data.userIds.includes(red._id)) {
+      await actTableUpdate({
+        actId: this.data.actId,
+        openId: red._id,
+      });
+    } else {
+      wx.navigateBack({
+        delta: 1,
+      });
+    }
+  },
+
+  // 输入框失去焦点时,即触发事件
+  bindTextAreaBlur: function (e) {
+    this.setData({
+      word: e.detail.value,
+    });
   },
 });
