@@ -790,6 +790,7 @@ export const getActHotRankvsAll = (db, openId) => {
   });
 };
 
+// 其它
 export const uploadProblem = (openId, text, imagePaths) => {
   /**
    * 上传用户的反馈
