@@ -179,6 +179,12 @@
           "pathName": "pages/punch_ing/punch_ing",
           "query": "actId=17e3426e6206247b0d3b908f2f933ba7",
           "scene": null
+        },
+        {
+          "name": "pages/activity_organize/activity_organize",
+          "pathName": "pages/activity_organize/activity_organize",
+          "query": "",
+          "scene": null
         }
       ]
     }

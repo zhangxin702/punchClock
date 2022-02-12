@@ -125,6 +125,8 @@ export const actTableInsert = ({
   punchTimes,
   announcement,
   requires,
+  label,
+  actLocation,
 }) => {
   return new Promise((resolve, reject) => {
     var db = wx.cloud.database().collection('ActTable');
@@ -141,6 +143,8 @@ export const actTableInsert = ({
         userCounts: 0,
         userIds: [],
         requires: requires,
+        label: label,
+        actLocation: actLocation,
       },
       success: (res) => {
         showToast({ title: '添加成功' });

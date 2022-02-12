@@ -4,6 +4,7 @@ import {
   showToast,
   actTableInsert,
 } from '../../async/index.js';
+import { chooseLocation } from '../../async/async.js';
 import { formatTime } from '../../utils/util.js';
 
 Page({
@@ -11,11 +12,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-
-    show:false,//控制下拉列表的显示隐藏，false隐藏、true显示
-    selectData:['考试','健身','考研','英语','阅读','其他'],//下拉列表的数据
-    index:0,//选择的下拉列表下标
-
+    show: false, //控制下拉列表的显示隐藏，false隐藏、true显示
+    selectData: ['考试', '健身', '考研', '英语', '阅读', '其他'], //下拉列表的数据
+    index: 0, //选择的下拉列表下标
 
     //  选择打卡的方式
     list: [
@@ -65,49 +64,41 @@ Page({
     punch_num: 1,
 
     // 定位地址
-    address:"",
-    longitude: 0,
-    latitude:0
-
+    address: '',
   },
 
-    // 点击下拉显示框
-    selectTap(){
-      this.setData({
-        show: !this.data.show
-      });
-    },
-    // 点击下拉列表
-    optionTap(e){
-      let Index=e.currentTarget.dataset.index;//获取点击的下拉列表的下标
-      this.setData({
-        index:Index,
-        show:!this.data.show
-      });
-    },
+  // 点击下拉显示框
+  selectTap() {
+    this.setData({
+      show: !this.data.show,
+    });
+  },
+  // 点击下拉列表
+  optionTap(e) {
+    let Index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
+    this.setData({
+      index: Index,
+      show: !this.data.show,
+    });
+  },
   // 打卡方式复选框 把选择的保持在selectList
-  handleCheckboxChange(e) {
+  async handleCheckboxChange(e) {
     this.setData({
       selectList: e.detail.value,
     });
-    if(this.data.selectList.includes("map")){
-      setTimeout(function(){
-        wx.showToast({
-          title: '请选择定位',
-          icon:"none"
-        }),3000
-      })
-      
-      wx.chooseLocation()
-      .then(res =>{
-        console.log(res);
-       
-          this.setData({
-            address:res.address,
-            longitude:res.longitude,
-            latitude:res.latitude
-          })})
-       
+    if (this.data.selectList.includes('map')) {
+      setTimeout(async function () {
+        await showToast({ title: '请选择定位' }), 3000;
+      });
+
+      var res = await chooseLocation();
+      this.setData({
+        address: {
+          longitude: res.longitude,
+          latitude: res.latitude,
+        },
+      });
+      console.log(this.data.address);
     }
   },
   // 打卡次数设置
@@ -126,7 +117,6 @@ Page({
   nextNum() {
     this.setData({ punch_num: this.data.punch_num - 1 });
   },
-
 
   // 改变时间
   changeStartDate(e) {
@@ -183,6 +173,12 @@ Page({
       });
       return;
     }
+    if (this.data.address === '' && this.data.selectList.includes('map')) {
+      await showToast({
+        title: '您还未定位,请先定位',
+      });
+      return;
+    }
     var res = await uploadFile({
       tempFilePath: this.data.tempFilePaths[0],
       cloudPath: 'actImage/' + this.data.tempFilePaths[0].split('/').pop(),
@@ -197,6 +193,8 @@ Page({
       punchTimes: this.data.punch_num,
       announcement: this.data.active_announce,
       requires: this.data.selectList,
+      actLocation: this.data.address,
+      label: this.data.selectData[this.data.index],
     });
   },
 
