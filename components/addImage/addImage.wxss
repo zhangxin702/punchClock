@@ -20,12 +20,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-shadow: 5px 6px 10px rgb(223, 220, 220);
  
 }
 .addImageIcon{
   text-align: center;
   line-height: 260rpx;
-  background-color: #f7f7f7;
+  /* background-color: #eeeeee; */
+
 }
 .addImageIconHover{
   background-color: #C0C4CC;

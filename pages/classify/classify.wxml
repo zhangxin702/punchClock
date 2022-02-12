@@ -1,2 +1,13 @@
-<!--pages/classify/classify.wxml-->
-<text>pages/classify/classify.wxml</text>
+<!-- 滚动卡片 -->
+<view class="msc-mask-layer" style="background-image: url({{imageSrc[nowImage]}});">
+  <view class="msc-image-container">
+    <scroll-view  class="msc-scroll-container" scroll-x="true" bindscroll="scrollHandle" >
+      <view style="width:{{(scrollItemNumber+2)*40}}vw;height:100%">
+        <block wx:for="{{imageSrc}}" wx:for-item="item" wx:key="index" >
+          <image src="{{item}}" class="{{index===nowImage?'msc-now-image':''}} msc-common-image"
+           id="image-{{index}}" bindload="imageLoadHandle" bindtap="clickCard"></image>
+        </block>
+      </view>
+    </scroll-view>
+  </view>
+</view>

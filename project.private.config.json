@@ -179,6 +179,30 @@
           "pathName": "pages/punch_ing/punch_ing",
           "query": "actId=54ad1eea62073afb0eff3d135588b711",
           "scene": null
+        },
+        {
+          "name": "pages/punch_ing/punch_ing",
+          "pathName": "pages/punch_ing/punch_ing",
+          "query": "actId=54ad1eea62073afb0eff3d135588b711",
+          "scene": null
+        },
+        {
+          "name": "pages/classify/classify",
+          "pathName": "pages/classify/classify",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/punch_detail/punch_detail",
+          "pathName": "pages/punch_detail/punch_detail",
+          "query": "actId=17e3426e6206247b0d3b908f2f933ba7",
+          "scene": null
+        },
+        {
+          "name": "pages/punch_ing/punch_ing",
+          "pathName": "pages/punch_ing/punch_ing",
+          "query": "actId=17e3426e6206247b0d3b908f2f933ba7",
+          "scene": null
         }
       ]
     }

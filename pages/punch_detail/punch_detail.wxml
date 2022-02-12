@@ -19,6 +19,7 @@
 	<view class="actives_time">参与人数:{{activity.userCounts}}</view>
 	<view class="actives_time">最低打卡次数:{{punch_num}}</view>
 	<view class="actives_time">打卡方式：{{bool}}</view>
+	<view class="actives_time">活动类型：{{activity.label}}</view>
 </view>
 <view class="kongbai"></view>
 <view class="actives_introduce">{{activity.actContent}}</view>

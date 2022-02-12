@@ -1,15 +1,48 @@
 .kongbai{
   padding: 20rpx;
+
+}
+page{
+  width: 100%;
+  height: 100%;
+ background-image: url("https://img1.baidu.com/it/u=1285150111,2384442222&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=1046");
+ background-position:0rpx -70px;
+ background-repeat: no-repeat;
 }
 .content{
-  display: flex;
-  background-color: #ececec;
+ 
+  background-color: rgba(3, 3,3, 0.1);
   margin: auto;
-  width: 86%;
+  width: 650rpx;
   height: 300rpx;
-  padding: 15rpx;
+  padding: 20rpx;
   border-radius: 20rpx;
   color: #8b8b8b;
+ 
+  
+}
+.file{
+  display: flex;
   justify-content: center;
   align-items: center;
+  
+  background-position: 0rpx;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  /* background-color: rgb(22, 209, 194); */
+  color: white;
+  border-radius: 50%;
+
+  width: 300rpx;
+  height: 300rpx;
+  box-shadow: 5rpx 6rpx 10rpx rgb(116, 115, 115);
+
+  margin: auto
+  ;
+}
+.btn{
+  width: 80%;
+ 
+  background-color: #9cd2eb;
+  color: white;
 }
