@@ -33,11 +33,11 @@
     <text class="{{item.class}}"></text>
 <text class="font">{{item.name}}</text>
 </navigator>
-
-
-  
-
-
-
 </view>
+<view class="kongbai">
+</view>
+<view class="rili">
+    <calendar></calendar>
+</view>
+
 

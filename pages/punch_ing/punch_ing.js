@@ -88,6 +88,9 @@ Page({
         longitude: res.longitude,
       },
     });
+    wx.showToast({
+      title: '获取定位成功',
+    })
     console.log(this.data.map);
   },
 

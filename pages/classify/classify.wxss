@@ -1,1 +1,4 @@
-/* pages/classify/classify.wxss */
+.header-style{
+  background: #188be4 ;  
+  color: #fff;
+}

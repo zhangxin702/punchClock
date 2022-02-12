@@ -25,6 +25,8 @@
 <view class="actives_introduce">{{activity.actContent}}</view>
 <view class="kongbai"></view>
 <navigator url="../punch_ing/punch_ing?actId={{activity._id}}">
-	<button style="background-color:#ececec;">参与打卡</button>
+	<button class="btn">参与打卡</button>
 </navigator>
+<view class="kongbai"></view>
+<view class="kongbai"></view>
 

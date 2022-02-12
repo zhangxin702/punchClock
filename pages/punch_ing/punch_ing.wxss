@@ -25,7 +25,7 @@ page{
   display: flex;
   justify-content: center;
   align-items: center;
-  
+ 
   background-position: 0rpx;
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -33,8 +33,8 @@ page{
   color: white;
   border-radius: 50%;
 
-  width: 300rpx;
-  height: 300rpx;
+  width: 250rpx;
+  height: 250rpx;
   box-shadow: 5rpx 6rpx 10rpx rgb(116, 115, 115);
 
   margin: auto

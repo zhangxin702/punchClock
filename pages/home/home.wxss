@@ -17,9 +17,10 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 290rpx;
+  height: 300rpx;
   background-color: #d6eefa;
   flex-wrap: wrap;
+  border-bottom: 5rpx solid gray;
 }
 .navContainer .navItem{
   /* flex: 2; */
@@ -40,4 +41,29 @@
   font-size: 80rpx;
   color:rgb(151, 52, 39);
   border-radius: 50%;
+}
+
+.kongbai{
+  margin: 10rpx;
+}
+/* 日历 */
+.header-style{
+  background: #188be4 ;  
+  color: #fff;
+  width: 60rpx;
+  height: 60rpx;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.rili{
+  
+  width: 750rpx;
+  width: 100%;
+  margin: auto;
+  height: 600rpx;
+ background-image: url("https://img2.baidu.com/it/u=919645239,301885573&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=493");
+ background-repeat: no-repeat;
+ background-size: 100% 100%;
 }
