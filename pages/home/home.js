@@ -1,4 +1,8 @@
-import { getParticipatePunch, getOrganizePunch, getSelfPunchedTimes } from "../../async/async.js";
+import {
+  getParticipatePunch,
+  getOrganizePunch,
+  getSelfPunchedTimes,
+} from '../../async/async.js';
 
 // 获取应用实例
 const app = getApp();
@@ -7,37 +11,26 @@ import { actTableGetAll } from '../../async/index.js';
 
 Page({
   data: {
-    currentTab: 0,
     actList: [],
-    pageNum: 0,
-
-    attendList:[],
-    organizeList:[]
-
-    
+    attendList: [],
+    organizeList: [],
   },
-  async onLoad(){
-   //如果没看见上面的组件可以把下面的注释划掉
+  async onLoad() {
+    //如果没看见上面的组件可以把下面的注释划掉
     //console.log(options);
     wx.showLoading({
-      title: "加载中",
+      title: '加载中',
       mask: true,
     });
 
-  
-  
     const openId = app.globalData.userInfo._id;
 
-   this.GetAttendAndOranizeList( openId)
-    this.GetAll(this.data.currentTab, this.data.pageNum);
+    this.GetAttendAndOranizeList(openId);
+    this.GetAll(0, 0);
     wx.hideLoading();
-
-   
- 
   },
-  async GetAttendAndOranizeList( openId){
-  
 
+  async GetAttendAndOranizeList(openId) {
     const db = wx.cloud.database();
     let res1 = await getParticipatePunch(openId);
     let res2 = await getOrganizePunch(openId);
@@ -60,20 +53,25 @@ Page({
     let punchData = null;
     await wx.cloud
       .callFunction({
-        name: "getPunchData",
+        name: 'getPunchData',
         data: {
           openId: openId,
         },
       })
       .then((res) => {
         punchData = res.result;
-        console.log("punchData: ", punchData);
+        console.log('punchData: ', punchData);
       });
 
     for (let i = 0; i < attendList.length; i++) {
-      let res = await getSelfPunchedTimes(db, openId,attendList[i]._id, punchData);
-    attendList[i].isFinish = res.isFinish;
-    attendList[i].punchedTimes = res.punchedTimes;
+      let res = await getSelfPunchedTimes(
+        db,
+        openId,
+        attendList[i]._id,
+        punchData
+      );
+      attendList[i].isFinish = res.isFinish;
+      attendList[i].punchedTimes = res.punchedTimes;
     }
     console.timeEnd();
 
@@ -83,42 +81,31 @@ Page({
       showActList: JSON.parse(JSON.stringify(attendList)), //深拷贝防止改变引起总的改变
       showOrganizeList: JSON.parse(JSON.stringify(organizeList)), //同上
     });
-    console.log("attendList: ", this.data.attendList);
-    console.log("organizeList: ", this.data.organizeList);
-    
+    console.log('attendList: ', this.data.attendList);
+    console.log('organizeList: ', this.data.organizeList);
   },
-  handleMore_0(e){
-    wx.navigateTo({
-      url: '../activity_punch/activity_punch?page_id=0'
-      
-    })
 
-  },
-  handleMore_1(e){
+  handleMore_0(e) {
     wx.navigateTo({
-      url: '../activity_punch/activity_punch?page_id=1'
-      
-    })
-
+      url: '../activity_punch/activity_punch?page_id=0',
+    });
   },
+  handleMore_1(e) {
+    wx.navigateTo({
+      url: '../activity_punch/activity_punch?page_id=1',
+    });
+  },
+
   async GetAll(order, skip) {
     var res = await actTableGetAll({
       order: order,
       skip: skip,
       limit: 3,
     });
-    var addList = res.data.map((v) => ({
-      ...v,
-      createTime: formatTime({ date: v.createTime }),
-    }));
+
     this.setData({
-      actList: [...this.data.actList, ...addList],
-      pageNum: this.data.pageNum + 3,
+      actList: res.data,
     });
-    wx.stopPullDownRefresh();
-    console.log("热门活动"+this.data.actList);
-   
+    console.log('热门活动' + this.data.actList);
   },
-
-
 });

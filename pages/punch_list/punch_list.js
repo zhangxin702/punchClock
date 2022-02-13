@@ -11,30 +11,34 @@ Page({
     currentTab: 0,
     actList: [],
     pageNum: 0,
-// 从 classify传过来的标签名
-    label:""
+    // 从 classify传过来的标签名
+    label: '',
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let label = options.label
+    let label = options.label;
     this.setData({
-      label:label
-    })
+      label: label,
+    });
     console.log(label);
-    if(label != "全部"){
-      this.GetAllLabel(this.data.currentTab, this.data.pageNum ,label);
-    }else{
+    if (label != '全部') {
+      this.GetAllLabel(
+        this.data.currentTab,
+        this.data.pageNum,
+        this.data.label
+      );
+    } else {
       this.GetAll(this.data.currentTab, this.data.pageNum);
     }
-    
+
     var that = this;
     /**
      * 获取系统信息
      */
- 
+
     wx.getSystemInfo({
       success: function (res) {
         that.setData({
@@ -61,12 +65,12 @@ Page({
     });
     wx.stopPullDownRefresh();
   },
-  async GetAllLabel(order, skip,label) {
+  async GetAllLabel(order, skip, label) {
     var res = await actTableGetLabel({
       order: order,
       skip: skip,
-      limit: 3,
-      label:label
+      limit: 9,
+      label: label,
     });
     var addList = res.data.map((v) => ({
       ...v,
@@ -74,16 +78,19 @@ Page({
     }));
     this.setData({
       actList: [...this.data.actList, ...addList],
-      pageNum: this.data.pageNum + 3,
+      pageNum: this.data.pageNum + 9,
     });
     wx.stopPullDownRefresh();
   },
 
   onReachBottom: function (e) {
-    if(this.data.label != '全部'){
-      this.GetAllLabel(this.data.currentTab, this.data.pageNum,this.data.label);
-
-    }else{
+    if (this.data.label != '全部') {
+      this.GetAllLabel(
+        this.data.currentTab,
+        this.data.pageNum,
+        this.data.label
+      );
+    } else {
       this.GetAll(this.data.currentTab, this.data.pageNum);
     }
   },
@@ -102,10 +109,13 @@ Page({
         pageNum: 0,
         actList: [],
       });
-      if(this.data.label != '全部'){
-        this.GetAllLabel(this.data.currentTab, this.data.pageNum,this.data.label);
-  
-      }else{
+      if (this.data.label != '全部') {
+        this.GetAllLabel(
+          this.data.currentTab,
+          this.data.pageNum,
+          this.data.label
+        );
+      } else {
         this.GetAll(this.data.currentTab, this.data.pageNum);
       }
       return false;
@@ -116,10 +126,13 @@ Page({
         actList: [],
       });
 
-      if(this.data.label != '全部'){
-        this.GetAllLabel(this.data.currentTab, this.data.pageNum,this.data.label);
-  
-      }else{
+      if (this.data.label != '全部') {
+        this.GetAllLabel(
+          this.data.currentTab,
+          this.data.pageNum,
+          this.data.label
+        );
+      } else {
         this.GetAll(this.data.currentTab, this.data.pageNum);
       }
     }
@@ -131,12 +144,14 @@ Page({
       pageNum: 0,
       actList: [],
     });
-    if(this.data.label != '全部'){
-      this.GetAllLabel(this.data.currentTab, this.data.pageNum,this.data.label);
-
-    }else{
+    if (this.data.label != '全部') {
+      this.GetAllLabel(
+        this.data.currentTab,
+        this.data.pageNum,
+        this.data.label
+      );
+    } else {
       this.GetAll(this.data.currentTab, this.data.pageNum);
     }
-   
   },
 });
