@@ -35,3 +35,7 @@
   padding: 10rpx 0;
   color: green;
 }
+.canvas{
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
+}

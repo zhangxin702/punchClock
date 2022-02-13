@@ -1,0 +1,121 @@
+/* pages/index/index.wxss */
+
+.swiper-tab {
+  width: 100%;
+  text-align: center;
+  line-height: 80rpx;
+  border-bottom: 1px solid #000;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  position:fixed;top:0;left:0;
+  background-color: white;
+  z-index: 999;
+  
+}
+.tab-item {
+  flex: 1;
+  font-size: 30rpx;
+  display: inline-block;
+  color: #777777;
+ 
+}
+.on {
+  color: red;
+  border-bottom: 5rpx solid red;
+}
+.out {
+  display: block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  margin-top: 100rpx;
+}
+.save_item {
+  display: flex;
+  text-align: center;
+  width: 70%;
+  height: 70rpx;
+  justify-content: center;
+  align-items: center;
+  border: 5rpx solid #083c53;
+  /* background-color: #cceaf8; */
+  margin-left:15%;
+  /* box-shadow: 6rpx 6rpx 10rpx #ababad, -3rpx -3rpx 10rpx #e0dede; */
+  border-radius: 15rpx;
+  margin-top: 30rpx;
+  color:#083c53;
+  font-weight: 700;
+}
+.line{
+  margin-top: 30rpx;
+  border-bottom: 1rpx solid #777777;
+  margin-bottom: 20rpx;
+}
+
+/* 活动列表页 */
+
+.inner {
+
+width: 100%;
+
+
+}
+.punch_item{
+  display: flex;
+  /* border-bottom: 1rpx solid #ccc; */
+  margin: 30rpx;
+  width: 92%;
+  padding-bottom: 5rpx;
+  height: 140rpx;
+  
+
+}
+
+/* .inner .actives_img {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+ 
+  margin-bottom: 6rpx;
+} */
+/* .inner .actives_img image {
+  width: 90%;
+  border-radius: 20rpx;
+  height: 140rpx;
+
+  
+} */
+.inner .punch_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: #cceaf8;
+  border:1rpx solid gray;
+  border-radius: 20rpx;
+  box-shadow: 6rpx 6rpx 10rpx #ababad, -3rpx -3rpx 10rpx #e0dede;
+  width: 100%;
+  text-align: center;
+}
+.inner .punch_info .act_theme {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  /* padding: 16rpx 0; */
+  /* display: flex; */
+  border-bottom: 1px solid #eee;
+  /* margin: 16rpx 0; */
+}
+.inner .punch_info .punch_content {
+  color: #dd3300;
+  font-size: 20rpx;
+}
+
+.inner .punch_info .punch_time {
+  color: #dd3300;
+  font-size: 20rpx;
+}

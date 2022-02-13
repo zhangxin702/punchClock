@@ -11,11 +11,16 @@ Page({
   },
 
   async onLoad() {
+    wx.showLoading({
+      title: '加载中',
+      mask: true,
+    })
     const dict = await getActTheme();
     this.setData({
       dict: dict,
     });
     this.GetAll(this.data.currentTab, this.data.pageNum);
+    wx.hideLoading();
   },
 
   async GetAll(order, skip) {
@@ -28,7 +33,7 @@ Page({
     );
     var addList = res.map((v) => ({
       ...v,
-      // createTime: formatTime({ date: v.createTime }),
+      punchTime: formatTime({ date: v.punchTime }),
     }));
     if (order == 0) {
       this.setData({
