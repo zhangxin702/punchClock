@@ -200,6 +200,7 @@ Page({
       punchTime: new Date(),
     });
     console.log(this.data.actId, red._id);
+    await wx.setStorageSync('punchWord','');
 
     if (!this.data.userIds.includes(red._id)) {
       await actTableUpdate({
