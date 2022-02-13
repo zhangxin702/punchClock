@@ -25,7 +25,7 @@
 <text class="font">分类</text>
 </navigator>
 
-<navigator class="navItem" url="../punch_list/punch_list" >
+<navigator class="navItem" url="../punch_list/punch_list?label=全部" >
     <text class="iconfont icon-xingzhuang" ></text>
 <text class="font">全部</text>
 </navigator>
