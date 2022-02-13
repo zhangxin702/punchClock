@@ -147,16 +147,17 @@ export const actTableInsert = ({
         actLocation: actLocation,
       },
       success: (res) => {
-        showToast({ title: '添加成功' });
+        showToast({ title: '添加成功！！！' });
       },
       fail: (err) => {
-        showToast({ title: '添加失败' });
+        showToast({ title: '添加失败！！！' });
       },
       complete: () => {
-        wx.hideLoading();
-        wx.navigateBack({
-          delta: 1,
-        });
+        setTimeout(function () {
+          wx.navigateBack({
+            delta: 1,
+          });
+        }, 2000);
       },
     });
   });
@@ -203,16 +204,17 @@ export const actTableUpdate = ({ actId, openId }) => {
         userIds: _.push(openId),
       },
       success: (res) => {
-        showToast({ title: '打卡成功' });
+        showToast({ title: '打卡成功！！！' });
       },
       fail: (err) => {
-        showToast({ title: '打卡失败' });
+        showToast({ title: '打卡失败！！！' });
       },
       complete: () => {
-        wx.hideLoading();
-        wx.navigateBack({
-          delta: 1,
-        });
+        setTimeout(function () {
+          wx.navigateBack({
+            delta: 1,
+          });
+        }, 2000);
       },
     });
   });
