@@ -3,7 +3,7 @@
 
 .index_swiper swiper {
   width: 750rpx;
-  height: 330rpx;
+  height: 400rpx;
 }
 /* 设置轮播图里面图片的大小 */
 .index_swiper swiper image {

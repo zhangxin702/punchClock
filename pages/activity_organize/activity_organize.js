@@ -131,6 +131,16 @@ async handleMap(e){
     this.setData({ punch_num: this.data.punch_num + 1 });
   },
   nextNum() {
+    if(this.data.punch_num <= 1){
+      wx.showToast({
+        title: '不能再少了',
+        icon:"none"
+       
+        
+      })
+      return 
+     
+    }
     this.setData({ punch_num: this.data.punch_num - 1 });
   },
 
