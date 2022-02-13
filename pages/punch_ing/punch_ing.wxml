@@ -9,6 +9,7 @@
 	 rows="10"
 	 placeholder="请在此处输入"
 	 bindblur="bindTextAreaBlur"
+	 value="{{word}}"
 	></textarea>
 </view>
 <view class="kongbai"></view>

@@ -62,6 +62,17 @@ Page({
   onLoad: function (e) {
     this.setData({ actId: e.actId });
     this.getById();
+    this.storage();
+  },
+
+  async storage() {
+    let punchWord = await wx.getStorageSync('punchWord'); // 先查本地缓存
+    // 本地缓存查不到
+    if (punchWord) {
+      this.setData({
+        word: punchWord,
+      });
+    }
   },
 
   async getById() {
@@ -189,28 +200,19 @@ Page({
       punchTime: new Date(),
     });
     console.log(this.data.actId, red._id);
-   
+
     if (!this.data.userIds.includes(red._id)) {
       await actTableUpdate({
         actId: this.data.actId,
         openId: red._id,
       });
     } else {
-      setTimeout(function(){
-        wx.showToast({
-          title: '打卡成功',
-        })
-       
-      },1000)
-      setTimeout(function(){
+      setTimeout(function () {
         wx.navigateBack({
           delta: 1,
         });
-       
-      },2000)
-     
+      }, 2000);
     }
-    
   },
 
   // 输入框失去焦点时,即触发事件
@@ -218,5 +220,6 @@ Page({
     this.setData({
       word: e.detail.value,
     });
+    wx.setStorageSync('punchWord', this.data.word); // 写本地缓存
   },
 });
