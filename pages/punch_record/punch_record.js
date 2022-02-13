@@ -7,19 +7,19 @@ Page({
     currentTab: 0,
     punchList: [],
     pageNum: 0,
-    dict: {},
+    dict: {}, // 将actId映射为actTheme的字典
   },
 
   async onLoad() {
     wx.showLoading({
-      title: '加载中',
+      title: "加载中",
       mask: true,
-    })
-    const dict = await getActTheme();
+    });
+    const dict = await getActTheme(); // 先把字典获取到
     this.setData({
       dict: dict,
     });
-    this.GetAll(this.data.currentTab, this.data.pageNum);
+    this.GetAll(this.data.currentTab, this.data.pageNum); // 再获取数据
     wx.hideLoading();
   },
 

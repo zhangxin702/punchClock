@@ -12,7 +12,7 @@ Page({
       actId = "1ef3c51361ed7d0c04d6b15c7b9b82b8";
     const db = wx.cloud.database();
     wx.showLoading({
-      title: "加载中",
+      title: "分析中",
       mask: true,
     });
     // const { isFinish, punchedTimes } = await getSelfPunchedTimes(db, openId, actId);

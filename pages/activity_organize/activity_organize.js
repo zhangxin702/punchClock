@@ -1,11 +1,6 @@
-import {
-  chooseImage,
-  uploadFile,
-  showToast,
-  actTableInsert,
-} from '../../async/index.js';
-import { chooseLocation } from '../../async/async.js';
-import { formatTime } from '../../utils/util.js';
+import { chooseImage, uploadFile, showToast, actTableInsert } from "../../async/index.js";
+import { chooseLocation } from "../../async/async.js";
+import { formatTime } from "../../utils/util.js";
 
 Page({
   /**
@@ -13,32 +8,32 @@ Page({
    */
   data: {
     show: false, //控制下拉列表的显示隐藏，false隐藏、true显示
-    selectData: ['考试', '健身', '考研', '英语', '阅读', '考勤','其他'], //下拉列表的数据
+    selectData: ["考试", "健身", "考研", "英语", "阅读", "考勤", "其他"], //下拉列表的数据
     index: 0, //选择的下拉列表下标
 
     //  选择打卡的方式
     list: [
       {
         id: 1,
-        name: '🖊',
-        value: 'word',
+        name: "🖊",
+        value: "word",
       },
       {
         id: 2,
-        name: '📸',
-        value: 'picture',
+        name: "📸",
+        value: "picture",
       },
-     
+
       {
         id: 3,
-        name: '📁',
-        value: 'file',
-      }
+        name: "📁",
+        value: "file",
+      },
     ],
     item: {
       id: 4,
-      name: '⛳',
-      value: 'map',
+      name: "⛳",
+      value: "map",
     },
     // 复选框选择的value
     selectList: [],
@@ -50,25 +45,25 @@ Page({
     tempFilePaths: [],
 
     // 活动简介
-    active_introduce: '',
+    active_introduce: "",
 
     // 活动名字
-    active_name: '',
+    active_name: "",
     // 活动时间，具体到秒
-    startTime: '',
-    startTimeString: '0000/00/00 00:00:00',
-    endTime: '',
-    endTimeString: '0000/00/00 00:00:00',
+    startTime: "",
+    startTimeString: "0000/00/00 00:00:00",
+    endTime: "",
+    endTimeString: "0000/00/00 00:00:00",
     // 活动公告
-    active_announce: '',
+    active_announce: "",
     //最低打卡次数
     punch_num: 1,
 
     // 定位地址
-    address: '',
+    address: "",
 
     // 判断是否选择地图
-    flag: true
+    flag: true,
   },
 
   // 点击下拉显示框
@@ -77,6 +72,7 @@ Page({
       show: !this.data.show,
     });
   },
+
   // 点击下拉列表
   optionTap(e) {
     let Index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
@@ -85,18 +81,19 @@ Page({
       show: !this.data.show,
     });
   },
+
   // 打卡方式复选框 把选择的保持在selectList
   async handleCheckboxChange(e) {
     this.setData({
       selectList: e.detail.value,
     });
-   
   },
-async handleMap(e){
+
+  async handleMap(e) {
     // console.log(e);
     if (this.data.flag) {
       setTimeout(async function () {
-        await showToast({ title: '请选择定位' }), 3000;
+        await showToast({ title: "请选择定位" }), 3000;
       });
 
       var res = await chooseLocation();
@@ -108,15 +105,14 @@ async handleMap(e){
       });
       console.log(this.data.address);
     }
-    if(true){
+    if (true) {
       this.setData({
-        flag : !this.data.flag
-
-      })
+        flag: !this.data.flag,
+      });
       console.log(this.data.flag);
     }
-
   },
+
   // 打卡次数设置
   num_blur: function (e) {
     console.log(e.detail.value);
@@ -130,85 +126,84 @@ async handleMap(e){
   prevNum() {
     this.setData({ punch_num: this.data.punch_num + 1 });
   },
+
   nextNum() {
-    if(this.data.punch_num <= 1){
+    if (this.data.punch_num <= 1) {
       wx.showToast({
-        title: '不能再少了',
-        icon:"none"
-       
-        
-      })
-      return 
-     
+        title: "不能再少了",
+        icon: "none",
+      });
+      return;
     }
     this.setData({ punch_num: this.data.punch_num - 1 });
   },
 
   // 改变时间
   changeStartDate(e) {
-    let res = new Date(e.detail.value.replace(/-/g, '/'));
+    let res = new Date(e.detail.value.replace(/-/g, "/"));
     this.setData({
       startTime: res,
       startTimeString: formatTime({ date: res }),
     });
   },
+
   changeEndDate(e) {
-    let res = new Date(e.detail.value.replace(/-/g, '/'));
+    let res = new Date(e.detail.value.replace(/-/g, "/"));
     this.setData({
       endTime: res,
       endTimeString: formatTime({ date: res }),
     });
   },
+
   async submit() {
-    if (
-      this.data.endTime <= this.data.startTime ||
-      this.data.startTime < new Date()
-    ) {
+    if (this.data.endTime <= this.data.startTime || this.data.startTime < new Date()) {
       await showToast({
-        title: '您选择的时间有误，请重新选择',
+        title: "您选择的时间有误，请重新选择",
       });
       return;
     }
-    if (this.data.active_name === '') {
+    if (this.data.active_name === "") {
       await showToast({
-        title: '当前活动名称为空，请输入活动名称',
+        title: "当前活动名称为空，请输入活动名称",
       });
       return;
     }
-    if (this.data.active_introduce === '') {
+    if (this.data.active_introduce === "") {
       await showToast({
-        title: '当前活动介绍为空，请输入活动介绍',
+        title: "当前活动介绍为空，请输入活动介绍",
       });
       return;
     }
-    if (this.data.active_announce === '') {
+    if (this.data.active_announce === "") {
       await showToast({
-        title: '当前活动公告为空，请输入活动介绍',
+        title: "当前活动公告为空，请输入活动介绍",
       });
       return;
     }
     if (this.data.selectList.length === 0) {
       await showToast({
-        title: '当前打卡方式为空，请选取对应打卡方式',
+        title: "当前打卡方式为空，请选取对应打卡方式",
       });
       return;
     }
     if (this.data.tempFilePaths.length === 0) {
       await showToast({
-        title: '当前海报为空，请选取海报',
+        title: "当前海报为空，请选取海报",
       });
       return;
     }
-    if (this.data.address === '' && this.data.selectList.includes('map')) {
+    if (this.data.address === "" && this.data.selectList.includes("map")) {
       await showToast({
-        title: '您还未定位,请先定位',
+        title: "您还未定位,请先定位",
       });
       return;
     }
+
     var res = await uploadFile({
       tempFilePath: this.data.tempFilePaths[0],
-      cloudPath: 'actImage/' + this.data.tempFilePaths[0].split('/').pop(),
+      cloudPath: "actImage/" + this.data.tempFilePaths[0].split("/").pop(),
     });
+
     var ree = await actTableInsert({
       actTheme: this.data.active_name,
       actContent: this.data.active_introduce,
@@ -222,7 +217,13 @@ async handleMap(e){
       actLocation: this.data.address,
       label: this.data.selectData[this.data.index],
     });
-  
+
+    const actInfo = wx.getStorageSync("actInfo");
+    const actInfoPro = {
+      participate: actInfo.participate,
+      organize: actInfo.organize + 1,
+    };
+    wx.setStorageSync("actInfo", actInfoPro);
   },
 
   // 上传图片有关函数
@@ -230,6 +231,7 @@ async handleMap(e){
     var res = await chooseImage({
       addedCount: this.data.addedCount,
     });
+
     console.log(res);
     this.setData({
       images: this.data.images.concat(res.tempFilePaths),

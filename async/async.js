@@ -8,10 +8,11 @@ export const getOpenId = () => {
         name: "getOpenId",
       })
       .then((res) => {
+        console.log("res: ", res);
         resolve(res.result);
       })
       .catch((err) => {
-        resolve();
+        reject(err);
       });
   });
 };

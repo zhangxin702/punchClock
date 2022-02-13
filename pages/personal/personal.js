@@ -1,5 +1,5 @@
 // 个人页
-import { getParticipateNum, getOrganizeNum } from "../../async/async.js";
+import { getOpenId, getUserInfo, getParticipateNum, getOrganizeNum } from "../../async/async.js";
 const app = getApp();
 
 Page({
@@ -37,5 +37,31 @@ Page({
         actInfo: actInfo,
       });
     }
+  },
+
+  async onPullDownRefresh() {
+    const db = wx.cloud.database();
+    // const openId = await getOpenId(); // 重新获取用户的openId
+    // console.log("openId: ", openId);
+    const openId = "user-1";
+    const userInfo = await getUserInfo(openId); // 获取新的用户信息
+    console.log("userInfo: ", userInfo);
+    const participate = await getParticipateNum(db, this.data.userInfo._id); // 获取用户已参与的活动数量
+    const organize = await getOrganizeNum(db, this.data.userInfo._id); // 获取用户已组织的活动数量
+    this.setData({
+      userInfo: userInfo,
+      actInfo: {
+        participate: participate,
+        organize: organize,
+      },
+    });
+
+    // 写本地缓存
+    const actInfo = {
+      participate: participate,
+      organize: organize + 1,
+    };
+    wx.setStorageSync("userInfo", userInfo);
+    wx.setStorageSync("actInfo", actInfo);
   },
 });
