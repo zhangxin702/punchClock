@@ -1,8 +1,8 @@
 {
   "usingComponents": {
    
-    "SearchInput":"../../components/SearchInput/SearchInput",
-    "calendar": "plugin://calendar/calendar"
+    "SearchInput":"../../components/SearchInput/SearchInput"
+  
   }
 
 
