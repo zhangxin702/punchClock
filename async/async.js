@@ -156,7 +156,7 @@ export const getOrganizePunch = (openId) => {
           organizeId = null;
         // 检索所有活动
         for (let i = 0; i < actData.length; i++) {
-          organizeId = actData[i].openId; // 获取一个活动的组织者
+          organizeId = actData[i]._openid; // 获取一个活动的组织者
           // 检索这个活动的所有组织者
           if (organizeId == openId) {
             actList.push(actData[i]);
@@ -952,7 +952,7 @@ export const getPunchAll = (order, skip, limit, openId) => {
 
           if (res.data.length === 0) {
             wx.showToast({ title: "没有更多数据啦" });
-            resolve(null);
+            resolve([]);
           }
 
           const punchData = res.data;
