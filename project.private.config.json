@@ -13,12 +13,6 @@
     "miniprogram": {
       "list": [
         {
-          "name": "创建活动（activity_organize）",
-          "pathName": "pages/index/activity_organize/activity_organize",
-          "query": "",
-          "scene": null
-        },
-        {
           "name": "活动经历（activity_punch）",
           "pathName": "pages/activity_punch/activity_punch",
           "query": "",
@@ -238,6 +232,12 @@
           "name": "pages/punch_list/punch_list",
           "pathName": "pages/punch_list/punch_list",
           "query": "",
+          "scene": null
+        },
+        {
+          "name": "打卡记录",
+          "pathName": "pages/punch_record/punch_record",
+          "query": "page_id=0",
           "scene": null
         }
       ]

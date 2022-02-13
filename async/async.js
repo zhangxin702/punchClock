@@ -56,7 +56,7 @@ export const getParticipateNum = (db, openId) => {
     db.collection("PunchTable") // 统计用户参与的活动的数量
       .aggregate()
       .match({
-        openId: openId,
+        _openid: openId,
       })
       .group({
         _id: "$actId",
@@ -84,7 +84,7 @@ export const getOrganizeNum = (db, openId) => {
   return new Promise((resolve, reject) => {
     db.collection("ActTable") // 统计用户组织的活动的数量
       .where({
-        openId: openId,
+        _openid: openId,
       })
       .get()
       .then((res) => {
@@ -280,8 +280,7 @@ export const chooseLocation = () => {
   });
 };
 
-// 数据分析相关函数
-// 对参与者
+// 对参与者的数据分析相关函数
 export const getSelfPunchedTimes = (db, openId, actId, punchData) => {
   /**
    * 统计参与者在一个活动中的打卡情况，并判断是否完成打卡要求
@@ -311,7 +310,7 @@ export const getSelfPunchedTimes = (db, openId, actId, punchData) => {
               name: "getPunchData",
               data: {
                 actId: actId,
-                openId: openId,
+                _openid: openId,
               },
             })
             .then((res) => {
@@ -363,7 +362,7 @@ export const getSelfPunchedRank = (openId, actId) => {
         name: "getPunchData",
         data: {
           actId: actId,
-          openId: null,
+          _openid: null,
         },
       })
       .then((res) => {
@@ -399,90 +398,109 @@ export const getSelfPunchedRank = (openId, actId) => {
   });
 };
 
-export const getSeflMaxLabels = (openId) => {
+export const getSelfLabels = (openId, max) => {
   /**
    * 统计用户参与得最多的活动标签
    * db: 数据库的引用
    * openId: 用户的唯一标识
+   * max: 返回的标签个数，-1表示全部
    *
    * 返回
-   * maxLabels: 返回参与的最多的x个标签，0<=x<=3
+   * maxLabels: 返回标签
    */
 
   return new Promise((resolve, reject) => {
     console.log(openId);
     wx.cloud
       .callFunction({
-        name: 'getActData',
+        name: "getActData",
       })
       .then((res) => {
-        console.log('参与者——获取所有活动信息成功√\n', res);
+        console.log("参与者——获取所有活动信息成功√\n", res);
         const actData = res.result;
         // 对所有活动数据进行分析
         let labels = [], // 存储标签名
           counts = [], // 存储标签出现次数
           userIds = null,
-          sum = 0;//总的已参与数量
+          sum = 0; //总的已参与数量
+
         // 检索所有活动
         for (let i = 0; i < actData.length; i++) {
+          // console.log("actData[", i, "]: ", actData[i]);
           userIds = actData[i].userIds; // 获取一个活动的所有参与者
           // 检索这个活动的所有参与者
           for (let j = 0; j < actData[i].userCounts; j++) {
+            // 看是否有该用户的openId
             if (userIds[j] == openId) {
-              // console.log("活动", i + 1, "的标签：", actData[i].label);
-              // 将所有标签记录
-              for (let k = 0; k < actData[i].label.length; k++) {
-                // labels里还没存了这个标签
-                if (labels.indexOf(actData[i].label[k]) == -1) {
-                  labels.push(actData[i].label[k]);
-                  counts.push(1);
-                }
-                // labels里已经存了这个标签
-                else {
-                  counts[labels.indexOf(actData[i].label[k])]++;
-                }
+              // console.log("活动", i, "：", actData[i].userIds);
+              // 将标签记录
+              if (labels.indexOf(actData[i].label) == -1) {
+                labels.push(actData[i].label);
+                counts.push(1);
+              } else {
+                counts[labels.indexOf(actData[i].label)]++;
               }
+
+              // for (let k = 0; k < actData[i].label.length; k++) {
+              //   // labels里还没存了这个标签
+              //   if (labels.indexOf(actData[i].label[k]) == -1) {
+              //     labels.push(actData[i].label[k]);
+              //     counts.push(1);
+              //   }
+              //   // labels里已经存了这个标签
+              //   else {
+              //     counts[labels.indexOf(actData[i].label[k])]++;
+              //   }
+              // }
               sum++;
               break; // 跳出对这个活动的参与者的检索
             }
           }
         }
+        // console.log("labels: ", labels);
+        // console.log("counts: ", counts);
 
-        let countsCopy =JSON.parse(JSON.stringify(counts)); // 复制一份标签组，并在对其排序完后保持不变
+        let countsCopy = JSON.parse(JSON.stringify(counts)); // 复制一份标签组，并在对其排序完后保持不变
         countsCopy.sort((a, b) => b - a); // 按从大到小排序
-        let max = counts.length > 3 ? 3 : counts.length, // 如果标签数不足3个
-          maxLabels = [], // 参与最多的x个标签
-          labelNum = [], //纪录标签的数量
+
+        let maxLabels = [],
+          labelNum = [], //纪录每个标签的数量
           label = null, // 临时存储
           otherSum = 0;
+        if (max == -1 || max > counts.length) {
+          max = counts.length;
+        }
 
+        console.log("max: ", max);
         // 逐个获取出现次数最多的几个标签
         for (let i = 0; i < max; i++) {
           label = labels[counts.indexOf(countsCopy[i])];
+          console.log(label);
           //建议加入深拷贝后加入划线的下一句，否则这种索引方式在同值的情况下会出错
           counts[counts.indexOf(countsCopy[i])] = 0; // 保证下一次不会再管它
+          otherSum += countsCopy[i]; //临时存储，最后用上面的sum减去他
+
           maxLabels.push(label);
-          otherSum += countsCopy[i];//临时存储，最后用上面的sum减去他
           labelNum.push(countsCopy[i]);
         }
-        if(counts.length>3){
-          maxLabels.push("其他");
-          otherSum = sum - otherSum;
-          labelNum.push(otherSum);
-        }
+        // if (counts.length > 3) {
+        //   labels.push("其他");
+        //   otherSum = sum - otherSum;
+        //   labelNum.push(otherSum);
+        // }
         resolve({
           maxLabels: maxLabels,
-          labelNum: labelNum
+          labelNum: labelNum,
         });
       })
       .catch((err) => {
-        console.log('参与者——获取所有活动信息失败×\n', err);
+        console.log("参与者——获取所有活动信息失败×\n", err);
         reject(err);
       });
   });
 };
 
-// 对举办方
+// 对举办方的数据分析相关函数
 export const getActPunchedTimes = (db, actId) => {
   /**
    * 统计一个活动中所有用户的打卡情况，并判断是否完成打卡要求
@@ -509,7 +527,7 @@ export const getActPunchedTimes = (db, actId) => {
           await db
             .collection("PunchTable")
             .where({
-              openId: userIds[i],
+              _openid: userIds[i],
               actId: actId,
             })
             .get()
@@ -556,7 +574,7 @@ export const getActUserGender = (db, openId, actId = null) => {
     db.collection("ActTable")
       .where({
         _id: actId,
-        openId: openId,
+        _openid: openId,
       })
       .get()
       .then(async (res) => {
@@ -570,9 +588,7 @@ export const getActUserGender = (db, openId, actId = null) => {
         for (let i = 0; i < userIds.length; i++) {
           await db
             .collection("UserTable")
-            .where({
-              openId: userIds[i],
-            })
+            .doc(userIds[i])
             .get()
             .then((res) => {
               console.log("举办方——获取用户信息成功√\n", res);
@@ -649,7 +665,7 @@ export const countActHeldNum = (db, openId) => {
   return new Promise((resolve, reject) => {
     db.collection("ActTable")
       .where({
-        openId: openId,
+        _openid: openId,
       })
       .get()
       .then((res) => {
@@ -680,14 +696,16 @@ export const getActHotRankvsSelf = (db, openId) => {
    */
 
   return new Promise((resolve, reject) => {
-    db.collection("ActTable")
-      .where({
-        openId: openId,
+    wx.cloud
+      .callFunction({
+        name: "getActData",
+        data: {
+          _openid: openId,
+        },
       })
-      .get()
       .then(async (res) => {
         console.log("举办方——获取举办的活动信息成功√\n", res);
-        const acts = res.data;
+        const acts = res.result;
         let actThemes = [],
           actUserNum = [], // 参与人数
           actUserRank = [], // 参与人数排名
@@ -719,9 +737,9 @@ export const getActHotRankvsSelf = (db, openId) => {
         //以后一定要用深拷贝，浅拷贝还是会根据他的值把原来的也改变
         let actUserNumCopy = JSON.parse(JSON.stringify(actUserNum.sort((a, b) => b - a))),
           actPunchNumCopy = JSON.parse(JSON.stringify(actPunchNum.sort((a, b) => b - a)));
-        console.log('活动主题：', actThemes);
-        console.log('参与人数：', actUserNum);
-        console.log('打卡次数：', actPunchNum);
+        console.log("活动主题：", actThemes);
+        console.log("参与人数：", actUserNum);
+        console.log("打卡次数：", actPunchNum);
         for (let i = 0; i < actUserNum.length; i++) {
           actUserRank.push(actUserNumCopy.indexOf(actUserNum[i]) + 1);
           actUserNumCopy[actUserNumCopy.indexOf(actUserNum[i])] = -1;
@@ -737,7 +755,7 @@ export const getActHotRankvsSelf = (db, openId) => {
         });
       })
       .catch((err) => {
-        console.log('举办方——获取举办的活动信息失败×\n', err);
+        console.log("举办方——获取举办的活动信息失败×\n", err);
         reject(err);
       });
   });
@@ -761,11 +779,16 @@ export const getActHotRankvsAll = (db, openId) => {
    */
 
   return new Promise((resolve, reject) => {
-    db.collection("ActTable")
-      .get()
+    wx.cloud
+      .callFunction({
+        name: "getActData",
+        data: {
+          _openid: openId,
+        },
+      })
       .then(async (res) => {
         console.log("举办方——获取举办的活动信息成功√\n", res);
-        const acts = res.data;
+        const acts = res.result;
         let actThemes = [],
           actUserNum = [], // 参与人数
           actUserRank = [], // 参与人数排名
@@ -796,9 +819,9 @@ export const getActHotRankvsAll = (db, openId) => {
         // 排位
         let actUserNumCopy = JSON.parse(JSON.stringify(actUserNum.sort((a, b) => b - a))),
           actPunchNumCopy = JSON.parse(JSON.stringify(actUserNum.sort((a, b) => b - a)));
-        console.log('活动主题：', actThemes);
-        console.log('参与人数：', actUserNum);
-        console.log('打卡次数：', actPunchNum);
+        console.log("活动主题：", actThemes);
+        console.log("参与人数：", actUserNum);
+        console.log("打卡次数：", actPunchNum);
         for (let i = 0; i < actUserNum.length; i++) {
           actUserRank.push(actUserNumCopy.indexOf(actUserNum[i]));
           actUserNumCopy[actUserNumCopy.indexOf(actUserNum[i])] = -1;
@@ -857,7 +880,7 @@ export const uploadProblem = (openId, text, imagePaths) => {
     db.collection("ProbTable")
       .add({
         data: {
-          openId: openId,
+          _openid: openId,
           text: text,
           imagePath: cloudPaths,
         },
@@ -886,12 +909,52 @@ export const getCollect = (openId) => {
    */
 
   const db = wx.cloud.database();
-  db.collection("UserTable").doc(openId).get().then(res=>{
-    console.log("获取用户的收藏成功√\n", res);
-    const {collect} = res;
-    // for
-  }).catch(err=>{
-    console.log("获取用户的收藏失败×\n", err);
-    return err;
-  })
+  db.collection("UserTable")
+    .doc(openId)
+    .get()
+    .then((res) => {
+      console.log("获取用户的收藏成功√\n", res);
+      const { collect } = res;
+      // for
+    })
+    .catch((err) => {
+      console.log("获取用户的收藏失败×\n", err);
+      return err;
+    });
+};
+
+export const getPunchAll = (order, skip) => {
+  /**
+   * 获取打卡记录
+   * order:
+   */
+
+  wx.showLoading({
+    title: "加载中",
+    mask: true,
+  });
+
+  return new Promise((resolve, reject) => {
+    var db = wx.cloud.database().collection("ActTable");
+    if (order == 0) {
+      db = db.orderBy("createTime", "desc");
+    } else if (order == 1) {
+      db = db.orderBy("userCounts", "desc");
+    }
+    db.skip(skip)
+      .limit(limit)
+      .get({
+        success: (res) => {
+          wx.hideLoading();
+          if (res.data.length === 0) {
+            showToast({ title: "没有更多数据啦" });
+          }
+          resolve(res);
+        },
+        fail: (err) => {
+          wx.hideLoading();
+          reject(err);
+        },
+      });
+  });
 };

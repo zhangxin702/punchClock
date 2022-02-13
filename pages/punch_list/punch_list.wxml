@@ -1,4 +1,3 @@
-<!-- pages/index/index.wxml -->
 <view class="swiper-tab" bindchange="bindChange">
 	<view
 	 class="tab-item {{currentTab==0 ? 'on' : ''}}"

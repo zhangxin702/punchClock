@@ -1,35 +1,15 @@
-import { formatTime } from '../../utils/util.js';
-import { actTableGetAll } from '../../async/index.js';
+import { formatTime } from "../../utils/util.js";
+import { actTableGetAll } from "../../async/index.js";
 
 Page({
-  /**
-   * 页面的初始数据
-   */
   data: {
-    winWidth: 0,
-    winHeight: 0,
     currentTab: 0,
-    actList: [],
+    punchList: [],
     pageNum: 0,
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    var that = this;
-    /**
-     * 获取系统信息
-     */
+  onLoad() {
     this.GetAll(this.data.currentTab, this.data.pageNum);
-    wx.getSystemInfo({
-      success: function (res) {
-        that.setData({
-          winWidth: res.windowWidth,
-          winHeight: res.windowHeight,
-        });
-      },
-    });
   },
 
   async GetAll(order, skip) {
@@ -43,7 +23,7 @@ Page({
       createTime: formatTime({ date: v.createTime }),
     }));
     this.setData({
-      actList: [...this.data.actList, ...addList],
+      punchList: [...this.data.punchList, ...addList],
       pageNum: this.data.pageNum + 9,
     });
     wx.stopPullDownRefresh();
@@ -59,13 +39,12 @@ Page({
     });
   },
 
-  // tab顶部
   swichNav: function (e) {
     if (this.data.currentTab === e.target.dataset.current) {
       this.setData({
         currentTab: e.detail.current,
         pageNum: 0,
-        actList: [],
+        punchList: [],
       });
       this.GetAll(this.data.currentTab, this.data.pageNum);
       return false;
@@ -73,17 +52,16 @@ Page({
       this.setData({
         currentTab: e.target.dataset.current,
         pageNum: 0,
-        actList: [],
+        punchList: [],
       });
       this.GetAll(this.data.currentTab, this.data.pageNum);
     }
   },
-  
-  //下拉刷新事件，存放在页面生命周期中
+
   onPullDownRefresh() {
     this.setData({
       pageNum: 0,
-      actList: [],
+      punchList: [],
     });
     this.GetAll(this.data.currentTab, this.data.pageNum);
   },

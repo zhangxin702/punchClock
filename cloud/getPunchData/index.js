@@ -22,7 +22,7 @@ exports.main = async (event, context) => {
       .collection("PunchTable")
       .where({
         actId: event.actId,
-        openId: event.openId,
+        _openid: event.openId,
       })
       .skip(i)
       .get();
@@ -35,7 +35,7 @@ exports.main = async (event, context) => {
   //       .collection("PunchTable")
   //       .where({
   //         actId: event.actId,
-  //         openId: event.openId,
+  //         _openid: event.openId,
   //       })
   //       .skip(i)
   //       .get();
