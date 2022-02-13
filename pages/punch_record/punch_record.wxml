@@ -9,6 +9,8 @@
 <view class="out" bindchange="bindChange">
   <view class="inner" wx:if="{{currentTab == 0}}">
     <scroll-view scroll-y="{{true}}">
+      <view class="save_item" bindtap="">保存"我的记录"excel文件</view>
+      <view class="line"></view>
       <view class="punch_item" wx:for="{{punchList}}" wx:key="punchId">
         <view class="punch_info">
           <view class="act_theme">{{dict[item.actId]}}</view>
@@ -21,6 +23,8 @@
   </view>
   <view class="inner" wx:else="{{currentTab == 1}}">
     <scroll-view scroll-y="{{true}}">
+      <view class="save_item" bindtap="">保存"活动的记录"excel文件</view>
+      <view class="line"></view>
       <view class="punch_item" wx:for="{{punchList}}" wx:key="punchId">
         <view class="punch_info">
           <view class="act_theme">{{dict[item.actId]}}</view>
