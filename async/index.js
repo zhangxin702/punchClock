@@ -27,7 +27,7 @@ export const actTableGetAll = ({ order, skip, limit }) => {
       });
   });
 };
-export const actTableGetLabel = ({ order, skip, limit,label}) => {
+export const actTableGetLabel = ({ order, skip, limit, label }) => {
   wx.showLoading({
     title: '加载中',
     mask: true,
@@ -42,7 +42,7 @@ export const actTableGetLabel = ({ order, skip, limit,label}) => {
     db.skip(skip)
       .limit(limit)
       .where({
-        label:label
+        label: label,
       })
       .get({
         success: (res) => {
@@ -58,7 +58,6 @@ export const actTableGetLabel = ({ order, skip, limit,label}) => {
         },
       });
   });
-  console.log("hhh");
 };
 
 export const actTableById = ({ id }) => {

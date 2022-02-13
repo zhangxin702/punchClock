@@ -1,42 +1,51 @@
 <!-- 搜索框 -->
 <SearchInput></SearchInput>
 <!-- 搜索框 -->
-
 <!-- 轮播图 -->
 <view class="index_swiper">
-        <swiper autoplay="{{true}}" interval="3000" circular="{{true}}" indicator-dots="{{true}}">
-            <swiper-item wx:for="{{actList}}">
-                <navigator open-type="navigate"  url="/pages/punch_detail/punch_detail?actId={{item._id}}">
-                    <image src="{{item.actImage?item.actImage:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"mode="scaleToFill" />
-                </navigator>
-            </swiper-item>
-            
-        </swiper>
-    </view>
+	<swiper
+	 autoplay="{{true}}"
+	 interval="3000"
+	 circular="{{true}}"
+	 indicator-dots="{{true}}"
+	>
+		<swiper-item wx:for="{{actList}}">
+			<navigator
+			 open-type="navigate"
+			 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
+			>
+				<image
+				 src="{{item.actImage?item.actImage:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"
+				 mode="scaleToFill"
+				/>
+			</navigator>
+		</swiper-item>
+	</swiper>
+</view>
 <!-- 轮播图 -->
-
-
-
 <!-- 图标导航区域 - 分类选择 -->
 <view class="navContainer">
-
-<navigator class="navItem" url="../classify/classify">
-    <text class="iconfont icon-fenlei" ></text>
-<text class="font">分类</text>
-</navigator>
-
-<navigator class="navItem" url="../punch_list/punch_list?label=全部" >
-    <text class="iconfont icon-xingzhuang" ></text>
-<text class="font">全部</text>
-</navigator>
-
-<navigator class="navItem" url="../classify/classify">
-    <text class="iconfont icon-tubiaozhizuomoban-" ></text>
-<text class="font">阅读</text>
-</navigator>
+	<navigator
+	 class="navItem"
+	 url="../classify/classify"
+	>
+		<text class="iconfont icon-fenlei"></text>
+		<text class="font">分类</text>
+	</navigator>
+	<navigator
+	 class="navItem"
+	 url="../punch_list/punch_list?label=全部"
+	>
+		<text class="iconfont icon-xingzhuang"></text>
+		<text class="font">全部</text>
+	</navigator>
+	<navigator
+	 class="navItem"
+	 url="../punch_list/punch_list?label=阅读"
+	>
+		<text class="iconfont icon-tubiaozhizuomoban-"></text>
+		<text class="font">阅读</text>
+	</navigator>
 </view>
-<view class="kongbai">
-</view>
-
-
+<view class="kongbai"></view>
 
