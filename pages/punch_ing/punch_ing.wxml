@@ -31,7 +31,7 @@
 <view
  bindtap="chooseMessageFile"
  class="file"
- style="background-image: url('https://i.postimg.cc/J4zz5DRH/image.png')"
+ style="background-image: url('https://7a68-zhangxinying-1g0quq2g2d68268c-1307395035.tcb.qcloud.la/projectImage/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0.png')"
  wx:if="{{bool[3]}}"
 >
 	上传文件
@@ -40,7 +40,7 @@
 <!-- 定位 我测试用的，如果有更好的按钮就更换 -->
 <view
  class="file"
- style="background-image: url('https://i.postimg.cc/kM8QPHSv/image.png')"
+ style="background-image: url('https://7a68-zhangxinying-1g0quq2g2d68268c-1307395035.tcb.qcloud.la/projectImage/%E5%AE%9A%E4%BD%8D.png')"
  bindtap="location"
  wx:if="{{bool[2]}}"
 >
