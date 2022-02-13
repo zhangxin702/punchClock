@@ -1,5 +1,5 @@
 import { formatTime } from '../../utils/util.js';
-import { actTableGetAll } from '../../async/index.js';
+import { actTableGetAll, actTableGetLabel } from '../../async/index.js';
 
 Page({
   /**
@@ -17,11 +17,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let label = options.label
+    if(label != "全部"){
+      this.GetAllLabel(this.data.currentTab, this.data.pageNum ,label);
+    }else{
+      this.GetAll(this.data.currentTab, this.data.pageNum);
+    }
+    
     var that = this;
     /**
      * 获取系统信息
      */
-    this.GetAll(this.data.currentTab, this.data.pageNum);
+ 
     wx.getSystemInfo({
       success: function (res) {
         that.setData({
@@ -44,6 +51,23 @@ Page({
     this.setData({
       actList: [...this.data.actList, ...addList],
       pageNum: this.data.pageNum + 9,
+    });
+    wx.stopPullDownRefresh();
+  },
+  async GetAllLabel(order, skip,label) {
+    var res = await actTableGetLabel({
+      order: order,
+      skip: skip,
+      limit: 3,
+      label:label
+    });
+    var addList = res.data.map((v) => ({
+      ...v,
+      createTime: formatTime({ date: v.createTime }),
+    }));
+    this.setData({
+      actList: [...this.data.actList, ...addList],
+      pageNum: this.data.pageNum + 3,
     });
     wx.stopPullDownRefresh();
   },

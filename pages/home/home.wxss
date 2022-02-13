@@ -17,7 +17,7 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 300rpx;
+  height: 250rpx;
   background-color: #d6eefa;
   flex-wrap: wrap;
   border-bottom: 5rpx solid gray;
@@ -32,15 +32,26 @@
   flex-wrap: wrap;
 
 }
+.class{
+ 
+  width: 200rpx;
+  height: 200rpx;
+}
 .font{
   color: gray;
 }
 .iconfont{
-  width: 80rpx;
-  height: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120rpx;
+  height: 120rpx;
   font-size: 80rpx;
+  background-color: rgb(77, 224, 224);
   color:rgb(151, 52, 39);
   border-radius: 50%;
+  box-shadow: 5rpx 6rpx 10rpx rgb(116, 115, 115);
+  margin-bottom: 15rpx;
 }
 
 .kongbai{

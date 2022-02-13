@@ -14,7 +14,7 @@ Page({
   }, 
 
   // 点击跳转活动列表
-  onItemClick: function(){ wx.navigateTo({ url: '../punch_list/punch_list', }) },
+  onItemClick: function(){ wx.navigateTo({ url: '../classify/classify'})},
  
   // 点击跳转活动创建列表
   onItemClick_1: function(){ wx.navigateTo({ url: '../activity_organize/activity_organize', }) },

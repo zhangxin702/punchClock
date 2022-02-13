@@ -4,7 +4,7 @@
         <view bindtap="onItemClick">
             <image class="image" mode="aspectFill" src="https://images.unsplash.com/photo-1560785496-3c9d27877182?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHN0dWR5fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60"/>
            
-            <view class="title">活动列表</view>
+            <view class="title">活动分类</view>
         </view>
     </view>
 		<view class="kongbai"></view>

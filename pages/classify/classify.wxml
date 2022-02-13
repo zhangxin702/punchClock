@@ -1,1 +1,7 @@
-<view>{{name}}</view>
+<view class="box">
+  <navigator class="navItem" url="../punch_list/punch_list?label={{item.name}}" wx:for="{{classify}}">
+    <text class="{{item.class}}" style=" background-image: url('{{item.bgImgUrl}}');" ></text>
+<text class="font">{{item.name}}</text>
+</navigator>
+</view>
+<view class="kongbai"></view>

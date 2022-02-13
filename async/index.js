@@ -27,6 +27,39 @@ export const actTableGetAll = ({ order, skip, limit }) => {
       });
   });
 };
+export const actTableGetLabel = ({ order, skip, limit,label}) => {
+  wx.showLoading({
+    title: '加载中',
+    mask: true,
+  });
+  return new Promise((resolve, reject) => {
+    var db = wx.cloud.database().collection('ActTable');
+    if (order == 0) {
+      db = db.orderBy('createTime', 'desc');
+    } else if (order == 1) {
+      db = db.orderBy('userCounts', 'desc');
+    }
+    db.skip(skip)
+      .limit(limit)
+      .where({
+        label:label
+      })
+      .get({
+        success: (res) => {
+          wx.hideLoading();
+          if (res.data.length === 0) {
+            showToast({ title: '没有更多数据啦' });
+          }
+          resolve(res);
+        },
+        fail: (err) => {
+          wx.hideLoading();
+          reject(err);
+        },
+      });
+  });
+  console.log("hhh");
+};
 
 export const actTableById = ({ id }) => {
   return new Promise((resolve, reject) => {

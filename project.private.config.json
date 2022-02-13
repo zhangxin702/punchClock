@@ -239,6 +239,12 @@
           "pathName": "pages/punch_list/punch_list",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "pages/classify/classify",
+          "pathName": "pages/classify/classify",
+          "query": "",
+          "scene": null
         }
       ]
     }
