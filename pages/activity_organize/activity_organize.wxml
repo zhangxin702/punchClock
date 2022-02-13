@@ -8,7 +8,7 @@
 			 auto-focus
 			 bindinput="textinput"
 			 type="text"
-			 
+			 style="text-align: center;"
 			 placeholder="限定在10字"
 			 maxlength="10"
 			></input>
