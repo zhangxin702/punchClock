@@ -1,31 +1,47 @@
 import { formatTime } from "../../utils/util.js";
-import { actTableGetAll } from "../../async/index.js";
+import { getPunchAll, getActTheme } from "../../async/async.js";
+const app = getApp();
 
 Page({
   data: {
     currentTab: 0,
     punchList: [],
     pageNum: 0,
+    dict: {},
   },
 
-  onLoad() {
+  async onLoad() {
+    const dict = await getActTheme();
+    this.setData({
+      dict: dict,
+    });
     this.GetAll(this.data.currentTab, this.data.pageNum);
   },
 
   async GetAll(order, skip) {
-    var res = await actTableGetAll({
-      order: order,
-      skip: skip,
-      limit: 9,
-    });
-    var addList = res.data.map((v) => ({
+    var res = await getPunchAll(
+      order,
+      skip,
+      9,
+      "user-1"
+      // app.globalData.userInfo.openId,
+    );
+    var addList = res.map((v) => ({
       ...v,
-      createTime: formatTime({ date: v.createTime }),
+      // createTime: formatTime({ date: v.createTime }),
     }));
-    this.setData({
-      punchList: [...this.data.punchList, ...addList],
-      pageNum: this.data.pageNum + 9,
-    });
+    if (order == 0) {
+      this.setData({
+        punchList: [...this.data.punchList, ...addList],
+        pageNum: this.data.pageNum + 9,
+      });
+    } else {
+      this.setData({
+        punchList: [...this.data.punchList, ...addList],
+        pageNum: this.data.pageNum + 3,
+      });
+    }
+
     wx.stopPullDownRefresh();
   },
 

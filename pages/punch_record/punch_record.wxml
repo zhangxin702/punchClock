@@ -11,7 +11,7 @@
     <scroll-view scroll-y="{{true}}">
       <view class="punch_item" wx:for="{{punchList}}" wx:key="punchId">
         <view class="punch_info">
-          <view class="act_theme">{{item.actTheme}}</view>
+          <view class="act_theme">{{dict[item.actId]}}</view>
           <view class="punch_content">打卡内容：{{item.punchContent}}</view>
           <view class="punch_time">打卡时间：{{item.punchTime}}</view>
         </view>
@@ -23,7 +23,7 @@
     <scroll-view scroll-y="{{true}}">
       <view class="punch_item" wx:for="{{punchList}}" wx:key="punchId">
         <view class="punch_info">
-          <view class="act_theme">{{item.actTheme}}</view>
+          <view class="act_theme">{{dict[item.actId]}}</view>
           <view class="punch_content">打卡内容：{{item.punchContent}}</view>
           <view class="punch_time">打卡时间：{{item.punchTime}}</view>
         </view>

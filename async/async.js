@@ -907,26 +907,28 @@ export const getCollect = (openId) => {
   /**
    * 获取收藏的活动
    */
-
-  const db = wx.cloud.database();
-  db.collection("UserTable")
-    .doc(openId)
-    .get()
-    .then((res) => {
-      console.log("获取用户的收藏成功√\n", res);
-      const { collect } = res;
-      // for
-    })
-    .catch((err) => {
-      console.log("获取用户的收藏失败×\n", err);
-      return err;
-    });
+  // const db = wx.cloud.database();
+  // db.collection("UserTable")
+  //   .doc(openId)
+  //   .get()
+  //   .then((res) => {
+  //     console.log("获取用户的收藏成功√\n", res);
+  //     const { collect } = res;
+  //     // for
+  //   })
+  //   .catch((err) => {
+  //     console.log("获取用户的收藏失败×\n", err);
+  //     return err;
+  //   });
 };
 
-export const getPunchAll = (order, skip) => {
+export const getPunchAll = (order, skip, limit, openId) => {
   /**
    * 获取打卡记录
-   * order:
+   * order: order为0表示获取我的打卡记录，1表示获取我举办的活动的打卡记录
+   * skip: 表示跳过多少条数据
+   * limit: 获取上限
+   * openId: 用户的唯一标识
    */
 
   wx.showLoading({
@@ -935,26 +937,111 @@ export const getPunchAll = (order, skip) => {
   });
 
   return new Promise((resolve, reject) => {
-    var db = wx.cloud.database().collection("ActTable");
+    var db = wx.cloud.database();
+    // 打卡的是openId对应的用户
     if (order == 0) {
-      db = db.orderBy("createTime", "desc");
-    } else if (order == 1) {
-      db = db.orderBy("userCounts", "desc");
-    }
-    db.skip(skip)
-      .limit(limit)
-      .get({
-        success: (res) => {
-          wx.hideLoading();
+      db.collection("PunchTable")
+        .where({
+          _openid: openId,
+        })
+        .skip(skip)
+        .limit(limit)
+        .get()
+        .then(async (res) => {
+          console.log("获取openId对应的用户的打卡数据成功√\n", res);
+
           if (res.data.length === 0) {
-            showToast({ title: "没有更多数据啦" });
+            wx.showToast({ title: "没有更多数据啦" });
+            resolve(null);
           }
-          resolve(res);
-        },
-        fail: (err) => {
-          wx.hideLoading();
+
+          const punchData = res.data;
+          for (let i = 0; i < punchData.length; i++) {
+            await db
+              .collection("ActTable")
+              .doc(punchData[i].actId)
+              .get()
+              .then((res) => {
+                punchData[i].actTheme = res.data.actTheme;
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          }
+          resolve(punchData);
+        })
+        .catch((err) => {
+          console.log("获取openId对应的用户的打卡数据失败×\n", err);
           reject(err);
-        },
+        });
+    }
+    // 活动是openId对应的用户举办的
+    else if (order == 1) {
+      db.collection("ActTable")
+        .where({
+          _openid: openId,
+        })
+        .get()
+        .then(async (res) => {
+          console.log("获取openId对应的用户举办的活动数据成功√\n", res);
+          const actData = res.data;
+
+          let punchData = [];
+          for (let i = 0; i < actData.length; i++) {
+            // 没有用户打了卡
+            if (actData[i].userIds.length == 0) {
+              continue;
+            }
+
+            // 有用户打卡
+            await db
+              .collection("PunchTable")
+              .where({
+                actId: actData[i]._id, // 查这个actId的打卡记录
+              })
+              .skip(skip)
+              .limit(3) // 如果遵循limit的9的话，所有活动加在一起会获取到很多数据
+              .get()
+              .then((res) => {
+                punchData = punchData.concat(res.data);
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          }
+
+          resolve(punchData);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    }
+    wx.hideLoading();
+  });
+};
+
+export const getActTheme = () => {
+  /**
+   * 获取一个能将actId转为actTheme的字典
+   */
+
+  return new Promise((resolve, reject) => {
+    const db = wx.cloud.database();
+    const $ = db.command.aggregate;
+    db.collection("ActTable")
+      .get()
+      .then((res) => {
+        const actData = res.data;
+
+        let dict = {};
+        for (let i = 0; i < actData.length; i++) {
+          dict[actData[i]._id] = actData[i].actTheme; // 形成_id到actTheme的映射
+        }
+
+        resolve(dict);
+      })
+      .catch((err) => {
+        reject(err);
       });
   });
 };

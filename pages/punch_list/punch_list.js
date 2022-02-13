@@ -1,5 +1,5 @@
-import { formatTime } from '../../utils/util.js';
-import { actTableGetAll } from '../../async/index.js';
+import { formatTime } from "../../utils/util.js";
+import { actTableGetAll } from "../../async/index.js";
 
 Page({
   /**
@@ -75,10 +75,11 @@ Page({
         pageNum: 0,
         actList: [],
       });
+
       this.GetAll(this.data.currentTab, this.data.pageNum);
     }
   },
-  
+
   //下拉刷新事件，存放在页面生命周期中
   onPullDownRefresh() {
     this.setData({
