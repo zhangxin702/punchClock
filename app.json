@@ -14,7 +14,8 @@
     "pages/analysis/analysis",
     "pages/feedback/feedback",
     "pages/search/search",
-    "pages/collect/collect"
+    "pages/collect/collect",
+    "pages/punch_record/punch_record"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -56,8 +57,8 @@
   },
   "plugins": {
     "calendar": {
-        "version": "1.0.0",
-        "provider": "wx23a9cef3522e4f7c"
+      "version": "1.0.0",
+      "provider": "wx23a9cef3522e4f7c"
     }
-}
+  }
 }

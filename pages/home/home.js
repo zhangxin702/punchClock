@@ -50,18 +50,5 @@ Page({
       content: '当前年份：' + currentYear + '年\n当前月份：' + currentMonth + '月'
     });
   },
-  onShow() {
-    wx.cloud
-      .callFunction({
-        // name: "getUserDataExcel",
-        // name: "getActDataExcel",
-        name: "getPunchDataExcel",
-      })
-      .then((res) => {
-        console.log("yes\n", res);
-      })
-      .catch((err) => {
-        console.log("no\n", err);
-      });
-  },
+
 });

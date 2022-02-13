@@ -1,0 +1,33 @@
+<view class="swiper-tab" bindchange="bindChange">
+  <view class="tab-item {{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="swichNav">
+    我的记录
+  </view>
+  <view class="tab-item {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">
+    活动的记录
+  </view>
+</view>
+<view class="out" bindchange="bindChange">
+  <view class="inner" wx:if="{{currentTab == 0}}">
+    <scroll-view scroll-y="{{true}}">
+      <view class="punch_item" wx:for="{{punchList}}" wx:key="punchId">
+        <view class="punch_info">
+          <view class="act_theme">{{dict[item.actId]}}</view>
+          <view class="punch_content">打卡内容：{{item.punchContent}}</view>
+          <view class="punch_time">打卡时间：{{item.punchTime}}</view>
+        </view>
+      </view>
+      <!-- 活动列表 -->
+    </scroll-view>
+  </view>
+  <view class="inner" wx:else="{{currentTab == 1}}">
+    <scroll-view scroll-y="{{true}}">
+      <view class="punch_item" wx:for="{{punchList}}" wx:key="punchId">
+        <view class="punch_info">
+          <view class="act_theme">{{dict[item.actId]}}</view>
+          <view class="punch_content">打卡内容：{{item.punchContent}}</view>
+          <view class="punch_time">打卡时间：{{item.punchTime}}</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

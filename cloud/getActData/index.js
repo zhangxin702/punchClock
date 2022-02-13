@@ -5,6 +5,10 @@ cloud.init();
 
 // 云函数入口函数
 exports.main = async (event, context) => {
+  /**
+   * 获取所有活动的数据
+   */
+
   const db = cloud.database();
   let actNum = await db.collection("ActTable").count(); // 先获取活动的数量
   actNum = actNum.total;

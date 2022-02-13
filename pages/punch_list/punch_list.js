@@ -38,6 +38,7 @@ Page({
       },
     });
   },
+
   async GetAll(order, skip) {
     var res = await actTableGetAll({
       order: order,
@@ -75,6 +76,7 @@ Page({
   onReachBottom: function (e) {
     this.GetAll(this.data.currentTab, this.data.pageNum);
   },
+
   bindChange: function (e) {
     this.setData({
       currentTab: e.detail.current,
@@ -97,9 +99,11 @@ Page({
         pageNum: 0,
         actList: [],
       });
+
       this.GetAll(this.data.currentTab, this.data.pageNum);
     }
   },
+
   //下拉刷新事件，存放在页面生命周期中
   onPullDownRefresh() {
     this.setData({
