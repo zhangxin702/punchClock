@@ -30,6 +30,7 @@ Page({
           participate: participate,
           organize: organize,
         };
+        
         wx.setStorageSync("actInfo", actInfo); // 写本地缓存
       }
 

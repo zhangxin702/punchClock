@@ -904,23 +904,63 @@ export const uploadProblem = (openId, text, imagePaths) => {
   });
 };
 
+// export const getActTableByCollect=({collect,skip,limit}) => {
+//   wx.showLoading({
+//     title: '加载中',
+//     mask: true,
+//   })
+//   return new Promise((resolve, reject) => {
+//     var db =wx.cloud.database().collection('ActTable');
+//     var actList=[];//如果是大于直接返回空数组
+//     if(skip>=collect.length){
+//       wx.showToast({title: '没有更多数据啦',});
+//       resolve(actList);
+//     }else{
+//       let max = skip + limit;//for循环的最大值
+//       if(max > collect.length){
+//         max = collect.length;
+//       }
+//       for(let i=skip; i<max; i++){
+//         let actId = collect[i];
+//         db.doc(actId)
+//         .get()
+//         .then((res) => {
+//             actList = actList.concat(res.data);
+//             console.log(actList);
+//             console.log("获取用户的收藏成功√\n", res);
+//         })
+//         .catch((err) => {
+//           wx.hideLoading()
+//           console.log("获取用户的收藏失败×\n", err);
+//           reject(err);
+//         })
+//       }
+//       console.log("actList",actList);
+//       wx.hideLoading();
+//       resolve(actList);
+//     }
+//   })
+// }
+
 export const getCollect = (openId) => {
   /**
-   * 获取收藏的活动
+   * 获取收藏的活动id
    */
-  // const db = wx.cloud.database();
-  // db.collection("UserTable")
-  //   .doc(openId)
-  //   .get()
-  //   .then((res) => {
-  //     console.log("获取用户的收藏成功√\n", res);
-  //     const { collect } = res;
-  //     // for
-  //   })
-  //   .catch((err) => {
-  //     console.log("获取用户的收藏失败×\n", err);
-  //     return err;
-  //   });
+  return new Promise((resolve, reject) => {
+    const db = wx.cloud.database();
+    db.collection("UserTable")
+      .doc(openId)
+      .get()
+      .then((res) => {
+        console.log("获取用户的收藏成功√\n", res);
+        const {collect} = res.data;
+        resolve(collect);
+      })
+      .catch((err) => {
+        console.log("获取用户的收藏失败×\n", err);
+        reject(err);
+      });
+  });
 };
 
 export const getPunchAll = (order, skip, limit, openId) => {
