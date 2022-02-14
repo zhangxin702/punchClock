@@ -68,6 +68,20 @@
 	<view class="control">
 		<view class="blank"></view>
 		<view class="navigator_item">
+			<navigator url="/pages/collect/collect">已收藏</navigator>
+		</view>
+		<view class="blank"></view>
+	</view>
+	<view class="control">
+		<view class="blank"></view>
+		<view class="navigator_item">
+			<navigator url="/pages/punch_record/punch_record">活动纪录</navigator>
+		</view>
+		<view class="blank"></view>
+	</view>
+	<view class="control">
+		<view class="blank"></view>
+		<view class="navigator_item">
 			<navigator url="/pages/activity_punch/activity_punch?page_id=0">已参与/已组织活动</navigator>
 		</view>
 		<view class="blank"></view>

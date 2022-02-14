@@ -1,6 +1,9 @@
 // pages/punch_detail/punch_detail.js
 import { actTableById } from '../../async/index.js';
+//获取收藏的函数
+import{ getCollect }from '../../async/async';
 import { formatTime } from '../../utils/util.js';
+const app =getApp();
 Page({
   /**
    * 页面的初始数据
@@ -12,7 +15,10 @@ Page({
     punch_num: 1,
     endTime: '',
     requires:[],
-    bool:[""]
+    bool:[""],
+
+    //用户是否收藏
+    isCollect:false,
 
   },
   /**
@@ -20,6 +26,7 @@ Page({
    */
   onLoad: function (options) {
     this.getById(options.actId);
+    this.getIsCollect(options.actId);
   },
  
   async getById(actId) {
@@ -63,6 +70,64 @@ Page({
     })
     
  
+  },
+
+  //获取是否收藏的函数
+  async getIsCollect(actId){
+    //防止加载过程用户误触
+    wx.showLoading({
+      title: '加载中',
+    })
+    //获取收藏的全部
+    const openId=app.globalData.userInfo._id;
+    //获取该openID的全部收藏对象
+    const collect=await getCollect(openId);
+    for(let i = 0;i< collect.length; i++){
+      if(collect[i]==actId){
+        this.setData({
+          isCollect: true,
+        })
+      }
+    }
+    wx.hideLoading();
+  },
+
+  async handleCollect(){
+    wx.showLoading({
+      title: '收藏中',
+      mask: true,
+    })
+    const {isCollect}=this.data;
+    const appId= this.data.activity._id;
+    //获取收藏的全部
+    const openId=app.globalData.userInfo._id;
+    //获取该openID的全部收藏对象
+    let newCollect=await getCollect(openId);
+    var db = wx.cloud.database().collection('UserTable');
+    if(isCollect){
+      newCollect.slice(newCollect.indexOf(appId)+1,1);
+    }
+    else{
+      newCollect.push(appId);
+    }
+    console.log(openId);
+    await db.doc(openId)
+    .update({
+      data: {
+        collect: newCollect
+      },
+      success: (res)=>{
+        console.log("插入成功",res);
+      },
+      fail: (err)=>{
+        wx.hideLoading();
+        console.log("插入失败",err);
+      }
+    })
+    this.setData({
+      isCollect:!isCollect
+    })
+    wx.hideLoading();
   }
 
 
