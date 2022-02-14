@@ -11,16 +11,11 @@ Page({
   },
 
   async onLoad() {
-    wx.showLoading({
-      title: "加载中",
-      mask: true,
-    });
-    const dict = await getActTheme(); // 先把字典获取到
+    const dict = await getActTheme();
     this.setData({
       dict: dict,
     });
-    this.GetAll(this.data.currentTab, this.data.pageNum); // 再获取数据
-    wx.hideLoading();
+    this.GetAll(this.data.currentTab, this.data.pageNum);
   },
 
   async GetAll(order, skip) {
@@ -52,6 +47,7 @@ Page({
 
   onReachBottom: function (e) {
     this.GetAll(this.data.currentTab, this.data.pageNum);
+    console.log(this.data.pageNum);
   },
 
   bindChange: function (e) {

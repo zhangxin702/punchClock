@@ -96,29 +96,42 @@ Page({
     });
 
     const { isCollect } = this.data;
+    const _ = wx.cloud.database().command;
     const actId = this.data.activity._id;
     const openId = app.globalData.userInfo._id;
     let newCollect = await getCollect(openId); // 获取该openID的全部收藏对象
     var db = wx.cloud.database().collection("UserTable");
-
     if (isCollect) {
-      newCollect.slice(newCollect.indexOf(actId) + 1, 1);
+      await db.doc(openId).update({
+        data: {
+          collect: _.pull(actId),
+        },
+        success: (res) => {
+          console.log("插入成功", res);
+        },
+        fail: (err) => {
+          wx.hideLoading();
+          console.log("插入失败", err);
+        },
+      })
+
     } else {
-      newCollect.push(actId);
+      await newCollect.push(actId);
+      await db.doc(openId).update({
+        data: {
+          collect: newCollect,
+        },
+        success: (res) => {
+          console.log("插入成功", res);
+        },
+        fail: (err) => {
+          wx.hideLoading();
+          console.log("插入失败", err);
+        },
+      });
     }
-    console.log(openId);
-    await db.doc(openId).update({
-      data: {
-        collect: newCollect,
-      },
-      success: (res) => {
-        console.log("插入成功", res);
-      },
-      fail: (err) => {
-        wx.hideLoading();
-        console.log("插入失败", err);
-      },
-    });
+    for(let i= 0;i<newCollect.length;i++)console.log(newCollect[i]);
+    
     this.setData({
       isCollect: !isCollect,
     });
