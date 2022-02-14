@@ -7,17 +7,44 @@ cloud.init();
 exports.main = async (event, context) => {
   /**
    * 获取所有活动的数据
+   * 可传参_openId
    */
 
-  const db = cloud.database();
-  let actNum = await db.collection("ActTable").count(); // 先获取活动的数量
-  actNum = actNum.total;
   let totalList = [],
     list = null;
-  // 再将所有活动获取
-  for (let i = 0; i < actNum; i += 100) {
-    list = await db.collection("ActTable").skip(i).get();
-    totalList = totalList.concat(list.data);
+
+  // 如果为空，则获取所有
+  if (event._openId == null) {
+    const db = cloud.database();
+    let actNum = await db.collection("ActTable").count(); // 先获取活动的数量
+    actNum = actNum.total;
+    // 再将所有活动获取
+    for (let i = 0; i < actNum; i += 100) {
+      list = await db.collection("ActTable").skip(i).get();
+      totalList = totalList.concat(list.data);
+    }
+  }
+  // 否则，获取_openId举办的活动
+  else {
+    const db = cloud.database();
+    let actNum = await db
+      .collection("ActTable")
+      .where({
+        _openId: event._openId,
+      })
+      .count(); // 先获取活动的数量
+    actNum = actNum.total;
+    // 再将所有活动获取
+    for (let i = 0; i < actNum; i += 100) {
+      list = await db
+        .collection("ActTable")
+        .where({
+          _openId: event._openId,
+        })
+        .skip(i)
+        .get();
+      totalList = totalList.concat(list.data);
+    }
   }
 
   return totalList;

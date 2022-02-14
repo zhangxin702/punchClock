@@ -6,9 +6,9 @@ Page({
     labels: [],
     maxLabels: [],
   },
+
   async onReady() {
-    // const openId = app.globalData.userInfo._id,
-    const openId = "user-1",
+    const openId = app.globalData.userInfo._id,
       actId = "1ef3c51361ed7d0c04d6b15c7b9b82b8";
     const db = wx.cloud.database();
     wx.showLoading({
