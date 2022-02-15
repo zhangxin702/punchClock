@@ -5,27 +5,95 @@ cloud.init();
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  // 先获取对表格的引用
-  const db = cloud.database().collection("PunchTable");
-
-  // 再获取活动总数
-  let punchNum = await db.count();
-  punchNum = punchNum.total;
+  // 获取对表格的引用
+  const db = cloud.database(),
+    { openId, mode } = event;
   let punchData = [];
 
-  // 再获取所有用户数据
-  for (let i = 0; i < punchNum; i += 50) {
-    // 先获取用户数据
-    let p = await db.skip(i).get();
-    p = p.data;
-    // console.log("p1: ", p);
+  // 模式1：查询该用户的所有打卡记录
+  if (mode == 1) {
+    const option = {
+      _openid: openId,
+    };
 
-    p = await FileIDtoUrl(p); // 转换
-    // console.log("p2: ", p);
+    // 先获取活动总数
+    let length = 0,
+      l = 0,
+      i = 0;
+    while (true) {
+      l = await db.collection("PunchTable").where(option).skip(i).count();
+      length += l.total;
+      i += 100;
 
-    punchData = punchData.concat(p);
+      if (l.total < 100) {
+        break;
+      }
+    }
+
+    // 再获取用户的所有打卡数据
+    let p = null;
+    for (i = 0; i < length; i += 100) {
+      p = await db.collection("PunchTable").where(option).skip(i).get();
+      p = p.data;
+      p = await FileIDtoUrl(p); // 将FileID转为下载地址
+      punchData = punchData.concat(p);
+    }
   }
-  // console.log("punchData: ", punchData);
+  // 模式2：查询该用户举办的所有活动的打卡记录
+  else {
+    // 先获取用户举办的所有活动
+    // 先获取数量
+    let length = 0,
+      l = 0,
+      i = 0;
+    while (true) {
+      l = await db.collection("ActTable").where({ _openid: openId }).skip(i).count();
+      length += l.total;
+      i += 100;
+
+      if (l.total < 100) {
+        break;
+      }
+    }
+
+    // 再获取活动
+    let actData = [],
+      a = null;
+    for (let i = 0; i < length; i += 100) {
+      a = await db.collection("ActTable").where({ _openid: openId }).skip(i).get();
+      a = a.data;
+      console.log("a: ", a);
+      actData = actData.concat(a);
+    }
+    console.log("length: ", length);
+    console.log("actData: ", actData);
+
+    // 再获取每个活动的所有打卡记录
+    for (let i = 0; i < actData.length; i++) {
+      // // 先获取数量
+      // for (let length = 0, l = 0, j = 0; true; j += 100) {
+      //   l = await db.collection("PunchTable").where({ actId: actData[i]._id }).skip(j).count();
+      //   length += l.total;
+
+      //   if (l.total < 100) {
+      //     break;
+      //   }
+      // }
+
+      // 获取打卡记录
+      for (let j = 0; j == 0; j += 100) {
+        p = await db.collection("PunchTable").where({ actId: actData[i]._id }).skip(j).get();
+        console.log("p: ", p);
+        if (p.data.length == 0) {
+          break;
+        }
+
+        // p = p.data;
+        p = await FileIDtoUrl(p.data); // 将FileID转为下载地址
+        punchData = punchData.concat(p);
+      }
+    }
+  }
 
   // 准备excel内容
   let allData = [];
@@ -41,8 +109,12 @@ exports.main = async (event, context) => {
     data.push(p.actId);
     data.push(p.openId);
     data.push(p.punchContent);
-    const location = "(" + p.punchLocation.latitude + ", " + p.punchLocation.longitude + ")";
-    data.push(location);
+    if (p.punchLocation == null) {
+      data.push(" ");
+    } else {
+      const location = "(" + p.punchLocation.latitude + ", " + p.punchLocation.longitude + ")";
+      data.push(location);
+    }
     data.push(p.punchFile);
     data.push(p.punchTime);
     for (let j = 0; j < p.punchImages.length; j++) {

@@ -12,11 +12,9 @@ exports.main = async (event, context) => {
 
   let totalList = [],
     list = null;
-  console.log("event: ", event);
-  // console.log("", typeof())
 
   // 如果未定义openId，则获取所有
-  if (typeof(event.openId) == "undefined") {
+  if (typeof event.openId == "undefined") {
     const db = cloud.database();
     let actNum = await db.collection("ActTable").count(); // 先获取活动的数量
     actNum = actNum.total;

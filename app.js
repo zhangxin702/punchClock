@@ -1,6 +1,6 @@
 import { getUserInfo, getOpenId } from "./async/async.js";
 // const app = getApp();
-let userInfo = ''
+let userInfo = "";
 App({
   async onLaunch() {
     wx.cloud.init({

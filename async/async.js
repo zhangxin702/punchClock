@@ -411,7 +411,7 @@ export const getSelfLabels = (openId, max) => {
    */
 
   return new Promise((resolve, reject) => {
-    console.log(openId);
+    console.log("openId: ", openId);
     wx.cloud
       .callFunction({
         name: "getActData",
@@ -429,34 +429,45 @@ export const getSelfLabels = (openId, max) => {
         for (let i = 0; i < actData.length; i++) {
           // console.log("actData[", i, "]: ", actData[i]);
           userIds = actData[i].userIds; // 获取一个活动的所有参与者
-          // 检索这个活动的所有参与者
-          for (let j = 0; j < actData[i].userCounts; j++) {
-            // 看是否有该用户的openId
-            if (userIds[j] == openId) {
-              // console.log("活动", i, "：", actData[i].userIds);
-              // 将标签记录
-              if (labels.indexOf(actData[i].label) == -1) {
-                labels.push(actData[i].label);
-                counts.push(1);
-              } else {
-                counts[labels.indexOf(actData[i].label)]++;
-              }
 
-              // for (let k = 0; k < actData[i].label.length; k++) {
-              //   // labels里还没存了这个标签
-              //   if (labels.indexOf(actData[i].label[k]) == -1) {
-              //     labels.push(actData[i].label[k]);
-              //     counts.push(1);
-              //   }
-              //   // labels里已经存了这个标签
-              //   else {
-              //     counts[labels.indexOf(actData[i].label[k])]++;
-              //   }
-              // }
-              sum++;
-              break; // 跳出对这个活动的参与者的检索
+          if (userIds.indexOf(openId) >= 0) {
+            // 将标签记录
+            if (labels.indexOf(actData[i].label) == -1) {
+              labels.push(actData[i].label);
+              counts.push(1);
+            } else {
+              counts[labels.indexOf(actData[i].label)]++;
             }
+            sum++;
           }
+          // 检索这个活动的所有参与者
+          // for (let j = 0; j < actData[i].userCounts; j++) {
+          //   // 看是否有该用户的openId
+          //   if (userIds[j] == openId) {
+          //     // console.log("活动", i, "：", actData[i].userIds);
+          //     // 将标签记录
+          //     if (labels.indexOf(actData[i].label) == -1) {
+          //       labels.push(actData[i].label);
+          //       counts.push(1);
+          //     } else {
+          //       counts[labels.indexOf(actData[i].label)]++;
+          //     }
+
+          //     // for (let k = 0; k < actData[i].label.length; k++) {
+          //     //   // labels里还没存了这个标签
+          //     //   if (labels.indexOf(actData[i].label[k]) == -1) {
+          //     //     labels.push(actData[i].label[k]);
+          //     //     counts.push(1);
+          //     //   }
+          //     //   // labels里已经存了这个标签
+          //     //   else {
+          //     //     counts[labels.indexOf(actData[i].label[k])]++;
+          //     //   }
+          //     // }
+          //     sum++;
+          //     break; // 跳出对这个活动的参与者的检索
+          //   }
+          // }
         }
         // console.log("labels: ", labels);
         // console.log("counts: ", counts);
@@ -701,7 +712,7 @@ function partition(arr, left, right) {
   let pivot = left,
     index = pivot + 1;
   for (let i = index; i <= right; i++) {
-    if (arr[i].v < arr[pivot].v) {
+    if (arr[i].v > arr[pivot].v) {
       swap(arr, i, index);
       index++;
     }
@@ -733,6 +744,7 @@ export const getActHotRankvsSelf = (db, openId) => {
    */
 
   return new Promise((resolve, reject) => {
+    // 先获取自己举办的所有活动的数据
     wx.cloud
       .callFunction({
         name: "getActData",
@@ -745,27 +757,27 @@ export const getActHotRankvsSelf = (db, openId) => {
         const acts = res.result;
         let actThemes = [],
           actUserNum = [], // 参与人数
-          actUserRank = [], // 参与人数排名
-          actPunchNum = [], // 打卡次数
-          actPunchRank = []; // 打卡次数排名
+          actPunchNum = []; // 打卡次数
 
-        //
         for (let i = 0; i < acts.length; i++) {
           actThemes.push(acts[i].actTheme); // 记录活动主题
           actUserNum.push(acts[i].userCounts); // 记录参与人数
 
-          await db
-            .collection("PunchTable")
-            .where({
-              actId: acts[i]._id,
+          // 再获取每个活动的所有打卡数据
+          await wx.cloud
+            .callFunction({
+              name: "getPunchData",
+              data: {
+                actId: acts[i]._id,
+                lengthOnly: true,
+              },
             })
-            .get()
             .then((res) => {
-              // console.log("举办方——获取打卡数据成功√\n", res);
-              actPunchNum.push(res.data.length); // 记录打卡次数
+              console.log("举办方——获取打卡数据成功√\n", res);
+              actPunchNum.push(res.result);
             })
             .catch((err) => {
-              // console.log("举办方——获取打卡数据失败×\n", err);
+              console.log("举办方——获取打卡数据失败×\n", err);
               reject(err);
             });
         }
@@ -813,83 +825,118 @@ export const getActHotRankvsSelf = (db, openId) => {
 
 //真的建议打卡排名还有参与人数排名分成两部分写，用orderby desc不是更好，可以参考index里的函数actTableGetAll
 //这样写的话一次只能获取二十个数据，也只是在这20个数据里排一次序。
-export const getActHotRankvsAll = (db, openId) => {
+export const getActHotRankvsAll = async (db, openId) => {
   /**
    * 获取举办的活动名及其在所有活动中对应的排名
    * db: 数据库的引用
    * openId: 用户的唯一标识
    *
    * 返回
-   * actThemes: 活动主题数组
-   * actUserRank: 活动参与人数排名数组
-   * actPunchRank: 活动打卡数排名数组
+   * themesByUserNum: 根据参与人数排序的活动主题数组
+   * userNum: 排序后的参与人数数组
+   * themesByPunchNum: 根据打卡次数排序的活动主题数组
+   * punchNum: 排序后的打卡次数数组
    *
    * ps
    * 配合countActHeldNum可以展示成“x/y”的形式
    */
 
-  return new Promise((resolve, reject) => {
-    wx.cloud
+  return new Promise(async (resolve, reject) => {
+    let myActData = null,
+      allActData = null;
+
+    // 先获取自己举办的所有活动的数据
+    await wx.cloud
       .callFunction({
         name: "getActData",
         data: {
-          _openid: openId,
+          openId: openId,
         },
       })
       .then(async (res) => {
-        console.log("举办方——获取举办的活动信息成功√\n", res);
-        const acts = res.result;
-        let actThemes = [],
-          actUserNum = [], // 参与人数
-          actUserRank = [], // 参与人数排名
-          actPunchNum = [], // 打卡次数
-          actPunchRank = []; // 打卡次数排名
-
-        //
-        for (let i = 0; i < acts.length; i++) {
-          actThemes.push(acts[i].actTheme);
-          actUserNum.push(acts[i].userCounts);
-
-          await db
-            .collection("PunchTable")
-            .where({
-              _id: acts[i]._id,
-            })
-            .get()
-            .then((res) => {
-              console.log("举办方——获取打卡数据成功√\n", res);
-              actPunchNum.push(res.data.length);
-            })
-            .catch((err) => {
-              console.log("举办方——获取打卡数据失败×\n", err);
-              reject(err);
-            });
-        }
-
-        // 排位
-        let actUserNumCopy = JSON.parse(JSON.stringify(actUserNum.sort((a, b) => b - a))),
-          actPunchNumCopy = JSON.parse(JSON.stringify(actUserNum.sort((a, b) => b - a)));
-        console.log("活动主题：", actThemes);
-        console.log("参与人数：", actUserNum);
-        console.log("打卡次数：", actPunchNum);
-        for (let i = 0; i < actUserNum.length; i++) {
-          actUserRank.push(actUserNumCopy.indexOf(actUserNum[i]));
-          actUserNumCopy[actUserNumCopy.indexOf(actUserNum[i])] = -1;
-
-          actPunchRank.push(actPunchNumCopy.indexOf(actPunchNum[i]));
-          actPunchNumCopy[actPunchNumCopy.indexOf(actPunchNum[i])] = -1;
-        }
-
-        resolve({
-          actThemes: actThemes,
-          actUserRank: actUserRank,
-          actPunchRank: actPunchRank,
-        });
+        myActData = res.result;
       })
       .catch((err) => {
-        console.log("举办方——获取举办的活动信息失败×\n", err);
+        console.log("获取我的活动信息失败×\n", err);
         reject(err);
       });
+
+    // 再获取所有活动的数据
+    await wx.cloud
+      .callFunction({
+        name: "getActData",
+      })
+      .then((res) => {
+        allActData = res.result;
+      })
+      .catch((err) => {
+        console.log("获取所有活动信息失败×\n", err);
+      });
+
+    console.log("我举办的活动数量：", myActData.length, "\n所有的活动数量：", allActData.length);
+
+    let actIds = [],
+      actThemes = [],
+      myActUserNum = [], // 我的活动的参与人数
+      allActUserNum = [], // 所有活动的参与人数
+      myActPunchNum = [], // 我的活动的打卡次数
+      allActPunchNum = []; // 所有活动的打卡次数
+
+    // 获取我举办的活动的id数组
+    for (let i = 0; i < myActData.length; i++) {
+      actIds.push(myActData[i]._id);
+    }
+
+    // 统计参与人数和打卡次数
+    for (let i = 0; i < allActData.length; i++) {
+      // actThemes.push(allActData[i].actTheme);
+      allActUserNum.push(allActData[i].userCounts);
+
+      await wx.cloud
+        .callFunction({
+          name: "getPunchData",
+          data: {
+            actId: allActData[i]._id,
+            lengthOnly: true,
+          },
+        })
+        .then((res) => {
+          allActPunchNum.push(res.result);
+          if (actIds.indexOf(allActData[i]._id) >= 0) {
+            actThemes.push(allActData[i].actTheme); // 活动主题
+            myActUserNum.push(allActData[i].userCounts); // 活动参与人数
+            myActPunchNum.push(res.result); // 活动打卡次数
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    }
+
+    console.log("活动主题（原始数据）：", actThemes);
+    console.log("参与人数（原始数据）：", myActUserNum);
+    console.log("打卡次数（原始数据）：", myActPunchNum);
+
+    // 从大到小排序
+    allActUserNum.sort((a, b) => b - a);
+    allActPunchNum.sort((a, b) => b - a);
+
+    let userRank = [], // 参与人数排名
+      punchRank = []; // 打卡次数排名
+
+    // 计算排名
+    for (let i = 0; i < actThemes.length; i++) {
+      userRank.push(allActUserNum.indexOf(myActUserNum[i]) + 1);
+      punchRank.push(allActPunchNum.indexOf(myActPunchNum[i]) + 1);
+    }
+
+    resolve({
+      actThemes: actThemes,
+      userNum: myActUserNum,
+      userRank: userRank,
+      punchNum: myActPunchNum,
+      punchRank: punchRank,
+    });
   });
 };
 
@@ -1129,6 +1176,29 @@ export const getActTheme = () => {
           dict[actData[i]._id] = actData[i].actTheme; // 形成_id即actId到actTheme的映射
         }
         resolve(dict);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+export const getPunchDataExcel = (openId, mode) => {
+  /**
+   * 下载指定用户的打卡记录到本地
+   */
+
+  return new Promise((resolve, reject) => {
+    wx.cloud
+      .callFunction({
+        name: "getPunchDataExcel",
+        data: {
+          openId: openId,
+          mode: mode,
+        },
+      })
+      .then((res) => {
+        resolve(true);
       })
       .catch((err) => {
         reject(err);
