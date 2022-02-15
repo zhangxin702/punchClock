@@ -251,3 +251,31 @@ export const actTableUpdate = ({ actId, openId }) => {
     });
   });
 };
+
+export const actTableBySearch = ({ searchKey }) => {
+  wx.showLoading({
+    title: '加载中',
+    mask: true,
+  });
+  return new Promise((resolve, reject) => {
+    var db = wx.cloud.database();
+
+    db.collection('ActTable')
+      .where({
+        actTheme: db.RegExp({
+          regexp: searchKey,
+          options: 'i',
+        }),
+      })
+      .get({
+        success: (res) => {
+          wx.hideLoading();
+          resolve(res);
+        },
+        fail: (err) => {
+          wx.hideLoading();
+          reject(err);
+        },
+      });
+  });
+};
