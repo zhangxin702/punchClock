@@ -697,6 +697,7 @@ export const getActHotRankvsSelf = (db, openId) => {
    */
 
   return new Promise((resolve, reject) => {
+    console.log(openId);
     wx.cloud
       .callFunction({
         name: "getActData",
@@ -735,7 +736,7 @@ export const getActHotRankvsSelf = (db, openId) => {
         }
 
         // 排位
-        //以后一定要用深拷贝，浅拷贝还是会根据他的值把原来的也改变
+        // 以后一定要用深拷贝，浅拷贝还是会根据他的值把原来的也改变
         let actUserNumCopy = JSON.parse(JSON.stringify(actUserNum.sort((a, b) => b - a))),
           actPunchNumCopy = JSON.parse(JSON.stringify(actPunchNum.sort((a, b) => b - a)));
         console.log("活动主题：", actThemes);
@@ -845,7 +846,7 @@ export const getActHotRankvsAll = (db, openId) => {
 };
 
 // 其它
-export const uploadProblem = (openId, text, imagePaths) => {
+export const uploadProblem = (text, imagePaths) => {
   /**
    * 上传用户的反馈
    * openId: 用户的唯一标识
@@ -854,11 +855,13 @@ export const uploadProblem = (openId, text, imagePaths) => {
    */
 
   return new Promise((resolve, reject) => {
-    let date = new Date();
+    // let date = new Date();
     let cloudPaths = [];
     for (let i = 0; i < imagePaths.length; i++) {
-      cloudPaths.push("feedback/" + imagePaths[i].substr(0, imagePaths[i].length - 4) + i + ".png");
+      cloudPaths.push("feedback/" + imagePaths[i].substr(11, imagePaths[i].length - 4) + i + ".png");
     }
+    console.log("imagePaths: ", imagePaths);
+    console.log("cloudPaths: ", cloudPaths);
 
     // 先把临时文件上传到云存储
     for (let i = 0; i < imagePaths.length; i++) {
@@ -881,7 +884,6 @@ export const uploadProblem = (openId, text, imagePaths) => {
     db.collection("ProbTable")
       .add({
         data: {
-          _openid: openId,
           text: text,
           imagePath: cloudPaths,
         },
@@ -946,6 +948,7 @@ export const getCollect = (openId) => {
   /**
    * 获取收藏的活动id
    */
+
   return new Promise((resolve, reject) => {
     const db = wx.cloud.database();
     db.collection("UserTable")
@@ -953,7 +956,7 @@ export const getCollect = (openId) => {
       .get()
       .then((res) => {
         console.log("获取用户的收藏成功√\n", res);
-        const {collect} = res.data;
+        const { collect } = res.data;
         resolve(collect);
       })
       .catch((err) => {

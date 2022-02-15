@@ -1,5 +1,6 @@
 import { uploadProblem } from "../../async/async.js";
 const app = getApp();
+
 Page({
   data: {
     text: "",
@@ -30,6 +31,7 @@ Page({
       });
       return;
     }
+
     wx.chooseImage({
       // 同时选中的图片数量
       count: count,
@@ -73,6 +75,6 @@ Page({
       return;
     }
 
-    uploadProblem(app.globalData.userInfo._id, text, images);
+    uploadProblem(text, images);
   },
 });

@@ -30,7 +30,7 @@ Page({
           participate: participate,
           organize: organize,
         };
-        
+
         wx.setStorageSync("actInfo", actInfo); // 写本地缓存
       }
 
@@ -44,8 +44,8 @@ Page({
     const db = wx.cloud.database();
     // const openId = await getOpenId(); // 重新获取用户的openId
     // console.log("openId: ", openId);
-    const openId = "user-1";
-    // const openId = app.globalData.userInfo._id;
+    // const openId = "user-2";
+    const openId = app.globalData.userInfo._id;
     const userInfo = await getUserInfo(openId); // 获取新的用户信息
     console.log("userInfo: ", userInfo);
     const participate = await getParticipateNum(db, this.data.userInfo._id); // 获取用户已参与的活动数量
