@@ -235,12 +235,15 @@
           "scene": null
         },
         {
-          "name": "pages/classify/classify",
-          "pathName": "pages/classify/classify",
-          "query": "",
           "name": "打卡记录",
           "pathName": "pages/punch_record/punch_record",
           "query": "page_id=0",
+          "scene": null
+        },
+        {
+          "name": "pages/search/search",
+          "pathName": "pages/search/search",
+          "query": "",
           "scene": null
         }
       ]

@@ -1,8 +1,8 @@
 // pages/punch_detail/punch_detail.js
-import { actTableById } from "../../async/index.js";
+import { actTableById } from '../../async/index.js';
 //获取收藏的函数
-import { getCollect } from "../../async/async";
-import { formatTime } from "../../utils/util.js";
+import { getCollect } from '../../async/async';
+import { formatTime } from '../../utils/util.js';
 
 const app = getApp();
 Page({
@@ -11,21 +11,28 @@ Page({
    */
   data: {
     //商品
-    activity: "",
-    startTime: "",
+    activity: '',
+    startTime: '',
     punch_num: 1,
-    endTime: "",
+    endTime: '',
     requires: [],
-    bool: [""],
+    bool: [''],
+
+    actId:"",
 
     //用户是否收藏
     isCollect: false,
   },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    this.getById(options.actId);
+onLoad:function(options){
+  this.setData({
+    actId:options.actId
+  })
+
+
+
+},
+  onShow: function (options) {
+    this.getById(this.data.actId);
     this.getIsCollect(options.actId);
   },
 
@@ -45,22 +52,22 @@ Page({
     });
     let word, picture, location, file;
     let bool = [];
-    location = this.data.requires.includes("map");
+    location = this.data.requires.includes('map');
     if (location) {
-      bool.push("⛳");
+      bool.push('⛳');
     }
-    word = this.data.requires.includes("word");
+    word = this.data.requires.includes('word');
     if (word) {
-      bool.push("🖊");
+      bool.push('🖊');
     }
-    picture = this.data.requires.includes("picture");
+    picture = this.data.requires.includes('picture');
     if (picture) {
-      bool.push("📸");
+      bool.push('📸');
     }
 
-    file = this.data.requires.includes("file");
+    file = this.data.requires.includes('file');
     if (file) {
-      bool.push("📁");
+      bool.push('📁');
     }
     console.log(bool);
     console.log(this.data.requires);
@@ -73,7 +80,7 @@ Page({
   async getIsCollect(actId) {
     //防止加载过程用户误触
     wx.showLoading({
-      title: "加载中",
+      title: '加载中',
     });
     //获取收藏的全部
     const openId = app.globalData.userInfo._id;
@@ -91,7 +98,7 @@ Page({
 
   async handleCollect() {
     wx.showLoading({
-      title: "收藏中",
+      title: '收藏中',
       mask: true,
     });
 
@@ -100,21 +107,20 @@ Page({
     const actId = this.data.activity._id;
     const openId = app.globalData.userInfo._id;
     let newCollect = await getCollect(openId); // 获取该openID的全部收藏对象
-    var db = wx.cloud.database().collection("UserTable");
+    var db = wx.cloud.database().collection('UserTable');
     if (isCollect) {
       await db.doc(openId).update({
         data: {
           collect: _.pull(actId),
         },
         success: (res) => {
-          console.log("插入成功", res);
+          console.log('插入成功', res);
         },
         fail: (err) => {
           wx.hideLoading();
-          console.log("插入失败", err);
+          console.log('插入失败', err);
         },
-      })
-
+      });
     } else {
       await newCollect.push(actId);
       await db.doc(openId).update({
@@ -122,16 +128,16 @@ Page({
           collect: newCollect,
         },
         success: (res) => {
-          console.log("插入成功", res);
+          console.log('插入成功', res);
         },
         fail: (err) => {
           wx.hideLoading();
-          console.log("插入失败", err);
+          console.log('插入失败', err);
         },
       });
     }
-    for(let i= 0;i<newCollect.length;i++)console.log(newCollect[i]);
-    
+    for (let i = 0; i < newCollect.length; i++) console.log(newCollect[i]);
+
     this.setData({
       isCollect: !isCollect,
     });
