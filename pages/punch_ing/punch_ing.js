@@ -28,6 +28,13 @@ Page({
     punchImages: [], //图片
     map: '', //位置
     word: '', //文字
+
+    actId:''
+  },
+  onLoad(options){
+this.setData({
+actId:options.actId
+})
   },
   // 上传图片有关函数
   async chooseImage() {
@@ -58,7 +65,7 @@ Page({
   },
 
   onShow: function (e) {
-    this.setData({ actId: e.actId });
+    
     this.getById();
     this.storage();
   },
