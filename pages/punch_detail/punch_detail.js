@@ -18,12 +18,21 @@ Page({
     requires: [],
     bool: [''],
 
+    actId:"",
+
     //用户是否收藏
     isCollect: false,
   },
+onLoad:function(options){
+  this.setData({
+    actId:options.actId
+  })
 
+
+
+},
   onShow: function (options) {
-    this.getById(options.actId);
+    this.getById(this.data.actId);
     this.getIsCollect(options.actId);
   },
 

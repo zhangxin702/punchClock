@@ -33,6 +33,7 @@ Page({
     // 如果输入为空
     if (!str.trim()) {
       this.setData({
+        
         resultData: [],
         isFocus: true,
       });
