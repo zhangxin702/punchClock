@@ -29,7 +29,8 @@ Page({
     map: '', //位置
     word: '', //文字
 
-    actId:''
+    actId:'',
+    name:""//文件名
   },
   onLoad(options){
 this.setData({
@@ -59,9 +60,13 @@ actId:options.actId
     var res = await chooseMessageFile({});
     this.setData({
       filePath: res.tempFiles[0].path,
+      name:res.tempFiles[0].name.split('.')[0]
     });
-    await showToast({ title: '选择文件成功' });
+    await showToast({ title: '文件'+this.data.name+'上传成功' 
+
+  });
     console.log(this.data.filePath);
+    console.log(res);
   },
 
   onShow: function (e) {

@@ -245,6 +245,12 @@
           "pathName": "pages/search/search",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "pages/punch_ing/punch_ing",
+          "pathName": "pages/punch_ing/punch_ing",
+          "query": "actId=3213b55961f7ad9b00f1b9a21c5d367b",
+          "scene": null
         }
       ]
     }
