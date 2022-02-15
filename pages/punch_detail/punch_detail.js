@@ -33,7 +33,7 @@ onLoad:function(options){
 },
   onShow: function (options) {
     this.getById(this.data.actId);
-    this.getIsCollect(options.actId);
+    this.getIsCollect(this.data.actId);
   },
 
   async getById(actId) {

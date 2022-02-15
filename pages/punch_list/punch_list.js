@@ -14,14 +14,18 @@ Page({
     // 从 classify传过来的标签名
     label: '',
   },
+onLoad(options){
+  let label = options.label;
+  this.setData({
+    label: label,
+  });
 
+},
   onShow: function (options) {
-    let label = options.label;
-    this.setData({
-      label: label,
-    });
-    console.log(label);
-    if (label != '全部') {
+    
+  
+    
+    if (this.data.label != '全部') {
       this.GetAllLabel(
         this.data.currentTab,
         this.data.pageNum,
