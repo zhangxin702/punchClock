@@ -1,6 +1,4 @@
 {
-  "usingComponents": {
-   
-  },
-  "navigationBarTitleText":"搜索"
+  "navigationBarTitleText": "活动搜索"
+
 }
