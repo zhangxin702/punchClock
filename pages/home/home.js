@@ -23,7 +23,9 @@ Page({
       mask: true,
     });
 
-    const openId = app.globalData.userInfo._id;
+    // const openId = app.globalData.userInfo._id;
+    const openId = "user-1";
+    // console.log("hhh"+openId);
 
     this.GetAttendAndOranizeList(openId);
     this.GetAll(0, 0);

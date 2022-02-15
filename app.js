@@ -1,5 +1,5 @@
 import { getUserInfo, getOpenId } from "./async/async.js";
-
+// const app = getApp();
 App({
   async onLaunch() {
     wx.cloud.init({
@@ -8,6 +8,7 @@ App({
     });
     // const openId = await getOpenId();//获取用户openID
     const openId = "user-1";
+    // const openId = app.globalData.userInfo._id;
     let userInfo = await wx.getStorageSync("userInfo"); // 先查本地缓存
 
     // 本地缓存查不到
