@@ -33,8 +33,28 @@
   background-color: #C0C4CC;
 }
 .image {
-  width: 48%;
+  width: 320rpx;
   border-radius: 10rpx;
   height: 300rpx;
   margin-right: 10rpx;
+}
+.block .delete{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: -10rpx;
+  right:10rpx;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 8rpx;
+  background-color: rgb(209, 115, 115);
+  color: white;
+
+}
+.block{
+  position: relative;
+  width: 350rpx;
+  height: 300rpx;
+
 }

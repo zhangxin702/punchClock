@@ -62,8 +62,8 @@ actId:options.actId
       filePath: res.tempFiles[0].path,
       name:res.tempFiles[0].name.split('.')[0]
     });
-    await showToast({ title: '文件'+this.data.name+'上传成功' ,
-    icon:"success"
+    await showToast({ title: '文件'+this.data.name+'上传成功' 
+
   });
     console.log(this.data.filePath);
     console.log(res);
