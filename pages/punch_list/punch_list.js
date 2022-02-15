@@ -15,10 +15,7 @@ Page({
     label: '',
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
+  onShow: function (options) {
     let label = options.label;
     this.setData({
       label: label,

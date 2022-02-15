@@ -1,9 +1,14 @@
-import { getParticipatePunch, getOrganizePunch, getSelfPunchedTimes } from "../../async/async.js";
+import {
+  getParticipatePunch,
+  getOrganizePunch,
+  getSelfPunchedTimes,
+  getOpenId,
+} from '../../async/async.js';
 
 // 获取应用实例
 const app = getApp();
-import { formatTime } from "../../utils/util.js";
-import { actTableGetAll } from "../../async/index.js";
+import { formatTime } from '../../utils/util.js';
+import { actTableGetAll } from '../../async/index.js';
 
 Page({
   data: {
@@ -12,15 +17,15 @@ Page({
     organizeList: [],
   },
 
-  async onLoad() {
+  async onShow() {
     //如果没看见上面的组件可以把下面的注释划掉
     //console.log(options);
     wx.showLoading({
-      title: "加载中",
+      title: '加载中',
       mask: true,
     });
 
-    const openId = app.globalData.userInfo._id; // app.js还未执行完就获取userInfo去了，逻辑错误，导致一直在“加载中”
+    const openId = await getOpenId(); 
 
     this.GetAttendAndOranizeList(openId);
     this.GetAll(0, 0);
@@ -50,18 +55,23 @@ Page({
     let punchData = null;
     await wx.cloud
       .callFunction({
-        name: "getPunchData",
+        name: 'getPunchData',
         data: {
           openId: openId,
         },
       })
       .then((res) => {
         punchData = res.result;
-        console.log("punchData: ", punchData);
+        console.log('punchData: ', punchData);
       });
 
     for (let i = 0; i < attendList.length; i++) {
-      let res = await getSelfPunchedTimes(db, openId, attendList[i]._id, punchData);
+      let res = await getSelfPunchedTimes(
+        db,
+        openId,
+        attendList[i]._id,
+        punchData
+      );
       attendList[i].isFinish = res.isFinish;
       attendList[i].punchedTimes = res.punchedTimes;
     }
@@ -73,18 +83,18 @@ Page({
       showActList: JSON.parse(JSON.stringify(attendList)), //深拷贝防止改变引起总的改变
       showOrganizeList: JSON.parse(JSON.stringify(organizeList)), //同上
     });
-    console.log("attendList: ", this.data.attendList);
-    console.log("organizeList: ", this.data.organizeList);
+    console.log('attendList: ', this.data.attendList);
+    console.log('organizeList: ', this.data.organizeList);
   },
 
   handleMore_0(e) {
     wx.navigateTo({
-      url: "../activity_punch/activity_punch?page_id=0",
+      url: '../activity_punch/activity_punch?page_id=0',
     });
   },
   handleMore_1(e) {
     wx.navigateTo({
-      url: "../activity_punch/activity_punch?page_id=1",
+      url: '../activity_punch/activity_punch?page_id=1',
     });
   },
 
@@ -98,6 +108,6 @@ Page({
     this.setData({
       actList: res.data,
     });
-    console.log("热门活动" + this.data.actList);
+    console.log('热门活动' + this.data.actList);
   },
 });
