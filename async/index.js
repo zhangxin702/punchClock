@@ -27,6 +27,7 @@ export const actTableGetAll = ({ order, skip, limit }) => {
       });
   });
 };
+
 export const actTableGetLabel = ({ order, skip, limit, label }) => {
   wx.showLoading({
     title: '加载中',

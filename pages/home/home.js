@@ -22,12 +22,12 @@ Page({
 
     const openId = app.globalData.userInfo._id; // app.js还未执行完就获取userInfo去了，逻辑错误，导致一直在“加载中”
 
-    this.GetAttendAndOranizeList(openId);
+    this.GetAttendAndOrganizeList(openId);
     this.GetAll(0, 0);
     wx.hideLoading();
   },
 
-  async GetAttendAndOranizeList(openId) {
+  async GetAttendAndOrganizeList(openId) {
     const db = wx.cloud.database();
     let res1 = await getParticipatePunch(openId);
     let res2 = await getOrganizePunch(openId);
@@ -82,6 +82,7 @@ Page({
       url: "../activity_punch/activity_punch?page_id=0",
     });
   },
+
   handleMore_1(e) {
     wx.navigateTo({
       url: "../activity_punch/activity_punch?page_id=1",

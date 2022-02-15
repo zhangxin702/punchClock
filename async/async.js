@@ -288,7 +288,7 @@ export const getSelfPunchedTimes = (db, openId, actId, punchData) => {
    * db: 数据库的引用
    * openId: 用户的唯一标识
    * actId: 活动的唯一标识
-   * punchData: 所有打卡数据，可以为空，也可以指定
+   * punchData: 若指定，则在punchData范围内分析
    *
    * 返回
    * isFinish: 是否完成打卡要求
@@ -681,6 +681,41 @@ export const countActHeldNum = (db, openId) => {
   });
 };
 
+function quickSort(arr, left, right) {
+  /**
+   * 快速排序，仅用于排名运算
+   * arr: 数组，每一个元素为一个字典
+   */
+
+  var len = arr.length,
+    partitionIndex = 0;
+
+  if (left < right) {
+    partitionIndex = partition(arr, left, right);
+    quickSort(arr, left, partitionIndex - 1);
+    quickSort(arr, partitionIndex + 1, right);
+  }
+}
+
+function partition(arr, left, right) {
+  let pivot = left,
+    index = pivot + 1;
+  for (let i = index; i <= right; i++) {
+    if (arr[i].v < arr[pivot].v) {
+      swap(arr, i, index);
+      index++;
+    }
+  }
+  swap(arr, pivot, index - 1);
+  return index - 1;
+}
+
+function swap(arr, i, j) {
+  const t = arr[i];
+  arr[i] = arr[j];
+  arr[j] = t;
+}
+
 export const getActHotRankvsSelf = (db, openId) => {
   /**
    * 获取举办的活动名及其在自己举办的所有活动中对应的排名
@@ -688,21 +723,21 @@ export const getActHotRankvsSelf = (db, openId) => {
    * openId: 用户的唯一标识
    *
    * 返回
-   * actThemes: 活动主题数组
-   * actUserRank: 活动参与人数排名数组
-   * actPunchRank: 活动打卡数排名数组
+   * themesByUserNum: 根据参与人数排序的活动主题数组
+   * userNum: 排序后的参与人数数组
+   * themesByPunchNum: 根据打卡次数排序的活动主题数组
+   * punchNum: 排序后的打卡次数数组
    *
    * ps
    * 配合countActHeldNum可以展示成“x/y”的形式
    */
 
   return new Promise((resolve, reject) => {
-    console.log(openId);
     wx.cloud
       .callFunction({
         name: "getActData",
         data: {
-          _openid: openId,
+          openId: openId,
         },
       })
       .then(async (res) => {
@@ -716,8 +751,8 @@ export const getActHotRankvsSelf = (db, openId) => {
 
         //
         for (let i = 0; i < acts.length; i++) {
-          actThemes.push(acts[i].actTheme);
-          actUserNum.push(acts[i].userCounts);
+          actThemes.push(acts[i].actTheme); // 记录活动主题
+          actUserNum.push(acts[i].userCounts); // 记录参与人数
 
           await db
             .collection("PunchTable")
@@ -726,34 +761,47 @@ export const getActHotRankvsSelf = (db, openId) => {
             })
             .get()
             .then((res) => {
-              console.log("举办方——获取打卡数据成功√\n", res);
-              actPunchNum.push(res.data.length);
+              // console.log("举办方——获取打卡数据成功√\n", res);
+              actPunchNum.push(res.data.length); // 记录打卡次数
             })
             .catch((err) => {
-              console.log("举办方——获取打卡数据失败×\n", err);
+              // console.log("举办方——获取打卡数据失败×\n", err);
               reject(err);
             });
         }
+        console.log("活动主题（原始数据）：", actThemes);
+        console.log("参与人数（原始数据）：", actUserNum);
+        console.log("打卡次数（原始数据）：", actPunchNum);
 
-        // 排位
-        // 以后一定要用深拷贝，浅拷贝还是会根据他的值把原来的也改变
-        let actUserNumCopy = JSON.parse(JSON.stringify(actUserNum.sort((a, b) => b - a))),
-          actPunchNumCopy = JSON.parse(JSON.stringify(actPunchNum.sort((a, b) => b - a)));
-        console.log("活动主题：", actThemes);
-        console.log("参与人数：", actUserNum);
-        console.log("打卡次数：", actPunchNum);
-        for (let i = 0; i < actUserNum.length; i++) {
-          actUserRank.push(actUserNumCopy.indexOf(actUserNum[i]) + 1);
-          actUserNumCopy[actUserNumCopy.indexOf(actUserNum[i])] = -1;
+        let dict1 = [],
+          dict2 = [];
+        // 将活动主题分别与参与人数和打卡次数绑定
+        for (let i = 0; i < actThemes.length; i++) {
+          dict1.push({ n: actThemes[i], v: actUserNum[i] });
+          dict2.push({ n: actThemes[i], v: actPunchNum[i] });
+        }
 
-          actPunchRank.push(actPunchNumCopy.indexOf(actPunchNum[i]) + 1);
-          actPunchNumCopy[actPunchNumCopy.indexOf(actPunchNum[i])] = -1;
+        // 快速排序
+        quickSort(dict1, 0, actThemes.length - 1);
+        quickSort(dict2, 0, actThemes.length - 1);
+
+        let themesByUserNum = [],
+          userNum = [],
+          themesByPunchNum = [],
+          punchNum = [];
+        // 解绑
+        for (let i = 0; i < actThemes.length; i++) {
+          themesByUserNum.push(dict1[i].n);
+          userNum.push(dict1[i].v);
+          themesByPunchNum.push(dict2[i].n);
+          punchNum.push(dict2[i].v);
         }
 
         resolve({
-          actThemes: actThemes,
-          actUserRank: actUserRank,
-          actPunchRank: actPunchRank,
+          themesByUserNum: themesByUserNum,
+          userNum: userNum,
+          themesByPunchNum: themesByPunchNum,
+          punchNum: punchNum,
         });
       })
       .catch((err) => {
@@ -1070,18 +1118,16 @@ export const getActTheme = () => {
    */
 
   return new Promise((resolve, reject) => {
-    const db = wx.cloud.database();
-    const $ = db.command.aggregate;
-    db.collection("ActTable")
-      .get()
+    wx.cloud
+      .callFunction({
+        name: "getActData",
+      })
       .then((res) => {
-        const actData = res.data;
-
+        const actData = res.result;
         let dict = {};
         for (let i = 0; i < actData.length; i++) {
-          dict[actData[i]._id] = actData[i].actTheme; // 形成_id到actTheme的映射
+          dict[actData[i]._id] = actData[i].actTheme; // 形成_id即actId到actTheme的映射
         }
-
         resolve(dict);
       })
       .catch((err) => {

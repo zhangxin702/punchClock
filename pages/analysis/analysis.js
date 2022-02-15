@@ -46,9 +46,10 @@ Page({
     // const actNum = await countActHeldNum(db, openId);
     // console.log("活动举办数量：", actNum);
 
-    const { actThemes, actUserRank, actPunchRank } = await getActHotRankvsSelf(db, openId);
+    // const { actThemes, actUserRank, actPunchRank } = await getActHotRankvsSelf(db, openId);
+    const { themesByUserNum, userNum, themesByPunchNum, punchNum } = await getActHotRankvsSelf(db, openId);
     // const {actThemes,actUserNum}=await GetUserPunch(openId);
-    console.log(actThemes, actUserRank, actPunchRank);
+    console.log(themesByUserNum, userNum, themesByPunchNum, punchNum);
     // console.log(actUserNum,actThemes);
     chart.draw(this, "canvas1", {
       title: {
@@ -66,6 +67,7 @@ Page({
         },
       ],
     });
+
     chart.draw(this, "canvas2", {
       title: {
         text: "已组织打卡活动情况",
