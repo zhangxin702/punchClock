@@ -1,25 +1,33 @@
-import { chooseImage, chooseMessageFile, uploadFile, actTableById, punchTableInsert, showToast, actTableUpdate } from "../../async/index.js";
-import { getLocation } from "../../async/async.js";
+import {
+  chooseImage,
+  chooseMessageFile,
+  uploadFile,
+  actTableById,
+  punchTableInsert,
+  showToast,
+  actTableUpdate,
+} from '../../async/index.js';
+import { getLocation } from '../../async/async.js';
 
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    actId: "",
+    actId: '',
     count: 2,
     addedCount: 0,
     requires: [],
     bool: [], //判断用的，位置[word,picture,map,file]，值为true或false
-    filePath: "", //选取文件的路径
+    filePath: '', //选取文件的路径
     images: [], //选取图片的路径
-    requireMap: "", //活动位置
+    requireMap: '', //活动位置
     userIds: [], //活动参与人
 
-    punchFile: "", //文件
+    punchFile: '', //文件
     punchImages: [], //图片
-    map: "", //位置
-    word: "", //文字
+    map: '', //位置
+    word: '', //文字
   },
   // 上传图片有关函数
   async chooseImage() {
@@ -45,20 +53,18 @@ Page({
     this.setData({
       filePath: res.tempFiles[0].path,
     });
-    await showToast({ title: "选择文件成功" });
+    await showToast({ title: '选择文件成功' });
     console.log(this.data.filePath);
   },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (e) {
+
+  onShow: function (e) {
     this.setData({ actId: e.actId });
     this.getById();
     this.storage();
   },
 
   async storage() {
-    let punchWord = await wx.getStorageSync("punchWord"); // 先查本地缓存
+    let punchWord = await wx.getStorageSync('punchWord'); // 先查本地缓存
     // 本地缓存查不到
     if (punchWord) {
       this.setData({
@@ -77,17 +83,17 @@ Page({
       userIds: res.data.userIds,
     });
     let word, picture, location, file;
-    word = this.data.requires.includes("word");
-    picture = this.data.requires.includes("picture");
-    location = this.data.requires.includes("map");
-    file = this.data.requires.includes("file");
+    word = this.data.requires.includes('word');
+    picture = this.data.requires.includes('picture');
+    location = this.data.requires.includes('map');
+    file = this.data.requires.includes('file');
     this.setData({
       bool: [word, picture, location, file],
     });
   },
 
   async location() {
-    if (this.data.map === "") {
+    if (this.data.map === '') {
       let res = await getLocation();
       this.setData({
         map: {
@@ -96,7 +102,7 @@ Page({
         },
       });
     }
-    await showToast({ title: "您已定位成功" });
+    await showToast({ title: '您已定位成功' });
   },
 
   Rad(d) {
@@ -109,7 +115,14 @@ Page({
     var radLat2 = this.Rad(lat2);
     var a = radLat1 - radLat2;
     var b = this.Rad(lng1) - this.Rad(lng2);
-    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+    var s =
+      2 *
+      Math.asin(
+        Math.sqrt(
+          Math.pow(Math.sin(a / 2), 2) +
+            Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)
+        )
+      );
     s = s * 6378.137; // EARTH_RADIUS;
     s = Math.round(s * 10000) / 10000; //输出m
     return s;
@@ -117,34 +130,39 @@ Page({
 
   async submit() {
     if (this.data.bool[0] === true) {
-      if (this.data.word === "") {
-        await showToast({ title: "您还未填写文档，请填写" });
+      if (this.data.word === '') {
+        await showToast({ title: '您还未填写文档，请填写' });
         return false;
       }
     }
     if (this.data.bool[1] === true) {
       if (this.data.images.length === 0) {
-        await showToast({ title: "您还未上传图片，请上传" });
+        await showToast({ title: '您还未上传图片，请上传' });
         return false;
       }
     }
     if (this.data.bool[2] === true) {
-      if (this.data.map === "") {
-        await showToast({ title: "您还未定位，请定位" });
+      if (this.data.map === '') {
+        await showToast({ title: '您还未定位，请定位' });
         return false;
       }
-      let ree = this.GetDistance(this.data.map.latitude, this.data.map.longitude, this.data.requireMap.latitude, this.data.requireMap.longitude);
+      let ree = this.GetDistance(
+        this.data.map.latitude,
+        this.data.map.longitude,
+        this.data.requireMap.latitude,
+        this.data.requireMap.longitude
+      );
       console.log(this.data.map, this.data.requireMap);
       console.log(ree);
       if (ree > 300) {
-        await showToast({ title: "您在规定的定位之外，请到达目的地" });
+        await showToast({ title: '您在规定的定位之外，请到达目的地' });
         return false;
       }
     }
 
     if (this.data.bool[3] === true) {
-      if (this.data.filePath === "") {
-        await showToast({ title: "您还未上传文件，请上传" });
+      if (this.data.filePath === '') {
+        await showToast({ title: '您还未上传文件，请上传' });
         return false;
       }
       if (this.data.bool[1] === true) {
@@ -152,7 +170,7 @@ Page({
           var imgUrl = this.data.images[i];
           var res = await uploadFile({
             tempFilePath: imgUrl,
-            cloudPath: "actImage/" + imgUrl.split("/").pop(),
+            cloudPath: 'actImage/' + imgUrl.split('/').pop(),
           });
           this.setData({
             punchImages: [...this.data.punchImages, res.fileID],
@@ -162,7 +180,7 @@ Page({
       }
       var ree = await uploadFile({
         tempFilePath: this.data.filePath,
-        cloudPath: "punchFile/" + this.data.filePath.split("/").pop(),
+        cloudPath: 'punchFile/' + this.data.filePath.split('/').pop(),
       });
       console.log(ree);
       this.setData({
@@ -170,7 +188,7 @@ Page({
       });
     }
 
-    let red = await wx.getStorageSync("userInfo");
+    let red = await wx.getStorageSync('userInfo');
     console.log(!this.data.userIds.includes(red._id));
     await punchTableInsert({
       actId: this.data.actId,
@@ -182,7 +200,7 @@ Page({
       punchTime: new Date(),
     });
     console.log(this.data.actId, red._id);
-    await wx.setStorageSync("punchWord", "");
+    await wx.setStorageSync('punchWord', '');
 
     if (!this.data.userIds.includes(red._id)) {
       await actTableUpdate({
@@ -190,12 +208,12 @@ Page({
         openId: red._id,
       });
 
-      const actInfo = wx.getStorageSync("actInfo"); // 获取缓存中的活动数据
+      const actInfo = wx.getStorageSync('actInfo'); // 获取缓存中的活动数据
       const actInfoPro = {
         participate: actInfo.participate + 1, // 自增
         organize: actInfo.organize,
       };
-      wx.setStorageSync("actInfo", actInfoPro); // 写缓存
+      wx.setStorageSync('actInfo', actInfoPro); // 写缓存
     } else {
       setTimeout(function () {
         wx.navigateBack({
@@ -210,6 +228,6 @@ Page({
     this.setData({
       word: e.detail.value,
     });
-    wx.setStorageSync("punchWord", this.data.word); // 写本地缓存
+    wx.setStorageSync('punchWord', this.data.word); // 写本地缓存
   },
 });
