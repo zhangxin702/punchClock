@@ -22,13 +22,13 @@ Page({
     // const rank = await getSelfPunchedRank(openId, actId);
     // console.log("用户的打卡次数超过了: ", rank * 100, "%");
 
-    const { maxLabels, labelNum } = await getSelfLabels(openId, -1);
-    console.log("所有的标签：", maxLabels);
-    this.setData({
-      //分成三份
-      labels: maxLabels, // 全部标签
-      maxLabels: maxLabels.slice(0, 3), // 标签的前三名
-    });
+    // const { maxLabels, labelNum } = await getSelfLabels(openId, -1);
+    // console.log("所有的标签：", maxLabels);
+    // this.setData({
+    //   //分成三份
+    //   labels: maxLabels, // 全部标签
+    //   maxLabels: maxLabels.slice(0, 3), // 标签的前三名
+    // });
 
     // const { isFinish, punchedTimes } = await getActPunchedTimes(db, actId);
     // console.log("是否已完成打卡要求：\n", isFinish);
@@ -47,9 +47,13 @@ Page({
     // console.log("活动举办数量：", actNum);
 
     // const { actThemes, actUserRank, actPunchRank } = await getActHotRankvsSelf(db, openId);
-    const { themesByUserNum, userNum, themesByPunchNum, punchNum } = await getActHotRankvsSelf(db, openId);
+    // const { themesByUserNum, userNum, themesByPunchNum, punchNum } = await getActHotRankvsSelf(db, openId);
+    // console.log(themesByUserNum, userNum, themesByPunchNum, punchNum);
+
+    const { actThemes, userNum, userRank, punchNum, punchRank } = await getActHotRankvsAll(db, openId);
+    console.log(actThemes, "\n", userNum, userRank, "\n", punchNum, punchRank);
+
     // const {actThemes,actUserNum}=await GetUserPunch(openId);
-    console.log(themesByUserNum, userNum, themesByPunchNum, punchNum);
     // console.log(actUserNum,actThemes);
     chart.draw(this, "canvas1", {
       title: {

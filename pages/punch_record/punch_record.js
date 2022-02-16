@@ -1,5 +1,5 @@
 import { formatTime } from "../../utils/util.js";
-import { getPunchAll, getActTheme } from "../../async/async.js";
+import { getPunchAll, getActTheme, getPunchDataExcel } from "../../async/async.js";
 const app = getApp();
 
 Page({
@@ -19,13 +19,7 @@ Page({
   },
 
   async GetAll(order, skip) {
-    var res = await getPunchAll(
-      order,
-      skip,
-      9,
-      "user-1"
-      // app.globalData.userInfo.openId,
-    );
+    var res = await getPunchAll(order, skip, 9, app.globalData.userInfo._id);
     var addList = res.map((v) => ({
       ...v,
       punchTime: formatTime({ date: v.punchTime }),
@@ -81,5 +75,35 @@ Page({
       punchList: [],
     });
     this.GetAll(this.data.currentTab, this.data.pageNum);
+  },
+
+  async handleMyOwnPunchData() {
+    /**
+     * 下载我的打卡记录到本地
+     */
+
+    const openId = app.globalData.userInfo._id;
+    await getPunchDataExcel(openId, 1)
+      .then((res) => {
+        console.log("res: ", res);
+      })
+      .catch((err) => {
+        console.log("err: ", err);
+      });
+  },
+
+  async handleMyActPunchData() {
+    /**
+     * 下载我举办的活动的打卡记录到本地
+     */
+
+    const openId = app.globalData.userInfo._id;
+    await getPunchDataExcel(openId, 2)
+      .then((res) => {
+        console.log("res: ", res);
+      })
+      .catch((err) => {
+        console.log("err: ", err);
+      });
   },
 });
