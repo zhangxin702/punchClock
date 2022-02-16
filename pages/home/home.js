@@ -1,13 +1,13 @@
 import {
   getParticipatePunch,
   getOrganizePunch,
-  getSelfPunchedTimes,
+ 
   getOpenId,
 } from '../../async/async.js';
 
 // 获取应用实例
 const app = getApp();
-import { formatTime } from '../../utils/util.js';
+
 import { actTableGetAll } from '../../async/index.js';
 
 Page({
@@ -36,21 +36,9 @@ Page({
     const db = wx.cloud.database();
     let res1 = await getParticipatePunch(openId);
     let res2 = await getOrganizePunch(openId);
-    let attendList = res1.map((v) => ({
-      ...v,
-      //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
-      createTime: formatTime({ date: new Date(v.createTime) }),
-      endTime: formatTime({ date: new Date(v.endTime) }),
-      startTime: formatTime({ date: new Date(v.startTime) }),
-    }));
-    let organizeList = res2.map((v) => ({
-      ...v,
-      //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
-      createTime: formatTime({ date: new Date(v.createTime) }),
-      endTime: formatTime({ date: new Date(v.endTime) }),
-      startTime: formatTime({ date: new Date(v.startTime) }),
-    }));
-    console.time();
+    console.log('res1'+res1);
+    
+
 
     let punchData = null;
     await wx.cloud
@@ -65,23 +53,13 @@ Page({
         console.log('punchData: ', punchData);
       });
 
-    for (let i = 0; i < attendList.length; i++) {
-      let res = await getSelfPunchedTimes(
-        db,
-        openId,
-        attendList[i]._id,
-        punchData
-      );
-      attendList[i].isFinish = res.isFinish;
-      attendList[i].punchedTimes = res.punchedTimes;
-    }
-    console.timeEnd();
+
 
     this.setData({
-      attendList,
-      organizeList,
-      showActList: JSON.parse(JSON.stringify(attendList)), //深拷贝防止改变引起总的改变
-      showOrganizeList: JSON.parse(JSON.stringify(organizeList)), //同上
+      attendList:res1,
+      organizeList:res2,
+      showActList: JSON.parse(JSON.stringify(res1)), //深拷贝防止改变引起总的改变
+      showOrganizeList: JSON.parse(JSON.stringify(res2)), //同上
     });
     console.log('attendList: ', this.data.attendList);
     console.log('organizeList: ', this.data.organizeList);
