@@ -50,13 +50,13 @@ Page({
 
   handleMore_0(e) {
     wx.navigateTo({
-      url: '../activity_punch/activity_punch?page_id=0',
+      url: '../activity_record/activity_record?page_id=0',
     });
   },
 
   handleMore_1(e) {
     wx.navigateTo({
-      url: '../activity_punch/activity_punch?page_id=1',
+      url: '../activity_record/activity_record?page_id=1',
     });
   },
 

@@ -25,21 +25,21 @@
 <view class="navContainer">
 	<navigator
 	 class="navItem"
-	 url="../classify/classify"
+	 url="../activity_classification/activity_classification"
 	>
 		<text class="iconfont icon-fenlei"></text>
 		<text class="font">分类</text>
 	</navigator>
 	<navigator
 	 class="navItem"
-	 url="../punch_list/punch_list?label=全部"
+	 url="../activity_list/activity_list?label=全部"
 	>
 		<text class="iconfont icon-xingzhuang"></text>
 		<text class="font">全部</text>
 	</navigator>
 	<navigator
 	 class="navItem"
-	 url="../punch_list/punch_list?label=阅读"
+	 url="../activity_list/activity_list?label=阅读"
 	>
 		<text class="iconfont icon-tubiaozhizuomoban-"></text>
 		<text class="font">阅读</text>

@@ -1,20 +1,20 @@
 {
   "pages": [
     "pages/home/home",
-    "pages/classify/classify",
+    "pages/activity_classification/activity_classification",
     "pages/register/register",
-    "pages/activity_punch/activity_punch",
+    "pages/activity_record/activity_record",
     "pages/activity_organize/activity_organize",
-    "pages/punch_ing/punch_ing",
-    "pages/punch_detail/punch_detail",
-    "pages/punch_list/punch_list",
-    "pages/punch/punch",
+    "pages/punch_submit/punch_submit",
+    "pages/activity_detail/activity_detail",
+    "pages/activity_list/activity_list",
+    "pages/activity/activity",
     "pages/personal/personal",
     "pages/cropper/cropper",
     "pages/analysis/analysis",
     "pages/feedback/feedback",
-    "pages/search/search",
-    "pages/collect/collect",
+    "pages/activity_search/activity_search",
+    "pages/activity_collect/activity_collect",
     "pages/punch_record/punch_record"
   ],
   "window": {
@@ -39,7 +39,7 @@
       {
         "selectedIconPath": "images/punch1.png",
         "iconPath": "images/punch.png",
-        "pagePath": "pages/punch/punch",
+        "pagePath": "pages/activity/activity",
         "text": "打卡"
       },
       {

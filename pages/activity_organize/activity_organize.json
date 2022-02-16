@@ -5,5 +5,5 @@
     "rui-panel": "../../components/panel/panel",
     "rui-flex": "../../components/flex/flex"
   },
-  "navigationBarTitleText": "设置活动"
+  "navigationBarTitleText": "活动创建"
 }

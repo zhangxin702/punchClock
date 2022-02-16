@@ -68,7 +68,7 @@
 	<view class="control">
 		<view class="blank"></view>
 		<view class="navigator_item">
-			<navigator url="/pages/collect/collect">已收藏</navigator>
+			<navigator url="/pages/activity_collect/activity_collect">已收藏</navigator>
 		</view>
 		<view class="blank"></view>
 	</view>
@@ -82,7 +82,7 @@
 	<view class="control">
 		<view class="blank"></view>
 		<view class="navigator_item">
-			<navigator url="/pages/activity_punch/activity_punch?page_id=0">已参与/已组织活动</navigator>
+			<navigator url="/pages/activity_record/activity_record?page_id=0">已参与/已组织活动</navigator>
 		</view>
 		<view class="blank"></view>
 	</view>

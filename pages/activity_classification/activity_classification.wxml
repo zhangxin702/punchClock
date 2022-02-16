@@ -1,5 +1,5 @@
 <view class="box">
-  <navigator class="navItem" url="../punch_list/punch_list?label={{item.name}}" wx:for="{{classify}}">
+  <navigator class="navItem" url="../activity_list/activity_list?label={{item.name}}" wx:for="{{classify}}">
     <text class="{{item.class}}" style=" background-image: url('{{item.bgImgUrl}}');" ></text>
 <text class="font">{{item.name}}</text>
 </navigator>
