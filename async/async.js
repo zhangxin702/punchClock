@@ -1211,3 +1211,47 @@ export const getPunchDataExcel = (openId, mode) => {
       });
   });
 };
+
+export const CollectPushDb = (order, actId, openId) => {
+  /**
+   * 把collect的数据push进数据库
+   * order 0:删除一个actId
+   * order 1:加入新的actId
+   */
+
+  return new Promise((resolve, reject) => {
+    var db = wx.cloud.database();
+    const _ = db.command;
+    if(order){
+      db.collection('UserTable')
+      .doc(openId)
+      .update({
+        data: {
+          collect: _.push(actId),
+        },
+        success: (res) => {
+          console.log('插入成功', res);
+        },
+        fail: (err) => {
+          console.log('插入失败', err);
+        },
+      })
+    }
+    else{
+      db.collection('UserTable')
+      .doc(openId)
+      .update({
+        data: {
+          collect: _.pull(actId),
+        },
+        success: (res) => {
+          console.log('插入成功', res);
+        },
+        fail: (err) => {
+          console.log('插入失败', err);
+        },
+      })
+    }
+  });
+};
+
