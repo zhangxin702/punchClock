@@ -19,7 +19,17 @@ Page({
   },
 
   async GetAll(order, skip) {
-    var res = await getPunchAll(order, skip, 9, app.globalData.userInfo._id);
+    wx.showLoading({
+      title: '加载中',
+      mask: true,
+    })
+    var res = await getPunchAll(
+      order,
+      skip,
+      9,
+      "user-2"
+      // app.globalData.userInfo.openId,
+    );
     var addList = res.map((v) => ({
       ...v,
       punchTime: formatTime({ date: v.punchTime }),
@@ -34,8 +44,9 @@ Page({
         punchList: [...this.data.punchList, ...addList],
         pageNum: this.data.pageNum + 3,
       });
+      console.log(this.data.punchList);
     }
-
+    wx.hideLoading();
     wx.stopPullDownRefresh();
   },
 

@@ -32,11 +32,20 @@
   overflow: hidden;
   margin-top: 100rpx;
 }
+button{
+  text-align: center;
+  /* width: auto!important;
+  margin-left:10px!important;
+  margin-right:10px!important; */
+  flex-direction: column;
+  width: 500rpx;
+  height: 70rpx;
+}
 .save_item {
   display: flex;
   text-align: center;
-  width: 70%;
-  height: 70rpx;
+  width: 70%!important;
+  height: 70rpx!important;
   justify-content: center;
   align-items: center;
   border: 5rpx solid #083c53;
@@ -118,4 +127,17 @@ width: 100%;
 .inner .punch_info .punch_time {
   color: #dd3300;
   font-size: 20rpx;
+}
+
+.kongbai{
+  height: 400rpx;
+  border-bottom: 1rpx solid gray;
+}
+.more{
+  
+  text-align: center;
+  margin: 30rpx;
+
+  color: #083c53;
+  font-weight: 500;
 }

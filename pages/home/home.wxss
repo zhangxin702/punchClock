@@ -6,19 +6,19 @@ page{
 
 .index_swiper {
   width: 750rpx;
-  height: 400rpx;
+  height: 350rpx;
 }
 swiper{
   width: 750rpx;
-  height: 400rpx;
+  height: 350rpx;
 }
 swiper-item{
   width: 750rpx;
-  height: 400rpx;
+  height: 350rpx;
 }
 .swiper_nav{
   width: 750rpx;
-  height: 400rpx;
+  height: 350rpx;
 }
 
 /* 设置轮播图里面图片的大小 */
