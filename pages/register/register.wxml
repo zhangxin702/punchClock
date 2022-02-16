@@ -3,7 +3,7 @@
         <view class="nickName_wrap">
             <text>昵称</text>
             <view class="nickName_item">
-                <input type="test" name="nickName" value="{{nickName}}" placeholder="请输入昵称" bindchange="handleNickName" />
+                <input type="test" name="nickName" value="{{nickName}}" placeholder="请输入昵称" bindblur="handleNickName" />
             </view>
         </view>
         <view class="gender_wrap">
@@ -18,7 +18,7 @@
         <view class="selfIntro_wrap">
             <text>自我介绍</text>
             <view class="selfIntro_item">
-                <textarea name="selfIntro" value="{{selfIntro}}" placeholder="请输入自我介绍" maxlength="-1" bindchange="handleSelfIntro"></textarea>
+                <textarea name="selfIntro" value="{{selfIntro}}" placeholder="请输入自我介绍" maxlength="-1" bindblur="handleSelfIntro"></textarea>
             </view>
         </view>
         <view class="addImage">

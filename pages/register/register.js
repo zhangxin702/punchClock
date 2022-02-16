@@ -7,9 +7,9 @@ Page({
     nickName: null,
     gender: null,
     selfIntro: null,
-    avatarPath: null, // 为了方便cropper接口传递所设
+    avatarPath: "", // 为了方便cropper接口传递所设
   },
-
+  isSet:false,//设置是否已经上传成功了
   async onShow() {
     const register = await wx.getStorageSync("register");
     if (register) {
@@ -31,13 +31,17 @@ Page({
   },
 
   onUnload() {
-    const register = {
-      nickName: this.data.nickName,
-      gender: this.data.gender,
-      selfIntro: this.data.selfIntro,
-      avatarPath: this.data.avatarPath,
-    };
-    wx.setStorageSync("register", register);
+    //否则会退出错误，因为提交submit的时候删除register缓存，退出的时候又加回去
+    if(!this.isSet){
+      const register = {
+        nickName: this.data.nickName,
+        gender: this.data.gender,
+        selfIntro: this.data.selfIntro,
+        avatarPath: this.data.avatarPath,
+      };
+      wx.setStorageSync("register", register);
+    }
+    
   },
 
   toCropper() {
@@ -48,6 +52,7 @@ Page({
 
   handleNickName(e) {
     this.setData({ nickName: e.detail.value });
+    console.log(e);
   },
 
   handleGender(e) {
@@ -80,7 +85,7 @@ Page({
       wx.showToast({
         title: "未选择性别",
       });
-    } else if (this.data.avatarPath == null) {
+    } else if (this.data.avatarPath == "") {
       wx.showToast({
         title: "未上传头像",
       });
@@ -92,14 +97,15 @@ Page({
       if (selfIntro == "") {
         selfIntro = "该用户很懒，没有填自我介绍~";
       }
-
+      wx.hideLoading();
       const userInfo = await register(openId, nickName, gender, selfIntro, this.data.avatarPath);
       wx.hideLoading();
       // 注册成功，返回用户信息
       if (userInfo) {
         app.globalData.userInfo = userInfo;
         wx.setStorageSync("userInfo", userInfo);
-        wx.removeStorageSync("register"); // 清除register的本地缓存
+        this.isSet =true,
+        wx.removeStorageSync('register'); // 清除register的本地缓存
         wx.navigateBack({
           delta: -1,
         });
