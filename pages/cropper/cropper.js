@@ -14,14 +14,18 @@ Page({
 
   onLoad: function (options) {
     this.cropper = this.selectComponent("#image-cropper");
-    console.log(options.imgSrc);
+    console.log(typeof(options.imgSrc));
+    // if(options.imgSrc){
+    //   let head_write= "点击中间裁剪框可查看裁剪后的图片";
+    // }
     this.setData({
       src: options.imgSrc,
     });
-    if (!options.imgSrc) {
+    if (options.imgSrc=="") {
       this.cropper.upload(); //上传图片
     }
   },
+
 
   cropperload(e) {
     console.log("cropper加载完成");
@@ -56,7 +60,7 @@ Page({
         //重置图片角度、缩放、位置
         that.cropper.imgReset();
         that.setData({
-          src: tempFilePaths,
+          src: tempFilePaths
         });
       },
     });
@@ -113,6 +117,13 @@ Page({
         prevPage.setData({
           avatarPath: obj.url,
         });
+        const register = wx.getStorageSync("register");
+        if (register) {
+          console.log("本地存在缓存register: ", register);
+          var _register = register;
+          _register.avatarPath = obj.url;
+          wx.setStorageSync('register', _register);
+        }
         wx.navigateBack();
       } else {
         console.log("上一页已被清除");

@@ -9,9 +9,19 @@
     justify-content: space-around;
 }
 
-.hint {
+.hint1 {
     position: absolute;
     top: 10rpx;
+    width: 100%;
+    font-size: 33rpx;
+    text-align: center;
+    color: white;
+    z-index: 10;
+}
+
+.hint2{
+    position: absolute;
+    top: 60rpx;
     width: 100%;
     font-size: 33rpx;
     text-align: center;
