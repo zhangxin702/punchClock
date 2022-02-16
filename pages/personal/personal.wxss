@@ -67,8 +67,9 @@
   margin-top: 150rpx;
 }
 .act_wrap .control {
-  margin-top: 30rpx;
+  margin-top: 10rpx;
   display: flex;
+  margin-bottom: 20rpx;
 }
 .act_wrap .control .blank {
   flex: 1;
@@ -84,4 +85,8 @@
 }
 .act_wrap .control .navigator_item navigator {
   padding: 30rpx;
+}
+
+.rail{
+  border-bottom: 1rpx solid gray;
 }

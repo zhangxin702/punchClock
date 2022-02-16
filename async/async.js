@@ -202,6 +202,7 @@ export const register = (openId, nickName, gender, selfIntro, avatarPath) => {
               gender: gender,
               selfIntro: selfIntro,
               avatarUrl: avatarUrl,
+              collect: [],
             },
           })
           .then((res) => {
@@ -1053,6 +1054,11 @@ export const getCollect = (openId) => {
       .then((res) => {
         console.log("获取用户的收藏成功√\n", res);
         const { collect } = res.data;
+        //如果是没有collect，单返回一个空数组
+        //这个能解决加载中获取不到数组.length问题
+        if(typeof collect == "undefined"){
+          resolve([]);
+        }
         resolve(collect);
       })
       .catch((err) => {
@@ -1070,11 +1076,6 @@ export const getPunchAll = (order, skip, limit, openId) => {
    * limit: 获取上限
    * openId: 用户的唯一标识
    */
-
-  wx.showLoading({
-    title: "加载中",
-    mask: true,
-  });
 
   return new Promise((resolve, reject) => {
     var db = wx.cloud.database();
@@ -1127,6 +1128,7 @@ export const getPunchAll = (order, skip, limit, openId) => {
           const actData = res.data;
 
           let punchData = [];
+          let ifget = false;//这个用来判断有没有get到过数据
           for (let i = 0; i < actData.length; i++) {
             // 没有用户打了卡
             if (actData[i].userIds.length == 0) {
@@ -1143,20 +1145,24 @@ export const getPunchAll = (order, skip, limit, openId) => {
               .limit(3) // 如果遵循limit的9的话，所有活动加在一起会获取到很多数据
               .get()
               .then((res) => {
-                punchData = punchData.concat(res.data);
+                if(res.data.length){
+                  punchData = punchData.concat(res.data);
+                  ifget = true;
+                }
               })
               .catch((err) => {
                 reject(err);
               });
           }
-
+          if(!ifget){
+            wx.showToast({ title: "没有更多数据啦" });
+          }
           resolve(punchData);
         })
         .catch((err) => {
           reject(err);
         });
     }
-    wx.hideLoading();
   });
 };
 
@@ -1207,3 +1213,47 @@ export const getPunchDataExcel = (openId, mode) => {
       });
   });
 };
+
+export const CollectPushDb = (order, actId, openId) => {
+  /**
+   * 把collect的数据push进数据库
+   * order 0:删除一个actId
+   * order 1:加入新的actId
+   */
+
+  return new Promise((resolve, reject) => {
+    var db = wx.cloud.database();
+    const _ = db.command;
+    if(order){
+      db.collection('UserTable')
+      .doc(openId)
+      .update({
+        data: {
+          collect: _.push(actId),
+        },
+        success: (res) => {
+          console.log('插入成功', res);
+        },
+        fail: (err) => {
+          console.log('插入失败', err);
+        },
+      })
+    }
+    else{
+      db.collection('UserTable')
+      .doc(openId)
+      .update({
+        data: {
+          collect: _.pull(actId),
+        },
+        success: (res) => {
+          console.log('插入成功', res);
+        },
+        fail: (err) => {
+          console.log('插入失败', err);
+        },
+      })
+    }
+  });
+};
+
