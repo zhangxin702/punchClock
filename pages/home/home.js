@@ -38,23 +38,6 @@ Page({
     let res2 = await getOrganizePunch(openId);
     console.log('res1'+res1);
     
-
-
-    let punchData = null;
-    await wx.cloud
-      .callFunction({
-        name: 'getPunchData',
-        data: {
-          openId: openId,
-        },
-      })
-      .then((res) => {
-        punchData = res.result;
-        console.log('punchData: ', punchData);
-      });
-
-
-
     this.setData({
       attendList:res1,
       organizeList:res2,
