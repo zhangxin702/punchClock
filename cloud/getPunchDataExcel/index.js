@@ -1,17 +1,19 @@
 // 云函数入口文件
 const cloud = require("wx-server-sdk");
 const xlsx = require("node-xlsx");
-cloud.init();
+cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
 // 云函数入口函数
 exports.main = async (event, context) => {
   // 获取对表格的引用
+  console.log("event: ", event);
   const db = cloud.database(),
     { openId, mode } = event;
   let punchData = [];
 
   // 模式1：查询该用户的所有打卡记录
   if (mode == 1) {
+    console.log("mode1");
     const option = {
       _openid: openId,
     };
@@ -35,12 +37,14 @@ exports.main = async (event, context) => {
     for (i = 0; i < length; i += 100) {
       p = await db.collection("PunchTable").where(option).skip(i).get();
       p = p.data;
-      p = await FileIDtoUrl(p); // 将FileID转为下载地址
+      p = await fileIDtoUrl(p); // 将FileID转为下载地址
       punchData = punchData.concat(p);
     }
   }
   // 模式2：查询该用户举办的所有活动的打卡记录
   else {
+    console.log("mode2");
+
     // 先获取用户举办的所有活动
     // 先获取数量
     let length = 0,
@@ -89,7 +93,7 @@ exports.main = async (event, context) => {
         }
 
         // p = p.data;
-        p = await FileIDtoUrl(p.data); // 将FileID转为下载地址
+        p = await fileIDtoUrl(p.data); // 将FileID转为下载地址
         punchData = punchData.concat(p);
       }
     }
@@ -125,22 +129,36 @@ exports.main = async (event, context) => {
   }
   // console.log("allData: ", allData);
 
+  console.log("buffer(before)");
   const buffer = await xlsx.build([
     {
       name: "excel",
       data: allData,
     },
   ]);
+  console.log("buffer(after)");
+  // .then((res) => {
+  //   console.log("buffer: ", res);
+  // })
+  // .catch((err) => {
+  //   console.log("buffer: ", err);
+  // });
 
-  await cloud.uploadFile({
-    cloudPath: "temp/punch.xlsx",
-    fileContent: buffer,
-  });
-
-  return true;
+  return await cloud
+    .uploadFile({
+      cloudPath: "temp/punch.xlsx",
+      fileContent: buffer,
+    })
+    .then((res) => {
+      return res.fileID;
+    })
+    .catch((err) => {
+      console.log("err: ", err);
+      return err;
+    });
 };
 
-async function FileIDtoUrl(punchData) {
+async function fileIDtoUrl(punchData) {
   /**
    * 将打卡原始数据中的所有的文件的云存储fileID转为下载地址url
    * punchData: 打卡原始数据，最大长度50
@@ -152,12 +170,17 @@ async function FileIDtoUrl(punchData) {
   // 先转换punchImages
   try {
     for (let i = 0; i < punchData.length; i++) {
+      // 填空
+      if (punchData[i].punchImages == null) {
+        fileList.push(null);
+        count++;
+      }
       // 保证每次转数总数不超过50（getTempFileURL的上限）
-      if (count + punchData[i].punchImages.length) {
+      else if (count + punchData[i].punchImages.length <= 50) {
         for (let j = 0; j < punchData[i].punchImages.length; j++) {
           fileList.push(punchData[i].punchImages[j]);
-          count++;
         }
+        count++;
       }
       // 逼近上限时，转换
       else {
@@ -167,6 +190,7 @@ async function FileIDtoUrl(punchData) {
             fileList: fileList,
           })
           .then((res) => {
+            console.log("fileIDtoUrl: ", res);
             fileList = res.fileList;
           })
           .catch((err) => {
@@ -211,10 +235,50 @@ async function FileIDtoUrl(punchData) {
     console.log("err in images: ", err);
   }
 
-  count = 0;
+  // count = 0;
   fileList = [];
-  // 在转换punchFiles
+  // 再转换punchFiles
   try {
+    for (let i = 0; i < punchData.length; i++) {
+      fileList.push(punchData[i].punchFiles);
+      if (i + 1 == 50) {
+        await cloud
+          .getTempFileURL({
+            fileList: fileList,
+          })
+          .then((res) => {
+            fileList = res.fileList;
+          })
+          .catch((err) => {
+            return err;
+          });
+
+        // 逐个punchData回填
+        let c = 0;
+        for (let j = i - 49; j < 50; j++) {
+          punchData[j].punchFile = fileList[c++].tempFileURL;
+        }
+        fileList = [];
+      }
+    }
+
+    // 剩余的，转换
+    await cloud
+      .getTempFileURL({
+        fileList: fileList,
+      })
+      .then((res) => {
+        fileList = res.fileList;
+      })
+      .catch((err) => {
+        return err;
+      });
+
+    // 逐个punchData回填
+    let c = 0;
+    for (let j = i - 49; j < 50; j++) {
+      punchData[j].punchFile = fileList[c++].tempFileURL;
+    }
   } catch (err) {
     console.log("err in files: ", err);
   }

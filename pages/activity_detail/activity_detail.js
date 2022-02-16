@@ -1,7 +1,7 @@
 // pages/punch_detail/punch_detail.js
 import { actTableById } from '../../async/index.js';
 //获取收藏的函数
-import { getCollect } from '../../async/async';
+import { getCollect,CollectPushDb } from '../../async/async';
 import { formatTime } from '../../utils/util.js';
 
 const app = getApp();
@@ -22,6 +22,8 @@ Page({
 
     //用户是否收藏
     isCollect: false,
+    //打开页面之前用户是否收藏
+    isBeforeCollect: false,
   },
 onLoad:function(options){
   this.setData({
@@ -31,9 +33,9 @@ onLoad:function(options){
 
 
 },
-  onShow: function (options) {
+  onShow: function () {
     this.getById(this.data.actId);
-    this.getIsCollect(this.data.actId);
+    this.getIsCollectBefor(this.data.actId);
   },
 
   async getById(actId) {
@@ -76,8 +78,16 @@ onLoad:function(options){
     });
   },
 
+  changeIsCollect(){
+    //单单改变页面的数据
+    const isCollect=!this.data.isCollect;
+    this.setData({
+      isCollect
+    })
+  },
+
   //获取是否收藏的函数
-  async getIsCollect(actId) {
+  async getIsCollectBefor(actId) {
     //防止加载过程用户误触
     wx.showLoading({
       title: '加载中',
@@ -85,62 +95,73 @@ onLoad:function(options){
     //获取收藏的全部
     const openId = app.globalData.userInfo._id;
     //获取该openID的全部收藏对象
-    const collect = await getCollect(openId);
-    for (let i = 0; i < collect.length; i++) {
-      if (collect[i] == actId) {
-        this.setData({
-          isCollect: true,
-        });
-      }
+    const userInfo =await wx.getStorageSync('userInfo');
+    let collect = [];
+    if(userInfo){
+      collect =userInfo.collect;//从缓存中获取
+    }
+    else{
+      collect = await getCollect(openId);//从数据库中获取
+    }
+    if(collect.indexOf(this.data.actId)>=0){//判断该活动是否在里面
+      this.setData({
+        isCollect: true,
+        isBeforeCollect: true,
+      });
     }
     wx.hideLoading();
   },
+
+   async onUnload(){
+     await this.handleCollect();
+     wx.hideLoading();//不能写在内部
+     //因为这是异步执行的一定是先执行一部分马上回退的
+   },
+
+   onHide(){
+     this.handleCollect();
+     wx.hideLoading();
+   },
 
   async handleCollect() {
     wx.showLoading({
       title: '收藏中',
       mask: true,
     });
-
-    const { isCollect } = this.data;
-    const _ = wx.cloud.database().command;
-    const actId = this.data.activity._id;
+    const actId = this.data.actId;
     const openId = app.globalData.userInfo._id;
-    let newCollect = await getCollect(openId); // 获取该openID的全部收藏对象
-    var db = wx.cloud.database().collection('UserTable');
-    if (isCollect) {
-      await db.doc(openId).update({
-        data: {
-          collect: _.pull(actId),
-        },
-        success: (res) => {
-          console.log('插入成功', res);
-        },
-        fail: (err) => {
-          wx.hideLoading();
-          console.log('插入失败', err);
-        },
-      });
-    } else {
-      await newCollect.push(actId);
-      await db.doc(openId).update({
-        data: {
-          collect: newCollect,
-        },
-        success: (res) => {
-          console.log('插入成功', res);
-        },
-        fail: (err) => {
-          wx.hideLoading();
-          console.log('插入失败', err);
-        },
-      });
+    const isCollect= this.data.isCollect;
+    const isBeforeCollect= this.data.isBeforeCollect;
+    if(isCollect!=isBeforeCollect){
+      await this.CollectPushStorage(isCollect,actId,openId);
+      await CollectPushDb(isCollect,actId,openId);
     }
-    for (let i = 0; i < newCollect.length; i++) console.log(newCollect[i]);
-
-    this.setData({
-      isCollect: !isCollect,
-    });
     wx.hideLoading();
   },
+
+  /**
+   * 把collect的数据放进缓存
+   * order 0:删除一个actId
+   * order 1:加入新的actId
+  */
+  async CollectPushStorage(isCollect,actId,openId){
+    const userInfo=wx.getStorageSync('userInfo');
+    if(userInfo){
+      console.log("本地存在缓存register: ", userInfo);
+      let collect =userInfo.collect;
+      if(isCollect){
+        await collect.push(this.data.actId);//插入一个
+      }
+      else{
+        await collect.splice(collect.indexOf(actId),1);//删除一个
+      }
+      var _userInfo = userInfo;
+      _userInfo.collect = collect; 
+      await wx.setStorageSync('userInfo', _userInfo);
+    }
+    else{
+      //看你们要不要写个从数据库加入缓存
+      wx.hideLoading();
+    }
+  }
 });

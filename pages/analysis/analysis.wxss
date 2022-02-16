@@ -1,6 +1,6 @@
 .label {
   display: flex;
-  margin-top: 200rpx;
+  margin-top: 50rpx;
 }
 .label .blank {
   flex: 1;

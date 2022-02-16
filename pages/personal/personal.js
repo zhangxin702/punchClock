@@ -23,9 +23,9 @@ Page({
       if (!actInfo) {
         let db = wx.cloud.database();
         const participate = await getParticipateNum(db, this.data.userInfo._id); // 获取用户已参与的活动数量
-        // console.log("participate: ", participate);
+        console.log("participate: ", participate);
         const organize = await getOrganizeNum(db, this.data.userInfo._id); // 获取用户已组织的活动数量
-        // console.log("organize: ", organize);
+        console.log("organize: ", organize);
         actInfo = {
           participate: participate,
           organize: organize,

@@ -11,27 +11,54 @@ Page({
     actList: [],
     pageNum: 0,
     // openId: "user-1",
-    // openId: app.globalData.userInfo.openId,  // 错误写法
-    openId: null,
+    openId: null,  // 错误写法 //傻嘿鬼无知啊
     limit: 9,
     isSearch: false, //看当前是否是搜索状态
     dict: {}, //为了方便搜索，创立一个字典
   },
 
-  async onLoad() {
-    if (this.data.openId == null) {
-      this.setData({
-        openId: app.globalData.userInfo._id,
-      });
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  async onShow() {
+    
+    let userInfo =await wx.getStorageSync("userInfo");
+    if(!userInfo){
+      //提示退出
+      wx.showModal({
+        title: '提示',
+        content: '未注册，没有权限查看收藏数据',
+        showCancel: false,
+        confirmText: "知道了",
+        success: function (res) {
+          if (res.confirm) {
+            wx.navigateBack({
+              delta: -1,
+            })
+          } else if (res.cancel) {
+            //点击取消按钮
+            //取消按钮被我隐藏了，不用管这个
+          }
+        }
+      })
     }
-
-    const collect = await getCollect(this.data.openId);
-    const dict = await getActTheme();
-    this.setData({
-      collect,
-      dict,
-    });
-    await this.GetAll(this.data.pageNum, this.data.collect, this.data.limit);
+    else{
+      //获取并且重置页面
+      const openId = userInfo._id;
+      const collect= userInfo.collect?userInfo.collect:[];
+      const dict = await getActTheme();
+      //重置页面
+      await this.setData({
+        collect,
+        dict,
+        openId:openId,
+        actList: [],
+        pageNum: 0,
+      });
+      console.log(this.data);
+      await this.GetAll(this.data.pageNum, this.data.collect, this.data.limit);
+    }
+    
   },
 
   async GetAll(skip, collect, limit) {
@@ -86,11 +113,11 @@ Page({
     var addList = [];
     for (let i = 0; i < collect.length; i++) {
       let actId = collect[i];
-      if (dict[actId].match(input)) {
-        await db
-          .doc(actId)
-          .get()
-          .then((res) => {
+      let actTheme= dict[actId]?dict[actId]:"";
+      if(actTheme.match(input)){
+        await db.doc(actId)
+        .get()
+        .then((res) => {
             addList = addList.concat(res.data);
             console.log(addList);
             console.log("获取用户的收藏成功√\n", res);
@@ -121,11 +148,6 @@ Page({
         title: "已经搜索完了",
       });
     } else {
-      this.setData({
-        pageNum: 0,
-        actList: [],
-        //刷新时应该是重新回到开始状态
-      });
       this.GetAll(this.data.pageNum, this.data.collect, this.data.limit);
     }
   },
