@@ -77,19 +77,43 @@ Page({
     this.GetAll(this.data.currentTab, this.data.pageNum);
   },
 
+  async shareFile(fileId) {
+    /**
+     * 分享文件到聊天
+     */
+
+    // 获取临时文件地址
+    wx.cloud
+      .downloadFile({
+        fileID: fileId,
+      })
+      .then((res) => {
+        console.log(res);
+        // 分享文件到聊天
+        wx.shareFileMessage({
+          filePath: res.tempFilePath,
+          success: (res) => {
+            console.log(res);
+          },
+          fail: (err) => {
+            console.log(err);
+          },
+        });
+      })
+      .catch((err) => {
+        console.log("获取文件临时地址失败×\n", err);
+      });
+  },
+
   async handleMyOwnPunchData() {
     /**
      * 下载我的打卡记录到本地
      */
 
     const openId = app.globalData.userInfo._id;
-    await getPunchDataExcel(openId, 1)
-      .then((res) => {
-        console.log("res: ", res);
-      })
-      .catch((err) => {
-        console.log("err: ", err);
-      });
+    const fileId = await getPunchDataExcel(openId, 1);
+    console.log("fileId: ", fileId);
+    this.shareFile(fileId);
   },
 
   async handleMyActPunchData() {
@@ -98,12 +122,8 @@ Page({
      */
 
     const openId = app.globalData.userInfo._id;
-    await getPunchDataExcel(openId, 2)
-      .then((res) => {
-        console.log("res: ", res);
-      })
-      .catch((err) => {
-        console.log("err: ", err);
-      });
+    const fileId = await getPunchDataExcel(openId, 2); // 获取fileId
+    console.log("fileId: ", fileId);
+    this.shareFile(fileId);
   },
 });

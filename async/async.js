@@ -1188,8 +1188,8 @@ export const getPunchDataExcel = (openId, mode) => {
    * 下载指定用户的打卡记录到本地
    */
 
-  return new Promise((resolve, reject) => {
-    wx.cloud
+  return new Promise(async (resolve, reject) => {
+    await wx.cloud
       .callFunction({
         name: "getPunchDataExcel",
         data: {
@@ -1198,7 +1198,8 @@ export const getPunchDataExcel = (openId, mode) => {
         },
       })
       .then((res) => {
-        resolve(true);
+        // console.log("getPunchDataExcel res: ", res);
+        resolve(res.result);
       })
       .catch((err) => {
         reject(err);
