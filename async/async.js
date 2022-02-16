@@ -217,6 +217,7 @@ export const register = (openId, nickName, gender, selfIntro, avatarPath) => {
               gender: gender,
               selfIntro: selfIntro,
               avatarUrl: avatarUrl,
+              collect: [],
             };
             resolve(userInfo);
           })

@@ -20,9 +20,9 @@ Page({
 
   async GetAll(order, skip) {
     wx.showLoading({
-      title: '加载中',
+      title: "加载中",
       mask: true,
-    })
+    });
     var res = await getPunchAll(
       order,
       skip,
@@ -94,20 +94,42 @@ Page({
      */
 
     // 获取临时文件地址
-    wx.cloud
+    await wx.cloud
       .downloadFile({
         fileID: fileId,
       })
       .then((res) => {
-        console.log(res);
-        // 分享文件到聊天
-        wx.shareFileMessage({
-          filePath: res.tempFilePath,
+        const index = fileId.lastIndexOf("/");
+        const fileName = fileId.substring(index + 1, fileId.length);
+        console.log("fileName: ", fileName);
+        // console.log("res1: ", res);
+        const temp = res.tempFilePath;
+        wx.showModal({
+          title: fileName,
+          content: "点击确定即可分享文件到聊天",
           success: (res) => {
-            console.log(res);
-          },
-          fail: (err) => {
-            console.log(err);
+            console.log("res2: ", res);
+            // 用户点击了确定
+            if (res.confirm) {
+              // 分享文件到聊天
+              wx.shareFileMessage({
+                filePath: temp,
+                success: (res) => {
+                  console.log(res);
+                },
+                fail: (err) => {
+                  console.log(err);
+                },
+              });
+            }
+            // 用户点击了取消
+            else if (res.cancel) {
+              wx.showToast({
+                title: "已取消",
+                icon: "error",
+                duration: 2000,
+              });
+            }
           },
         });
       })
@@ -124,7 +146,7 @@ Page({
     const openId = app.globalData.userInfo._id;
     const fileId = await getPunchDataExcel(openId, 1);
     console.log("fileId: ", fileId);
-    this.shareFile(fileId);
+    await this.shareFile(fileId);
   },
 
   async handleMyActPunchData() {
@@ -135,6 +157,6 @@ Page({
     const openId = app.globalData.userInfo._id;
     const fileId = await getPunchDataExcel(openId, 2); // 获取fileId
     console.log("fileId: ", fileId);
-    this.shareFile(fileId);
+    await this.shareFile(fileId);
   },
 });
