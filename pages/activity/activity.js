@@ -11,7 +11,10 @@ Page({
 
   // 点击跳转活动列表
   onItemClick: function () {
-    wx.navigateTo({ url: '../activity_classification/activity_classification' });
+    wx.navigateTo({ url: '../activity_collect/activity_collect' });
+  },
+  onItemClick_2: function () {
+    wx.navigateTo({ url: '../activity_record/activity_record' });
   },
 
   // 点击跳转活动创建列表

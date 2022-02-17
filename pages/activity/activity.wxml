@@ -1,12 +1,4 @@
-<!-- 卡片一，进入活动列表页面 -->
-<view class="kongbai"></view>
-<view class="card" >
-        <view bindtap="onItemClick">
-            <image class="image" mode="aspectFill" src="cloud://zhangxinying-1g0quq2g2d68268c.7a68-zhangxinying-1g0quq2g2d68268c-1307395035/projectImage/活动分类图片.jfif"/>
-           
-            <view class="title">活动分类</view>
-        </view>
-    </view>
+
 		<view class="kongbai"></view>
 <!-- 卡片二，进入创建活动页面 -->
 <view class="card" >
@@ -16,7 +8,26 @@
             <view class="title">创建活动</view>
         </view>
     </view>
+    <!-- 卡片一，进入活动列表页面 -->
+<view class="kongbai"></view>
+<view class="secondBox">
+    <view class="card_1" >
+        <view bindtap="onItemClick">
+            <image class="image_1" mode="aspectFill" src="cloud://zhangxinying-1g0quq2g2d68268c.7a68-zhangxinying-1g0quq2g2d68268c-1307395035/projectImage/climber-gb587c11f9_1280.jpg"/>
+           
+            <view class="title">活动收藏</view>
+        </view>
+    </view>
+    <view class="card_1" >
+        <view bindtap="onItemClick_2">
+            <image class="image_1" mode="aspectFill" src="cloud://zhangxinying-1g0quq2g2d68268c.7a68-zhangxinying-1g0quq2g2d68268c-1307395035/projectImage/matthieu-petiard-Pf6e3o0GL4M-unsplash.jpg"/>
+           
+            <view class="title">活动经历</view>
+        </view>
+    </view>
 
+</view>
+<view class="kongbai"></view>
 
 
 
