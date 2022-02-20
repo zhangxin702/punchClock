@@ -1,4 +1,4 @@
-import { getParticipatePunch, getOrganizePunch, getSelfPunchedTimes } from "../../async/async.js";
+import { getParticipatePunch, getOrganizePunch, getSelfPunchedTimes, getSearch} from "../../async/async.js";
 import { formatTime } from "../../utils/util.js";
 const app = getApp();
 
@@ -20,9 +20,8 @@ Page({
       },
     ],
     actList: [],
-    organizeList: [],
-    showActList: [],
-    showOrganizeList: [],
+    pageNum: 0,
+    openId: "",
   },
 
   //标题点击事件，从组件中传过来
@@ -35,7 +34,16 @@ Page({
     tabs.forEach((v, i) => (i === index ? (v.isActive = true) : (v.isActive = false)));
     this.setData({
       tabs,
+      actList: [],
+      pageNum: 0,
     });
+    //代表在已参与页面
+    if(this.data.tabs[0].isActive){
+      this.getAll(1, this.data.pageNum, this.data.openId);
+    }
+    else{
+      this.getAll(0, this.data.pageNum, this.data.openId);
+    }
   },
 
   //加载时获取page_id以此确保能够从按钮中走向正确样式
@@ -53,95 +61,167 @@ Page({
     const index = Number(page_id);
     //找哪个是page_id，是的改成isActive为true，否则为false
     tabs.forEach((v, i) => (i === index ? (v.isActive = true) : (v.isActive = false)));
+    // const openId = app.globalData.userInfo._id;
+    const openId = "user-1";
     this.setData({
       tabs,
+      openId,
     });
-    const openId = app.globalData.userInfo._id;
+  },
 
-    const db = wx.cloud.database();
-    let res1 = await getParticipatePunch(openId);
-    let res2 = await getOrganizePunch(openId);
-    let actList = res1.map((v) => ({
-      ...v,
-      //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
-      createTime: formatTime({ date: new Date(v.createTime) }),
-      endTime: formatTime({ date: new Date(v.endTime) }),
-      startTime: formatTime({ date: new Date(v.startTime) }),
-    }));
-    let organizeList = res2.map((v) => ({
-      ...v,
-      //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
-      createTime: formatTime({ date: new Date(v.createTime) }),
-      endTime: formatTime({ date: new Date(v.endTime) }),
-      startTime: formatTime({ date: new Date(v.startTime) }),
-    }));
-    console.time();
-
-    let punchData = null;
-    await wx.cloud
-      .callFunction({
-        name: "getPunchData",
-        data: {
-          openId: openId,
-        },
-      })
-      .then((res) => {
-        punchData = res.result;
-        console.log("punchData: ", punchData);
-      });
-
-    for (let i = 0; i < actList.length; i++) {
-      let res = await getSelfPunchedTimes(db, openId, actList[i]._id, punchData);
-      actList[i].isFinish = res.isFinish;
-      actList[i].punchedTimes = res.punchedTimes;
-    }
-    console.timeEnd();
-
+  onShow(){
     this.setData({
-      actList,
-      organizeList,
-      showActList: JSON.parse(JSON.stringify(actList)), //深拷贝防止改变引起总的改变
-      showOrganizeList: JSON.parse(JSON.stringify(organizeList)), //同上
+      pageNum: 0,
+      actList: [],
+    })
+    //代表在已参与页面
+    if(this.data.tabs[0].isActive){
+      this.getAll(1, this.data.pageNum, this.data.openId);
+    }
+    else{
+      this.getAll(0, this.data.pageNum, this.data.openId);
+    }
+  },
+
+  async getAll(order, skip, openId) {
+    //order==1表示在第一个已参与里面
+    //order==0表示在已组织页面里面
+    wx.showLoading({
+      title: '加载中',
+      mask: true,
     });
-    console.log("actList: ", this.data.actList);
-    console.log("organizeList: ", this.data.organizeList);
+    let addList=[];
+    if(order){
+      var res = await getParticipatePunch({
+        openId: openId,
+        skip: skip,
+        limit: 9,
+      });
+      console.log(res);
+      let punchData = null;
+      addList= res.data;
+      const db = wx.cloud.database();
+      await wx.cloud
+        .callFunction({
+          name: "getPunchData",
+          data: {
+            openId: openId,
+          },
+        })
+        .then((res) => {
+          punchData = res.result;
+          console.log("punchData: ", punchData);
+        });
+      for (let i = 0; i < addList.length; i++) {
+        let res = await getSelfPunchedTimes(db, openId, addList[i]._id, punchData);
+        addList[i].isFinish = res.isFinish;
+        addList[i].punchedTimes = res.punchedTimes;
+      }
+    }
+    else{
+      var res = await getOrganizePunch({
+        openId: openId,
+        skip: skip,
+        limit: 9,
+      });
+      addList=res.data;
+    }
+    addList = res.data.map((v) => ({
+      ...v,
+      //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
+      createTime: formatTime({ date: new Date(v.createTime) }),
+      endTime: formatTime({ date: new Date(v.endTime) }),
+      startTime: formatTime({ date: new Date(v.startTime) }),
+    }));
+    this.setData({
+      actList: [...this.data.actList, ...addList],
+      pageNum: this.data.pageNum + 9,
+    });
+    wx.stopPullDownRefresh();
     wx.hideLoading();
+  },
+  onReachBottom: function(e){
+    if(this.data.tabs[0].isActive){
+      this.getAll(1,this.data.pageNum,this.data.openId);
+    }
+    else{
+      this.getAll(0,this.data.pageNum,this.data.openId);
+    }
+  },
+
+  //下拉刷新事件，存放在页面生命周期中
+  onPullDownRefresh() {
+    this.setData({
+      pageNum: 0,
+      actList: [],
+    });
+    if (this.data.tabs[0].isActive) {
+      this.getAll(1,this.data.pageNum,this.data.openId);
+    }
+    else{
+      this.getAll(0,this.data.pageNum,this.data.openId);
+    }
   },
 
   //搜索，按enter键返回值
-  inputBind(e) {
+  async inputBind(e) {
     wx.showLoading({
       title: "加载中",
       mask: true,
     });
-    let showActList = [];
-    let showOrganizeList = [];
-    let actTheme = null;
-    let actList = this.data.actList;
-    let organizeList = this.data.organizeList; // 检索所有参与活动
-    for (let i = 0; i < actList.length; i++) {
-      actTheme = actList[i].actTheme; // 获取一个活动的所有参与者 // 检索这个活动的所有参与者 //.match是匹配字符串
-      if (actTheme.match(e.detail.value)) {
-        showActList.push(actList[i]);
-      }
-    } //检索所有组织活动
-    for (let i = 0; i < organizeList.length; i++) {
-      actTheme = organizeList[i].actTheme; // 获取一个活动的所有参与者 // 检索这个活动的所有参与者
-      if (actTheme.match(e.detail.value)) {
-        showOrganizeList.push(organizeList[i]);
-      }
-    } //两边同时为空的时候，由于是数组只能用length==0去判断
-    if (!showActList.length && !showOrganizeList.length) {
-      wx.showToast({
-        title: "未查询到活动",
-      });
-      showActList = this.data.actList;
-      showOrganizeList = this.data.organizeList;
-    }
     this.setData({
-      showOrganizeList,
-      showActList,
+      actList: [],
+      pageNum: 0,
+    })
+    let addList=[];
+    let str= e.detail.value;
+    const {openId} = this.data;
+    if(this.data.tabs[0].isActive){
+      var res=await getSearch({
+        order:1,
+        openId:openId,
+        searchKey:str,
+      });
+      let punchData = null;
+      addList= res.data;
+      const db = wx.cloud.database();
+      await wx.cloud
+        .callFunction({
+          name: "getPunchData",
+          data: {
+            openId: openId,
+          },
+        })
+        .then((res) => {
+          punchData = res.result;
+          console.log("punchData: ", punchData);
+        });
+      for (let i = 0; i < addList.length; i++) {
+        var res = await getSelfPunchedTimes(db, openId, addList[i]._id, punchData);
+        addList[i].isFinish = res.isFinish;
+        addList[i].punchedTimes = res.punchedTimes;
+      }
+    }
+    else{
+      let res=await getSearch({
+        order:0,
+        openId:this.data.openId,
+        searchKey:str
+      });
+      addList= res.data;
+    }
+    addList = addList.map((v) => ({
+      ...v,
+      //以下都一样。因为云函数取出的时间格式比较奇怪，需要先new date
+      createTime: formatTime({ date: new Date(v.createTime) }),
+      endTime: formatTime({ date: new Date(v.endTime) }),
+      startTime: formatTime({ date: new Date(v.startTime) }),
+    }));
+    this.setData({
+      actList: [...this.data.actList, ...addList],
+      pageNum: this.data.pageNum + 9,
     });
+    wx.stopPullDownRefresh();
     wx.hideLoading();
   },
 });

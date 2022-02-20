@@ -2,5 +2,6 @@
   "usingComponents": {
     "tabs":"../../components/tabs/tabs"
   },
-  "navigationBarTitleText":"活动经历"
+  "navigationBarTitleText":"活动经历",
+  "enablePullDownRefresh": true
 }

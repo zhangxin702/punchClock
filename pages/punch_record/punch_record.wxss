@@ -32,19 +32,10 @@
   overflow: hidden;
   margin-top: 100rpx;
 }
-button{
-  text-align: center;
-  /* width: auto!important;
-  margin-left:10px!important;
-  margin-right:10px!important; */
-  flex-direction: column;
-  width: 500rpx;
-  height: 70rpx;
-}
 .save_item {
   display: flex;
   text-align: center;
-  width: 70%!important;
+  width: 75%!important;
   height: 70rpx!important;
   justify-content: center;
   align-items: center;

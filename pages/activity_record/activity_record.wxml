@@ -1,6 +1,6 @@
 <!-- 监听自定义事件 -->
 <view class="search">
-	<input type="test" value="" placeholder="活动搜索" maxlength="10" bindconfirm="inputBind"/>
+	<input type="test" value="" placeholder="输入enter进行搜索" maxlength="10" bindconfirm="inputBind"/>
 </view>
 <tabs
  tabs="{{tabs}}"
@@ -12,7 +12,7 @@
 			<scroll-view scroll-y="{{true}}" > 
 			<navigator
 			 class="actives_item"
-			 wx:for="{{showActList}}"
+			 wx:for="{{actList}}"
 			 wx:key="actId"
 			 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
 			>
@@ -38,7 +38,7 @@
 			<scroll-view scroll-y="{{true}}" > 
 			<navigator
 			 class="actives_item"
-			 wx:for="{{showOrganizeList}}"
+			 wx:for="{{actList}}"
 			 wx:key="actId"
 			 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
 			>
