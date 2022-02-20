@@ -15,13 +15,35 @@ Page({
     limit: 9,
     isSearch: false, //看当前是否是搜索状态
     dict: {}, //为了方便搜索，创立一个字典
-  },
 
+    isDetailReturn: false //是否是从activity_detail页面返回，如果是需要阻隔一段时间
+  },
+  TimeId: -1, //用于全局的timer控制
   /**
    * 生命周期函数--监听页面加载
    */
   async onShow() {
-    
+    console.log(this.data.isDetailReturn);
+    if(this.data.isDetailReturn){
+     console.log("yes");
+     wx.showLoading({
+       title: '加载中',
+       mask: true,
+     })
+     clearTimeout(this.TimeId);
+     this.TimeId = setTimeout(() => {
+       //开启定时器
+       this.initialize();
+     }, 1000);
+     this.setData({
+       isDetailReturn: false,
+     })
+    }else{
+      this.initialize();
+    }
+  },
+
+  async initialize(){
     let userInfo =await wx.getStorageSync("userInfo");
     if(!userInfo){
       //提示退出
@@ -58,7 +80,6 @@ Page({
       console.log(this.data);
       await this.GetAll(this.data.pageNum, this.data.collect, this.data.limit);
     }
-    
   },
 
   async GetAll(skip, collect, limit) {

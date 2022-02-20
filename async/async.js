@@ -99,75 +99,121 @@ export const getOrganizeNum = (db, openId) => {
   });
 };
 
-export const getParticipatePunch = (openId) => {
+export const getParticipatePunch = ({openId, skip, limit}) => {
   /**
    * 获取用户参与的活动
    * openId: 用户的唯一标识
    */
-
+  
   return new Promise((resolve, reject) => {
-    wx.cloud
-      .callFunction({
-        name: "getActData",
-      })
-      .then((res) => {
-        console.log("获取所有活动信息成功√\n", res);
-        const actData = res.result;
+    
+    // wx.cloud
+    //   .callFunction({
+    //     name: "getActData",
+    //   })
+    //   .then((res) => {
+    //     console.log("获取所有活动信息成功√\n", res);
+    //     const actData = res.result;
 
-        // 对所有活动数据进行分析
-        let actList = [], // 存储活动
-          userIds = null;
-        // 检索所有活动
-        for (let i = 0; i < actData.length; i++) {
-          userIds = actData[i].userIds; // 获取一个活动的所有参与者
-          // 检索这个活动的所有参与者
-          for (let j = 0; j < actData[i].userCounts; j++) {
-            if (userIds[j] == openId) {
-              actList.push(actData[i]);
-              break;
-            }
-          }
-        }
-        resolve(actList);
+    //     // 对所有活动数据进行分析
+    //     let actList = [], // 存储活动
+    //       userIds = null;
+    //     // 检索所有活动
+    //     for (let i = 0; i < actData.length; i++) {
+    //       userIds = actData[i].userIds; // 获取一个活动的所有参与者
+    //       // 检索这个活动的所有参与者
+    //       for (let j = 0; j < actData[i].userCounts; j++) {
+    //         if (userIds[j] == openId) {
+    //           actList.push(actData[i]);
+    //           break;
+    //         }
+    //       }
+    //     }
+    //     resolve(actList);
+    //   })
+    //   .catch((err) => {
+    //     console.log("获取所有活动信息失败×\n", err);
+    //     reject(err);
+    //   });
+    var db = wx.cloud.database().collection('ActTable');
+    db.skip(skip)
+      .limit(limit)
+      .where({
+        userIds: openId//表示userIds数组里面某个值包含这个
       })
-      .catch((err) => {
-        console.log("获取所有活动信息失败×\n", err);
-        reject(err);
+      .get({
+        success: (res) => {
+          console.log("res",res);
+          if (res.data.length === 0) {
+            wx.showToast({ title: '没有更多数据啦' });
+          }
+          resolve(res);
+        },
+        fail: (err) => {
+          console.log("失败",err);
+          wx.hideLoading();
+          reject(err);
+        },
       });
   });
 };
 
-export const getOrganizePunch = (openId) => {
+export const getOrganizePunch = ({openId,skip,limit}) => {
   /**
    * 获取用户参与的活动
    * openId: 用户的唯一标识
    */
-
+  wx.showLoading({
+    title: '加载中',
+    mask: true,
+  });
   return new Promise((resolve, reject) => {
-    wx.cloud
-      .callFunction({
-        name: "getActData",
-      })
-      .then((res) => {
-        console.log("获取所有活动信息成功√\n", res);
-        const actData = res.result;
+    // wx.cloud
+    //   .callFunction({
+    //     name: "getActData",
+    //   })
+    //   .then((res) => {
+    //     console.log("获取所有活动信息成功√\n", res);
+    //     const actData = res.result;
 
-        // 对所有活动数据进行分析
-        let actList = [], // 存储活动
-          organizeId = null;
-        // 检索所有活动
-        for (let i = 0; i < actData.length; i++) {
-          organizeId = actData[i]._openid; // 获取一个活动的组织者
-          // 检索这个活动的所有组织者
-          if (organizeId == openId) {
-            actList.push(actData[i]);
-          }
-        }
-        resolve(actList);
+    //     // 对所有活动数据进行分析
+    //     let actList = [], // 存储活动
+    //       organizeId = null;
+    //     // 检索所有活动
+    //     for (let i = 0; i < actData.length; i++) {
+    //       organizeId = actData[i]._openid; // 获取一个活动的组织者
+    //       // 检索这个活动的所有组织者
+    //       if (organizeId == openId) {
+    //         actList.push(actData[i]);
+    //       }
+    //     }
+    //     resolve(actList);
+    //   })
+    //   .catch((err) => {
+    //     console.log("获取所有活动信息失败×\n", err);
+    //     reject(err);
+    //   });
+    
+    var db = wx.cloud.database().collection('ActTable');
+    db.skip(skip)
+      .limit(limit)
+      .where({
+        _openid: openId//表示userIds数组里面某个值包含这个
       })
-      .catch((err) => {
-        console.log("获取所有活动信息失败×\n", err);
-        reject(err);
+      .get({
+        success: (res) => {
+          console.log("res",res);
+          wx.hideLoading();
+          if (res.data.length == 0) {
+            wx.showToast({ title: '没有更多数据啦' });
+          }
+          resolve(res);
+        },
+        fail: (err) => {
+          console.log("失败",err);
+          wx.hideLoading();
+          reject(err);
+        },
       });
   });
 };
@@ -341,6 +387,7 @@ export const getSelfPunchedTimes = (db, openId, actId, punchData) => {
         }
       })
       .catch((err) => {
+        wx.hideLoading();
         console.log("参与者——获取活动信息失败×\n", err);
         reject(err);
       });
@@ -1257,3 +1304,55 @@ export const CollectPushDb = (order, actId, openId) => {
   });
 };
 
+export const getSearch = ({order, openId, searchKey}) => {
+  /**
+   * 
+   * order 0:查找已组织活动
+   * order 1:查找已参与活动
+   */
+
+  return new Promise((resolve, reject) => {
+    console.log("openId",openId);
+    var db = wx.cloud.database();
+    if(order){
+      db.collection('ActTable')
+        .where({
+          actTheme: db.RegExp({
+            regexp: searchKey,
+            options: 'i',
+          }),
+          userIds: openId,
+        })
+        .get({
+          success: (res) => {
+            console.log("res",res);
+            resolve(res);
+          },
+          fail: (err) => {
+            wx.hideLoading();
+            reject(err);
+          },
+        });
+    }
+    else{
+      db.collection('ActTable')
+        .where({
+          actTheme: db.RegExp({
+            regexp: searchKey,
+            options: 'i',
+          }),
+          _openid: openId,
+        })
+        .get({
+          success: (res) => {
+            console.log("res",res);
+            resolve(res);
+          },
+          fail: (err) => {
+            wx.hideLoading();
+            reject(err);
+          },
+        });
+    }
+  });
+};

@@ -14,7 +14,7 @@ Page({
     wx.navigateTo({ url: '../activity_collect/activity_collect' });
   },
   onItemClick_2: function () {
-    wx.navigateTo({ url: '../activity_record/activity_record' });
+    wx.navigateTo({ url: '../activity_record/activity_record?page_id=0' });
   },
 
   // 点击跳转活动创建列表

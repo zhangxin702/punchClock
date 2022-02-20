@@ -112,15 +112,24 @@ onLoad:function(options){
     wx.hideLoading();
   },
 
-   async onUnload(){
-     await this.handleCollect();
-     wx.hideLoading();//不能写在内部
-     //因为这是异步执行的一定是先执行一部分马上回退的
+   onUnload(){
+     let pages = getCurrentPages(); // 获取页面栈
+     let prevPage = pages[pages.length - 2]; // 获取上一个页面
+     if(prevPage.route=="pages/activity_collect/activity_collect"){
+       console.log("yes");
+       prevPage.setData({
+         isDetailReturn: true,//将这个改成这样，判断是不是从这个页面改变了数据。
+        });
+      }
+    //执行上述操作是因为页面改写本地缓存有时间差，因此要阻隔上页面一段时间来让缓存顺利改写
+     this.handleCollect();
+
    },
 
    onHide(){
      this.handleCollect();
-     wx.hideLoading();
+     wx.hideLoading();//不能写在内部
+     //因为这是异步执行的一定是先执行一部分马上回退的
    },
 
   async handleCollect() {
