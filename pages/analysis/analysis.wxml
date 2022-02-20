@@ -23,6 +23,9 @@
 <view class="canvas">
 	<canvas canvas-id="canvas2" class="myCanvas" style="width:{{chartWidth}}px;height:{{chartHeight}}px;"/>
 </view>
+<view class="canvas">
+	<canvas canvas-id="canvas3" class="myCanvas" style="width:{{chartWidth}}px;height:{{chartHeight}}px;"/>
+</view>
 <!-- <view class="canvas">
 <canvas canvas-id="canvas2" disable-scroll="true" class="myCanvas" style="width:{{chartWidth}}px;height:{{chartHeight}}px;"/>
 </view> -->
