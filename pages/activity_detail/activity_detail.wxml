@@ -15,7 +15,6 @@
 >
 	<text class="iconfont {{isCollect?'icon-shoucang':'icon-qita'}}">收藏</text>
 </view>
-
 <view class="kongbai"></view>
 <!-- 活动公告 -->
 <view class="activity_announce">{{activity.announcement}}</view>
@@ -32,9 +31,9 @@
 <view class="kongbai"></view>
 <view class="actives_introduce">{{activity.actContent}}</view>
 <view class="kongbai"></view>
-<navigator url="../punch_submit/punch_submit?actId={{activity._id}}">
+<view bindtap='submit'>
 	<button class="btn">参与打卡</button>
-</navigator>
+</view>
 <view class="kongbai"></view>
 <view class="kongbai"></view>
 

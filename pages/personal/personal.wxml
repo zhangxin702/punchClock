@@ -22,7 +22,6 @@
 		<navigator url="/pages/register/register">注册</navigator>
 	</view>
 </view>
-
 <view class="user_content">
 	<view class="user_main">
 		<view class="wrap_all">

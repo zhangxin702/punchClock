@@ -1,5 +1,10 @@
 // 个人页
-import { getOpenId, getUserInfo, getParticipateNum, getOrganizeNum } from "../../async/async.js";
+import {
+  getOpenId,
+  getUserInfo,
+  getParticipateNum,
+  getOrganizeNum,
+} from '../../async/async.js';
 const app = getApp();
 
 Page({
@@ -18,20 +23,20 @@ Page({
         userInfo: app.globalData.userInfo,
       });
 
-      let actInfo = wx.getStorageSync("actInfo");
+      let actInfo = wx.getStorageSync('actInfo');
       // actInfo无本地缓存
       if (!actInfo) {
         let db = wx.cloud.database();
         const participate = await getParticipateNum(db, this.data.userInfo._id); // 获取用户已参与的活动数量
-        console.log("participate: ", participate);
+        console.log('participate: ', participate);
         const organize = await getOrganizeNum(db, this.data.userInfo._id); // 获取用户已组织的活动数量
-        console.log("organize: ", organize);
+        console.log('organize: ', organize);
         actInfo = {
           participate: participate,
           organize: organize,
         };
 
-        wx.setStorageSync("actInfo", actInfo); // 写本地缓存
+        wx.setStorageSync('actInfo', actInfo); // 写本地缓存
       }
 
       this.setData({
@@ -47,7 +52,7 @@ Page({
     // const openId = "user-2";
     const openId = app.globalData.userInfo._id;
     const userInfo = await getUserInfo(openId); // 获取新的用户信息
-    console.log("userInfo: ", userInfo);
+    console.log('userInfo: ', userInfo);
     const participate = await getParticipateNum(db, this.data.userInfo._id); // 获取用户已参与的活动数量
     const organize = await getOrganizeNum(db, this.data.userInfo._id); // 获取用户已组织的活动数量
     this.setData({
@@ -63,7 +68,7 @@ Page({
       participate: participate,
       organize: organize + 1,
     };
-    wx.setStorageSync("userInfo", userInfo);
-    wx.setStorageSync("actInfo", actInfo);
+    wx.setStorageSync('userInfo', userInfo);
+    wx.setStorageSync('actInfo', actInfo);
   },
 });

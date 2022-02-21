@@ -1,7 +1,7 @@
 // pages/punch_detail/punch_detail.js
-import { actTableById } from '../../async/index.js';
+import { actTableById, showToast } from '../../async/index.js';
 //获取收藏的函数
-import { getCollect, CollectPushDb } from '../../async/async';
+import { getCollect, CollectPushDb, getOpenId } from '../../async/async';
 import { formatTime } from '../../utils/util.js';
 
 const app = getApp();
@@ -24,9 +24,24 @@ Page({
     isCollect: false,
     //打开页面之前用户是否收藏
     isBeforeCollect: false,
+    user: '',
   },
+
+  async submit() {
+    if (this.data.user) {
+      wx.navigateTo({
+        url: '../punch_submit/punch_submit?actId=' + this.data.actId,
+      });
+    } else {
+      await showToast({ title: '您还未注册，请注册' });
+    }
+  },
+
   onLoad: function (options) {
+    let userInfo = wx.getStorageSync('userInfo'); // 先查本地缓存
+    console.log(userInfo);
     this.setData({
+      user: userInfo,
       actId: options.actId,
     });
   },
@@ -75,38 +90,39 @@ Page({
     });
   },
 
-  changeIsCollect() {
-    //单单改变页面的数据
-    const isCollect = !this.data.isCollect;
-    this.setData({
-      isCollect,
-    });
+  async changeIsCollect() {
+    if (this.data.user) {
+      //单单改变页面的数据
+      const isCollect = !this.data.isCollect;
+      this.setData({
+        isCollect,
+      });
+    } else {
+      await showToast({ title: '您还未注册，请注册' });
+    }
   },
 
   //获取是否收藏的函数
   async getIsCollectBefor(actId) {
-    //防止加载过程用户误触
-    wx.showLoading({
-      title: '加载中',
-    });
-    //获取收藏的全部
-    const openId = app.globalData.userInfo._id;
-    //获取该openID的全部收藏对象
-    const userInfo = await wx.getStorageSync('userInfo');
-    let collect = [];
-    if (userInfo) {
-      collect = userInfo.collect; //从缓存中获取
-    } else {
-      collect = await getCollect(openId); //从数据库中获取
-    }
-    if (collect.indexOf(this.data.actId) >= 0) {
-      //判断该活动是否在里面
-      this.setData({
-        isCollect: true,
-        isBeforeCollect: true,
+    if (this.data.user) {
+      //防止加载过程用户误触
+      wx.showLoading({
+        title: '加载中',
       });
+      //获取该openID的全部收藏对象
+      let collect = [];
+      collect = this.data.user.collect; //从缓存中获取
+      if (collect) {
+        if (collect.indexOf(this.data.actId) >= 0) {
+          //判断该活动是否在里面
+          this.setData({
+            isCollect: true,
+            isBeforeCollect: true,
+          });
+        }
+      }
+      wx.hideLoading();
     }
-    wx.hideLoading();
   },
 
   onUnload() {
@@ -129,19 +145,23 @@ Page({
   },
 
   async handleCollect() {
-    wx.showLoading({
-      title: '收藏中',
-      mask: true,
-    });
-    const actId = this.data.actId;
-    const openId = app.globalData.userInfo._id;
-    const isCollect = this.data.isCollect;
-    const isBeforeCollect = this.data.isBeforeCollect;
-    if (isCollect != isBeforeCollect) {
-      await this.CollectPushStorage(isCollect, actId, openId);
-      await CollectPushDb(isCollect, actId, openId);
+    if (this.data.user) {
+      wx.showLoading({
+        title: '收藏中',
+        mask: true,
+      });
+      const actId = this.data.actId;
+      const openId = app.globalData.userInfo._id;
+      const isCollect = this.data.isCollect;
+      const isBeforeCollect = this.data.isBeforeCollect;
+      if (isCollect != isBeforeCollect) {
+        await this.CollectPushStorage(isCollect, actId, openId);
+        await CollectPushDb(isCollect, actId, openId);
+      }
+      wx.hideLoading();
+    } else {
+      await showToast({ title: '您还未注册，请注册' });
     }
-    wx.hideLoading();
   },
 
   /**
