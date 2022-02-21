@@ -79,7 +79,6 @@ Page({
       pageNum: 0,
       actList: [],
     });
-    //代表在已参与页面
     if (this.data.tabs[0].isActive) {
       this.getAll(1, this.data.pageNum, this.data.openId);
     } else {
@@ -88,7 +87,10 @@ Page({
   },
 
   // onShow() {
-  //   this.setData({});
+  //   this.setData({
+  //     pageNum: 0,
+  //     actList: [],
+  //   });
   //   //代表在已参与页面
   //   if (this.data.tabs[0].isActive) {
   //     this.getAll(1, this.data.pageNum, this.data.openId);

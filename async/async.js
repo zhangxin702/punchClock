@@ -5,10 +5,10 @@ export const getOpenId = () => {
   return new Promise((resolve, reject) => {
     wx.cloud // 先获取该用户的openId
       .callFunction({
-        name: "getOpenId",
+        name: 'getOpenId',
       })
       .then((res) => {
-        console.log("res: ", res);
+        console.log('res: ', res);
         resolve(res.result);
       })
       .catch((err) => {
@@ -19,7 +19,7 @@ export const getOpenId = () => {
 
 export const getUserInfo = (openId) => {
   wx.showLoading({
-    title: "加载中",
+    title: '加载中',
     mask: true,
   });
   /**
@@ -29,18 +29,18 @@ export const getUserInfo = (openId) => {
 
   return new Promise((resolve, reject) => {
     let db = wx.cloud.database();
-    db.collection("UserTable")
+    db.collection('UserTable')
       .doc(openId)
       .get()
       .then((res) => {
         wx.hideLoading();
-        console.log("调取用户信息成功√\n", res);
+        console.log('调取用户信息成功√\n', res);
         resolve(res.data);
       })
       .catch((err) => {
         wx.hideLoading();
         // console.log("调取用户信息失败×\n", err);
-        console.log("查无此人，新用户");
+        console.log('查无此人，新用户');
         resolve();
       });
   });
@@ -54,22 +54,22 @@ export const getParticipateNum = (db, openId) => {
 
   return new Promise((resolve, reject) => {
     const $ = db.command.aggregate;
-    db.collection("PunchTable") // 统计用户参与的活动的数量
+    db.collection('PunchTable') // 统计用户参与的活动的数量
       .aggregate()
       .match({
         _openid: openId,
       })
       .group({
-        _id: "$actId",
+        _id: '$actId',
         count: $.sum(1),
       })
       .end()
       .then((res) => {
-        console.log("统计参与活动数量成功√\n", res);
+        console.log('统计参与活动数量成功√\n', res);
         resolve(res.list.length);
       })
       .catch((err) => {
-        console.log("统计参与的活动数量失败×\n", err);
+        console.log('统计参与的活动数量失败×\n', err);
         reject(err);
       });
   });
@@ -83,30 +83,29 @@ export const getOrganizeNum = (db, openId) => {
    */
 
   return new Promise((resolve, reject) => {
-    db.collection("ActTable") // 统计用户组织的活动的数量
+    db.collection('ActTable') // 统计用户组织的活动的数量
       .where({
         _openid: openId,
       })
       .get()
       .then((res) => {
-        console.log("统计组织的活动数量成功√\n", res);
+        console.log('统计组织的活动数量成功√\n', res);
         resolve(res.data.length);
       })
       .catch((err) => {
-        console.log("统计组织的活动数量失败×\n", err);
+        console.log('统计组织的活动数量失败×\n', err);
         reject(err);
       });
   });
 };
 
-export const getParticipatePunch = ({openId, skip, limit}) => {
+export const getParticipatePunch = ({ openId, skip, limit }) => {
   /**
    * 获取用户参与的活动
    * openId: 用户的唯一标识
    */
-  
+
   return new Promise((resolve, reject) => {
-    
     // wx.cloud
     //   .callFunction({
     //     name: "getActData",
@@ -139,18 +138,18 @@ export const getParticipatePunch = ({openId, skip, limit}) => {
     db.skip(skip)
       .limit(limit)
       .where({
-        userIds: openId//表示userIds数组里面某个值包含这个
+        userIds: openId, //表示userIds数组里面某个值包含这个
       })
       .get({
         success: (res) => {
-          console.log("res",res);
+          console.log('res', res);
           if (res.data.length === 0) {
             wx.showToast({ title: '没有更多数据啦' });
           }
           resolve(res);
         },
         fail: (err) => {
-          console.log("失败",err);
+          console.log('失败', err);
           wx.hideLoading();
           reject(err);
         },
@@ -158,7 +157,7 @@ export const getParticipatePunch = ({openId, skip, limit}) => {
   });
 };
 
-export const getOrganizePunch = ({openId,skip,limit}) => {
+export const getOrganizePunch = ({ openId, skip, limit }) => {
   /**
    * 获取用户参与的活动
    * openId: 用户的唯一标识
@@ -193,16 +192,16 @@ export const getOrganizePunch = ({openId,skip,limit}) => {
     //     console.log("获取所有活动信息失败×\n", err);
     //     reject(err);
     //   });
-    
+
     var db = wx.cloud.database().collection('ActTable');
     db.skip(skip)
       .limit(limit)
       .where({
-        _openid: openId//表示userIds数组里面某个值包含这个
+        _openid: openId, //表示userIds数组里面某个值包含这个
       })
       .get({
         success: (res) => {
-          console.log("res",res);
+          console.log('res', res);
           wx.hideLoading();
           if (res.data.length == 0) {
             wx.showToast({ title: '没有更多数据啦' });
@@ -210,7 +209,7 @@ export const getOrganizePunch = ({openId,skip,limit}) => {
           resolve(res);
         },
         fail: (err) => {
-          console.log("失败",err);
+          console.log('失败', err);
           wx.hideLoading();
           reject(err);
         },
@@ -231,16 +230,16 @@ export const register = (openId, nickName, gender, selfIntro, avatarPath) => {
   return new Promise((resolve, reject) => {
     wx.cloud
       .uploadFile({
-        cloudPath: "avatar/" + openId + ".jpg", // 上传到云存储的路径
+        cloudPath: 'avatar/' + openId + '.jpg', // 上传到云存储的路径
         filePath: avatarPath, // 临时路径
       })
       .then((res) => {
         console.log(res);
         const avatarUrl = res.fileID; // 云存储的路径
-        console.log("照片云存储路径生成成功√\n", res);
+        console.log('照片云存储路径生成成功√\n', res);
 
         const db = wx.cloud.database();
-        db.collection("UserTable")
+        db.collection('UserTable')
           .add({
             data: {
               _id: openId,
@@ -253,11 +252,11 @@ export const register = (openId, nickName, gender, selfIntro, avatarPath) => {
           })
           .then((res) => {
             wx.showToast({
-              title: "注册成功",
-              icon: "success",
+              title: '注册成功',
+              icon: 'success',
               duration: 100,
             });
-            console.log("注册成功√");
+            console.log('注册成功√');
             const userInfo = {
               _id: openId,
               nickName: nickName,
@@ -270,16 +269,16 @@ export const register = (openId, nickName, gender, selfIntro, avatarPath) => {
           })
           .catch((err) => {
             wx.showToast({
-              title: "注册失败",
-              icon: "fail",
+              title: '注册失败',
+              icon: 'fail',
               duration: 100,
             });
-            console.log("注册失败×");
+            console.log('注册失败×');
             reject(false);
           });
       })
       .catch((err) => {
-        console.log("照片云存储路径生成失败×\n", err);
+        console.log('照片云存储路径生成失败×\n', err);
         reject(err);
       });
   });
@@ -292,19 +291,22 @@ export const getLocation = () => {
 
   return new Promise((resolve, reject) => {
     wx.getLocation({
-      type: "wgs84",
+      type: 'wgs84',
       altitude: true,
       success: (res) => {
         resolve(res);
       },
       fail: (err) => {
-        console.log("获取定位失败×\n", err);
+        console.log('获取定位失败×\n', err);
         const currentTime = new Date().getTime(); // 获取时间，单位ms
         const interval = (currentTime - this.data.latestTime) / 1000; // 计算距离上次获取定位的时间间隔，单位s
-        const title = "您的定位获取过于频繁，请在" + (30 - interval).toFixed(0).toString() + "s后再尝试";
+        const title =
+          '您的定位获取过于频繁，请在' +
+          (30 - interval).toFixed(0).toString() +
+          's后再尝试';
         wx.showToast({
           title: title,
-          icon: "none",
+          icon: 'none',
           duration: 1500,
         });
       },
@@ -345,7 +347,7 @@ export const getSelfPunchedTimes = (db, openId, actId, punchData) => {
 
   return new Promise((resolve, reject) => {
     // 先查询活动的打卡次数要求
-    db.collection("ActTable")
+    db.collection('ActTable')
       .doc(actId)
       .get()
       .then((res) => {
@@ -356,7 +358,7 @@ export const getSelfPunchedTimes = (db, openId, actId, punchData) => {
         if (!punchData) {
           wx.cloud
             .callFunction({
-              name: "getPunchData",
+              name: 'getPunchData',
               data: {
                 actId: actId,
                 _openid: openId,
@@ -388,7 +390,7 @@ export const getSelfPunchedTimes = (db, openId, actId, punchData) => {
       })
       .catch((err) => {
         wx.hideLoading();
-        console.log("参与者——获取活动信息失败×\n", err);
+        console.log('参与者——获取活动信息失败×\n', err);
         reject(err);
       });
   });
@@ -409,14 +411,14 @@ export const getSelfPunchedRank = (openId, actId) => {
     // 获取所有的打卡数据
     wx.cloud
       .callFunction({
-        name: "getPunchData",
+        name: 'getPunchData',
         data: {
           actId: actId,
           _openid: null,
         },
       })
       .then((res) => {
-        console.log("参与者——获取所有打卡数据成功√\n", res);
+        console.log('参与者——获取所有打卡数据成功√\n', res);
         const punchData = res.result;
         // 对所有打卡数据进行分析
         let punchTimes = [], // 存储每个用户的打卡次数
@@ -442,7 +444,7 @@ export const getSelfPunchedRank = (openId, actId) => {
         }
       })
       .catch((err) => {
-        console.log("参与者——获取所有打卡数据失败×\n", err);
+        console.log('参与者——获取所有打卡数据失败×\n', err);
         reject(err);
       });
   });
@@ -460,13 +462,13 @@ export const getSelfLabels = (openId, max) => {
    */
 
   return new Promise((resolve, reject) => {
-    console.log("openId: ", openId);
+    console.log('openId: ', openId);
     wx.cloud
       .callFunction({
-        name: "getActData",
+        name: 'getActData',
       })
       .then((res) => {
-        console.log("参与者——获取所有活动信息成功√\n", res);
+        console.log('参与者——获取所有活动信息成功√\n', res);
         const actData = res.result;
         // 对所有活动数据进行分析
         let labels = [], // 存储标签名
@@ -532,7 +534,7 @@ export const getSelfLabels = (openId, max) => {
           max = counts.length;
         }
 
-        console.log("max: ", max);
+        console.log('max: ', max);
         // 逐个获取出现次数最多的几个标签
         for (let i = 0; i < max; i++) {
           label = labels[counts.indexOf(countsCopy[i])];
@@ -555,7 +557,7 @@ export const getSelfLabels = (openId, max) => {
         });
       })
       .catch((err) => {
-        console.log("参与者——获取所有活动信息失败×\n", err);
+        console.log('参与者——获取所有活动信息失败×\n', err);
         reject(err);
       });
   });
@@ -574,11 +576,11 @@ export const getActPunchedTimes = (db, actId) => {
    */
 
   return new Promise((resolve, reject) => {
-    db.collection("ActTable")
+    db.collection('ActTable')
       .doc(actId)
       .get()
       .then(async (res) => {
-        console.log("举办方——获取活动信息成功√\n", res);
+        console.log('举办方——获取活动信息成功√\n', res);
         const { punchTimes, userIds } = res.data; // 获取要求的打卡次数和参与的所有用户id
         let isFinish = [],
           punchedTimes = [];
@@ -586,14 +588,19 @@ export const getActPunchedTimes = (db, actId) => {
         // 对每个用户的所有打卡记录进行检索
         for (let i = 0; i < userIds.length; i++) {
           await db
-            .collection("PunchTable")
+            .collection('PunchTable')
             .where({
               _openid: userIds[i],
               actId: actId,
             })
             .get()
             .then((res) => {
-              console.log("举办方——获取用户", userIds[i], "的打卡数据成功√\n", res);
+              console.log(
+                '举办方——获取用户',
+                userIds[i],
+                '的打卡数据成功√\n',
+                res
+              );
               punchedTimes.push(res.data.length);
               if (res.data.length >= punchTimes) {
                 isFinish.push(true);
@@ -602,19 +609,24 @@ export const getActPunchedTimes = (db, actId) => {
               }
             })
             .catch((err) => {
-              console.log("举办方——获取用户", userIds[i], "的打卡数据失败×\n", err);
+              console.log(
+                '举办方——获取用户',
+                userIds[i],
+                '的打卡数据失败×\n',
+                err
+              );
               reject(err);
             });
         }
-        console.log("isFinish: ", isFinish);
-        console.log("punchedTimes: ", punchedTimes);
+        console.log('isFinish: ', isFinish);
+        console.log('punchedTimes: ', punchedTimes);
         resolve({
           isFinish: isFinish,
           punchedTimes: punchedTimes,
         });
       })
       .catch((err) => {
-        console.log("举办方——获取活动信息失败×\n", err);
+        console.log('举办方——获取活动信息失败×\n', err);
         reject(err);
       });
   });
@@ -632,14 +644,14 @@ export const getActUserGender = (db, openId, actId = null) => {
    */
 
   return new Promise((resolve, reject) => {
-    db.collection("ActTable")
+    db.collection('ActTable')
       .where({
         _id: actId,
         _openid: openId,
       })
       .get()
       .then(async (res) => {
-        console.log("举办方——获取活动信息成功√\n", res);
+        console.log('举办方——获取活动信息成功√\n', res);
         const { userIds } = res.data[0]; // 获取所有参与者的openId
         let gender = [];
         gender.push(0);
@@ -648,22 +660,22 @@ export const getActUserGender = (db, openId, actId = null) => {
         // 逐个用户进行检索
         for (let i = 0; i < userIds.length; i++) {
           await db
-            .collection("UserTable")
+            .collection('UserTable')
             .doc(userIds[i])
             .get()
             .then((res) => {
-              console.log("举办方——获取用户信息成功√\n", res);
+              console.log('举办方——获取用户信息成功√\n', res);
               gender[res.data[0].gender]++; // 对应性别计数
             })
             .catch((err) => {
-              console.log("举办方——获取用户信息失败×\n", err);
+              console.log('举办方——获取用户信息失败×\n', err);
               reject(err);
             });
         }
         resolve(gender);
       })
       .catch((err) => {
-        console.log("举办方——获取活动信息失败×\n", err);
+        console.log('举办方——获取活动信息失败×\n', err);
         reject(err);
       });
   });
@@ -682,11 +694,11 @@ export const countActHeldDays = (db, actId) => {
 
   return new Promise((resolve, reject) => {
     // 获取活动信息
-    db.collection("ActTable")
+    db.collection('ActTable')
       .doc(actId)
       .get()
       .then((res) => {
-        console.log("获取活动信息成功√\n", res);
+        console.log('获取活动信息成功√\n', res);
         let { startTime, endTime } = res.data;
         startTime = startTime.getTime(); // 将开始时间转成毫秒
         endTime = endTime.getTime(); // 将结束时间转成毫秒
@@ -724,18 +736,18 @@ export const countActHeldNum = (db, openId) => {
    */
 
   return new Promise((resolve, reject) => {
-    db.collection("ActTable")
+    db.collection('ActTable')
       .where({
         _openid: openId,
       })
       .get()
       .then((res) => {
-        console.log("举办方——获取活动信息成功√\n", res);
+        console.log('举办方——获取活动信息成功√\n', res);
         const actNum = res.data.length;
         resolve(actNum);
       })
       .catch((err) => {
-        console.log("举办方——获取活动信息失败×\n", err);
+        console.log('举办方——获取活动信息失败×\n', err);
         reject(err);
       });
   });
@@ -796,13 +808,13 @@ export const getActHotRankvsSelf = (db, openId) => {
     // 先获取自己举办的所有活动的数据
     wx.cloud
       .callFunction({
-        name: "getActData",
+        name: 'getActData',
         data: {
           openId: openId,
         },
       })
       .then(async (res) => {
-        console.log("举办方——获取举办的活动信息成功√\n", res);
+        console.log('举办方——获取举办的活动信息成功√\n', res);
         const acts = res.result;
         let actThemes = [],
           actUserNum = [], // 参与人数
@@ -815,24 +827,24 @@ export const getActHotRankvsSelf = (db, openId) => {
           // 再获取每个活动的所有打卡数据
           await wx.cloud
             .callFunction({
-              name: "getPunchData",
+              name: 'getPunchData',
               data: {
                 actId: acts[i]._id,
                 lengthOnly: true,
               },
             })
             .then((res) => {
-              console.log("举办方——获取打卡数据成功√\n", res);
+              console.log('举办方——获取打卡数据成功√\n', res);
               actPunchNum.push(res.result);
             })
             .catch((err) => {
-              console.log("举办方——获取打卡数据失败×\n", err);
+              console.log('举办方——获取打卡数据失败×\n', err);
               reject(err);
             });
         }
-        console.log("活动主题（原始数据）：", actThemes);
-        console.log("参与人数（原始数据）：", actUserNum);
-        console.log("打卡次数（原始数据）：", actPunchNum);
+        console.log('活动主题（原始数据）：', actThemes);
+        console.log('参与人数（原始数据）：', actUserNum);
+        console.log('打卡次数（原始数据）：', actPunchNum);
 
         let dict1 = [],
           dict2 = [];
@@ -866,7 +878,7 @@ export const getActHotRankvsSelf = (db, openId) => {
         });
       })
       .catch((err) => {
-        console.log("举办方——获取举办的活动信息失败×\n", err);
+        console.log('举办方——获取举办的活动信息失败×\n', err);
         reject(err);
       });
   });
@@ -897,7 +909,7 @@ export const getActHotRankvsAll = async (db, openId) => {
     // 先获取自己举办的所有活动的数据
     await wx.cloud
       .callFunction({
-        name: "getActData",
+        name: 'getActData',
         data: {
           openId: openId,
         },
@@ -906,23 +918,28 @@ export const getActHotRankvsAll = async (db, openId) => {
         myActData = res.result;
       })
       .catch((err) => {
-        console.log("获取我的活动信息失败×\n", err);
+        console.log('获取我的活动信息失败×\n', err);
         reject(err);
       });
 
     // 再获取所有活动的数据
     await wx.cloud
       .callFunction({
-        name: "getActData",
+        name: 'getActData',
       })
       .then((res) => {
         allActData = res.result;
       })
       .catch((err) => {
-        console.log("获取所有活动信息失败×\n", err);
+        console.log('获取所有活动信息失败×\n', err);
       });
 
-    console.log("我举办的活动数量：", myActData.length, "\n所有的活动数量：", allActData.length);
+    console.log(
+      '我举办的活动数量：',
+      myActData.length,
+      '\n所有的活动数量：',
+      allActData.length
+    );
 
     let actIds = [],
       actThemes = [],
@@ -943,7 +960,7 @@ export const getActHotRankvsAll = async (db, openId) => {
 
       await wx.cloud
         .callFunction({
-          name: "getPunchData",
+          name: 'getPunchData',
           data: {
             actId: allActData[i]._id,
             lengthOnly: true,
@@ -962,9 +979,9 @@ export const getActHotRankvsAll = async (db, openId) => {
         });
     }
 
-    console.log("活动主题（原始数据）：", actThemes);
-    console.log("参与人数（原始数据）：", myActUserNum);
-    console.log("打卡次数（原始数据）：", myActPunchNum);
+    console.log('活动主题（原始数据）：', actThemes);
+    console.log('参与人数（原始数据）：', myActUserNum);
+    console.log('打卡次数（原始数据）：', myActPunchNum);
 
     // 从大到小排序
     allActUserNum.sort((a, b) => b - a);
@@ -1002,10 +1019,15 @@ export const uploadProblem = (text, imagePaths) => {
     // let date = new Date();
     let cloudPaths = [];
     for (let i = 0; i < imagePaths.length; i++) {
-      cloudPaths.push("feedback/" + imagePaths[i].substr(11, imagePaths[i].length - 4) + i + ".png");
+      cloudPaths.push(
+        'feedback/' +
+          imagePaths[i].substr(11, imagePaths[i].length - 4) +
+          i +
+          '.png'
+      );
     }
-    console.log("imagePaths: ", imagePaths);
-    console.log("cloudPaths: ", cloudPaths);
+    console.log('imagePaths: ', imagePaths);
+    console.log('cloudPaths: ', cloudPaths);
 
     // 先把临时文件上传到云存储
     for (let i = 0; i < imagePaths.length; i++) {
@@ -1015,17 +1037,17 @@ export const uploadProblem = (text, imagePaths) => {
           filePath: imagePaths[i],
         })
         .then((res) => {
-          console.log("上传图片到云存储成功\n", res);
+          console.log('上传图片到云存储成功\n', res);
         })
         .catch((err) => {
-          console.log("上传图片到云存储失败×\n", err);
+          console.log('上传图片到云存储失败×\n', err);
           reject(err);
         });
     }
 
     // 再把临时文件上传到服务器
     const db = wx.cloud.database();
-    db.collection("ProbTable")
+    db.collection('ProbTable')
       .add({
         data: {
           text: text,
@@ -1033,10 +1055,10 @@ export const uploadProblem = (text, imagePaths) => {
         },
       })
       .then((res) => {
-        console.log("上传问题反馈成功√\n", res);
+        console.log('上传问题反馈成功√\n', res);
 
         wx.showToast({
-          title: "反馈已发送",
+          title: '反馈已发送',
         });
         wx.navigateBack({
           delta: 1,
@@ -1044,7 +1066,7 @@ export const uploadProblem = (text, imagePaths) => {
         resolve(res);
       })
       .catch((err) => {
-        console.log("上传问题反馈失败×\n", err);
+        console.log('上传问题反馈失败×\n', err);
         reject(err);
       });
   });
@@ -1095,21 +1117,21 @@ export const getCollect = (openId) => {
 
   return new Promise((resolve, reject) => {
     const db = wx.cloud.database();
-    db.collection("UserTable")
+    db.collection('UserTable')
       .doc(openId)
       .get()
       .then((res) => {
-        console.log("获取用户的收藏成功√\n", res);
+        console.log('获取用户的收藏成功√\n', res);
         const { collect } = res.data;
         //如果是没有collect，单返回一个空数组
         //这个能解决加载中获取不到数组.length问题
-        if(typeof collect == "undefined"){
+        if (typeof collect == 'undefined') {
           resolve([]);
         }
         resolve(collect);
       })
       .catch((err) => {
-        console.log("获取用户的收藏失败×\n", err);
+        console.log('获取用户的收藏失败×\n', err);
         reject(err);
       });
   });
@@ -1128,7 +1150,7 @@ export const getPunchAll = (order, skip, limit, openId) => {
     var db = wx.cloud.database();
     // 打卡的是openId对应的用户
     if (order == 0) {
-      db.collection("PunchTable")
+      db.collection('PunchTable')
         .where({
           _openid: openId,
         })
@@ -1136,17 +1158,17 @@ export const getPunchAll = (order, skip, limit, openId) => {
         .limit(limit)
         .get()
         .then(async (res) => {
-          console.log("获取openId对应的用户的打卡数据成功√\n", res);
+          console.log('获取openId对应的用户的打卡数据成功√\n', res);
 
           if (res.data.length === 0) {
-            wx.showToast({ title: "没有更多数据啦" });
+            wx.showToast({ title: '没有更多数据啦' });
             resolve([]);
           }
 
           const punchData = res.data;
           for (let i = 0; i < punchData.length; i++) {
             await db
-              .collection("ActTable")
+              .collection('ActTable')
               .doc(punchData[i].actId)
               .get()
               .then((res) => {
@@ -1159,23 +1181,23 @@ export const getPunchAll = (order, skip, limit, openId) => {
           resolve(punchData);
         })
         .catch((err) => {
-          console.log("获取openId对应的用户的打卡数据失败×\n", err);
+          console.log('获取openId对应的用户的打卡数据失败×\n', err);
           reject(err);
         });
     }
     // 活动是openId对应的用户举办的
     else if (order == 1) {
-      db.collection("ActTable")
+      db.collection('ActTable')
         .where({
           _openid: openId,
         })
         .get()
         .then(async (res) => {
-          console.log("获取openId对应的用户举办的活动数据成功√\n", res);
+          console.log('获取openId对应的用户举办的活动数据成功√\n', res);
           const actData = res.data;
 
           let punchData = [];
-          let ifget = false;//这个用来判断有没有get到过数据
+          let ifget = false; //这个用来判断有没有get到过数据
           for (let i = 0; i < actData.length; i++) {
             // 没有用户打了卡
             if (actData[i].userIds.length == 0) {
@@ -1184,7 +1206,7 @@ export const getPunchAll = (order, skip, limit, openId) => {
 
             // 有用户打卡
             await db
-              .collection("PunchTable")
+              .collection('PunchTable')
               .where({
                 actId: actData[i]._id, // 查这个actId的打卡记录
               })
@@ -1192,7 +1214,7 @@ export const getPunchAll = (order, skip, limit, openId) => {
               .limit(3) // 如果遵循limit的9的话，所有活动加在一起会获取到很多数据
               .get()
               .then((res) => {
-                if(res.data.length){
+                if (res.data.length) {
                   punchData = punchData.concat(res.data);
                   ifget = true;
                 }
@@ -1201,8 +1223,8 @@ export const getPunchAll = (order, skip, limit, openId) => {
                 reject(err);
               });
           }
-          if(!ifget){
-            wx.showToast({ title: "没有更多数据啦" });
+          if (!ifget) {
+            wx.showToast({ title: '没有更多数据啦' });
           }
           resolve(punchData);
         })
@@ -1221,7 +1243,7 @@ export const getActTheme = () => {
   return new Promise((resolve, reject) => {
     wx.cloud
       .callFunction({
-        name: "getActData",
+        name: 'getActData',
       })
       .then((res) => {
         const actData = res.result;
@@ -1245,7 +1267,7 @@ export const getPunchDataExcel = (openId, mode) => {
   return new Promise(async (resolve, reject) => {
     await wx.cloud
       .callFunction({
-        name: "getPunchDataExcel",
+        name: 'getPunchDataExcel',
         data: {
           openId: openId,
           mode: mode,
@@ -1271,50 +1293,49 @@ export const CollectPushDb = (order, actId, openId) => {
   return new Promise((resolve, reject) => {
     var db = wx.cloud.database();
     const _ = db.command;
-    if(order){
+    if (order) {
       db.collection('UserTable')
-      .doc(openId)
-      .update({
-        data: {
-          collect: _.push(actId),
-        },
-        success: (res) => {
-          console.log('插入成功', res);
-        },
-        fail: (err) => {
-          console.log('插入失败', err);
-        },
-      })
-    }
-    else{
+        .doc(openId)
+        .update({
+          data: {
+            collect: _.push(actId),
+          },
+          success: (res) => {
+            console.log('插入成功', res);
+          },
+          fail: (err) => {
+            console.log('插入失败', err);
+          },
+        });
+    } else {
       db.collection('UserTable')
-      .doc(openId)
-      .update({
-        data: {
-          collect: _.pull(actId),
-        },
-        success: (res) => {
-          console.log('插入成功', res);
-        },
-        fail: (err) => {
-          console.log('插入失败', err);
-        },
-      })
+        .doc(openId)
+        .update({
+          data: {
+            collect: _.pull(actId),
+          },
+          success: (res) => {
+            console.log('插入成功', res);
+          },
+          fail: (err) => {
+            console.log('插入失败', err);
+          },
+        });
     }
   });
 };
 
-export const getSearch = ({order, openId, searchKey}) => {
+export const getSearch = ({ order, openId, searchKey }) => {
   /**
-   * 
+   *
    * order 0:查找已组织活动
    * order 1:查找已参与活动
    */
 
   return new Promise((resolve, reject) => {
-    console.log("openId",openId);
+    console.log('openId', openId);
     var db = wx.cloud.database();
-    if(order){
+    if (order) {
       db.collection('ActTable')
         .where({
           actTheme: db.RegExp({
@@ -1325,7 +1346,7 @@ export const getSearch = ({order, openId, searchKey}) => {
         })
         .get({
           success: (res) => {
-            console.log("res",res);
+            console.log('res', res);
             resolve(res);
           },
           fail: (err) => {
@@ -1333,8 +1354,7 @@ export const getSearch = ({order, openId, searchKey}) => {
             reject(err);
           },
         });
-    }
-    else{
+    } else {
       db.collection('ActTable')
         .where({
           actTheme: db.RegExp({
@@ -1345,7 +1365,7 @@ export const getSearch = ({order, openId, searchKey}) => {
         })
         .get({
           success: (res) => {
-            console.log("res",res);
+            console.log('res', res);
             resolve(res);
           },
           fail: (err) => {
