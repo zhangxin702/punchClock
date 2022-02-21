@@ -1,7 +1,6 @@
 import {
   getParticipatePunch,
   getOrganizePunch,
- 
   getOpenId,
 } from '../../async/async.js';
 
@@ -25,7 +24,7 @@ Page({
       mask: true,
     });
 
-    const openId = await getOpenId(); 
+    const openId = await getOpenId();
 
     this.GetAttendAndOrganizeList(openId);
     this.GetAll(0, 0);
@@ -34,15 +33,15 @@ Page({
 
   async GetAttendAndOrganizeList(openId) {
     const db = wx.cloud.database();
-    let res1 = await getParticipatePunch(openId);
-    let res2 = await getOrganizePunch(openId);
-    console.log('res1'+res1);
-    
+    let res1 = await getParticipatePunch({ openId: openId, skip: 0, limit: 4 });
+    let res2 = await getOrganizePunch({ openId: openId, skip: 0, limit: 4 });
+    console.log(res1);
+
     this.setData({
-      attendList:res1,
-      organizeList:res2,
-      showActList: JSON.parse(JSON.stringify(res1)), //深拷贝防止改变引起总的改变
-      showOrganizeList: JSON.parse(JSON.stringify(res2)), //同上
+      attendList: res1.data,
+      organizeList: res2.data,
+      showActList: JSON.parse(JSON.stringify(res1.data)), //深拷贝防止改变引起总的改变
+      showOrganizeList: JSON.parse(JSON.stringify(res2.data)), //同上
     });
     console.log('attendList: ', this.data.attendList);
     console.log('organizeList: ', this.data.organizeList);

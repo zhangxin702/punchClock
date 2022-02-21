@@ -12,7 +12,7 @@
 		<swiper-item wx:for="{{actList}}">
 			<navigator
 			 open-type="navigate"
-			 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
+			 url="/pages/activity_detail/activity_detail?actId={{item._id}}"
 			 class="swiper_nav"
 			>
 				<image src="{{item.actImage?item.actImage:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}" />
@@ -65,7 +65,7 @@
 		 wx:for="{{attendList}}"
 		 wx:key="_id"
 		 class="scrollItem"
-		 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
+		 url="/pages/activity_detail/activity_detail?actId={{item._id}}"
 		>
 			<image
 			 src="{{item.actImage?item.actImage:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"
@@ -94,7 +94,7 @@
 		 wx:for="{{organizeList}}"
 		 wx:key="_id"
 		 class="scrollItem"
-		 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
+		 url="/pages/activity_detail/activity_detail?actId={{item._id}}"
 		>
 			<image
 			 src="{{item.actImage?item.actImage:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"

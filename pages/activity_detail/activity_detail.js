@@ -1,7 +1,7 @@
 // pages/punch_detail/punch_detail.js
 import { actTableById } from '../../async/index.js';
 //获取收藏的函数
-import { getCollect,CollectPushDb } from '../../async/async';
+import { getCollect, CollectPushDb } from '../../async/async';
 import { formatTime } from '../../utils/util.js';
 
 const app = getApp();
@@ -18,21 +18,18 @@ Page({
     requires: [],
     bool: [''],
 
-    actId:"",
+    actId: '',
 
     //用户是否收藏
     isCollect: false,
     //打开页面之前用户是否收藏
     isBeforeCollect: false,
   },
-onLoad:function(options){
-  this.setData({
-    actId:options.actId
-  })
-
-
-
-},
+  onLoad: function (options) {
+    this.setData({
+      actId: options.actId,
+    });
+  },
   onShow: function () {
     this.getById(this.data.actId);
     this.getIsCollectBefor(this.data.actId);
@@ -78,12 +75,12 @@ onLoad:function(options){
     });
   },
 
-  changeIsCollect(){
+  changeIsCollect() {
     //单单改变页面的数据
-    const isCollect=!this.data.isCollect;
+    const isCollect = !this.data.isCollect;
     this.setData({
-      isCollect
-    })
+      isCollect,
+    });
   },
 
   //获取是否收藏的函数
@@ -95,15 +92,15 @@ onLoad:function(options){
     //获取收藏的全部
     const openId = app.globalData.userInfo._id;
     //获取该openID的全部收藏对象
-    const userInfo =await wx.getStorageSync('userInfo');
+    const userInfo = await wx.getStorageSync('userInfo');
     let collect = [];
-    if(userInfo){
-      collect =userInfo.collect;//从缓存中获取
+    if (userInfo) {
+      collect = userInfo.collect; //从缓存中获取
+    } else {
+      collect = await getCollect(openId); //从数据库中获取
     }
-    else{
-      collect = await getCollect(openId);//从数据库中获取
-    }
-    if(collect.indexOf(this.data.actId)>=0){//判断该活动是否在里面
+    if (collect.indexOf(this.data.actId) >= 0) {
+      //判断该活动是否在里面
       this.setData({
         isCollect: true,
         isBeforeCollect: true,
@@ -112,25 +109,24 @@ onLoad:function(options){
     wx.hideLoading();
   },
 
-   onUnload(){
-     let pages = getCurrentPages(); // 获取页面栈
-     let prevPage = pages[pages.length - 2]; // 获取上一个页面
-     if(prevPage.route=="pages/activity_collect/activity_collect"){
-       console.log("yes");
-       prevPage.setData({
-         isDetailReturn: true,//将这个改成这样，判断是不是从这个页面改变了数据。
-        });
-      }
+  onUnload() {
+    let pages = getCurrentPages(); // 获取页面栈
+    let prevPage = pages[pages.length - 2]; // 获取上一个页面
+    if (prevPage.route == 'pages/activity_collect/activity_collect') {
+      console.log('yes');
+      prevPage.setData({
+        isDetailReturn: true, //将这个改成这样，判断是不是从这个页面改变了数据。
+      });
+    }
     //执行上述操作是因为页面改写本地缓存有时间差，因此要阻隔上页面一段时间来让缓存顺利改写
-     this.handleCollect();
+    this.handleCollect();
+  },
 
-   },
-
-   onHide(){
-     this.handleCollect();
-     wx.hideLoading();//不能写在内部
-     //因为这是异步执行的一定是先执行一部分马上回退的
-   },
+  onHide() {
+    this.handleCollect();
+    wx.hideLoading(); //不能写在内部
+    //因为这是异步执行的一定是先执行一部分马上回退的
+  },
 
   async handleCollect() {
     wx.showLoading({
@@ -139,11 +135,11 @@ onLoad:function(options){
     });
     const actId = this.data.actId;
     const openId = app.globalData.userInfo._id;
-    const isCollect= this.data.isCollect;
-    const isBeforeCollect= this.data.isBeforeCollect;
-    if(isCollect!=isBeforeCollect){
-      await this.CollectPushStorage(isCollect,actId,openId);
-      await CollectPushDb(isCollect,actId,openId);
+    const isCollect = this.data.isCollect;
+    const isBeforeCollect = this.data.isBeforeCollect;
+    if (isCollect != isBeforeCollect) {
+      await this.CollectPushStorage(isCollect, actId, openId);
+      await CollectPushDb(isCollect, actId, openId);
     }
     wx.hideLoading();
   },
@@ -152,25 +148,23 @@ onLoad:function(options){
    * 把collect的数据放进缓存
    * order 0:删除一个actId
    * order 1:加入新的actId
-  */
-  async CollectPushStorage(isCollect,actId,openId){
-    const userInfo=wx.getStorageSync('userInfo');
-    if(userInfo){
-      console.log("本地存在缓存register: ", userInfo);
-      let collect =userInfo.collect;
-      if(isCollect){
-        await collect.push(this.data.actId);//插入一个
-      }
-      else{
-        await collect.splice(collect.indexOf(actId),1);//删除一个
+   */
+  async CollectPushStorage(isCollect, actId, openId) {
+    const userInfo = wx.getStorageSync('userInfo');
+    if (userInfo) {
+      console.log('本地存在缓存register: ', userInfo);
+      let collect = userInfo.collect;
+      if (isCollect) {
+        await collect.push(this.data.actId); //插入一个
+      } else {
+        await collect.splice(collect.indexOf(actId), 1); //删除一个
       }
       var _userInfo = userInfo;
-      _userInfo.collect = collect; 
+      _userInfo.collect = collect;
       await wx.setStorageSync('userInfo', _userInfo);
-    }
-    else{
+    } else {
       //看你们要不要写个从数据库加入缓存
       wx.hideLoading();
     }
-  }
+  },
 });
