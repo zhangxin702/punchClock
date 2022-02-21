@@ -1,5 +1,11 @@
-import { getParticipatePunch, getOrganizePunch, getSelfPunchedTimes, getSearch} from "../../async/async.js";
-import { formatTime } from "../../utils/util.js";
+import {
+  getParticipatePunch,
+  getOrganizePunch,
+  getSelfPunchedTimes,
+  getSearch,
+  getOpenId,
+} from '../../async/async.js';
+import { formatTime } from '../../utils/util.js';
 const app = getApp();
 
 Page({
@@ -10,18 +16,18 @@ Page({
     tabs: [
       {
         tab_id: 0,
-        name: "已参与活动",
+        name: '已参与活动',
         isActive: true,
       },
       {
         tab_id: 1,
-        name: "已组织活动",
+        name: '已组织活动',
         isActive: false,
       },
     ],
     actList: [],
     pageNum: 0,
-    openId: "",
+    openId: '',
   },
 
   //标题点击事件，从组件中传过来
@@ -31,17 +37,18 @@ Page({
     let { index } = e.detail;
     let { tabs } = this.data;
     //找哪个是index，是的改成isActive为true，否则为false
-    tabs.forEach((v, i) => (i === index ? (v.isActive = true) : (v.isActive = false)));
+    tabs.forEach((v, i) =>
+      i === index ? (v.isActive = true) : (v.isActive = false)
+    );
     this.setData({
       tabs,
       actList: [],
       pageNum: 0,
     });
     //代表在已参与页面
-    if(this.data.tabs[0].isActive){
+    if (this.data.tabs[0].isActive) {
       this.getAll(1, this.data.pageNum, this.data.openId);
-    }
-    else{
+    } else {
       this.getAll(0, this.data.pageNum, this.data.openId);
     }
   },
@@ -51,7 +58,7 @@ Page({
     //如果没看见上面的组件可以把下面的注释划掉
     //console.log(options);
     wx.showLoading({
-      title: "加载中",
+      title: '加载中',
       mask: true,
     });
 
@@ -60,28 +67,35 @@ Page({
     //因为传过来的是string应该转为Number
     const index = Number(page_id);
     //找哪个是page_id，是的改成isActive为true，否则为false
-    tabs.forEach((v, i) => (i === index ? (v.isActive = true) : (v.isActive = false)));
+    tabs.forEach((v, i) =>
+      i === index ? (v.isActive = true) : (v.isActive = false)
+    );
     // const openId = app.globalData.userInfo._id;
-    const openId = "user-1";
+    // const openId = "user-1";
+    const openId = await getOpenId();
     this.setData({
       tabs,
-      openId,
-    });
-  },
-
-  onShow(){
-    this.setData({
+      openId: openId,
       pageNum: 0,
       actList: [],
-    })
+    });
     //代表在已参与页面
-    if(this.data.tabs[0].isActive){
+    if (this.data.tabs[0].isActive) {
       this.getAll(1, this.data.pageNum, this.data.openId);
-    }
-    else{
+    } else {
       this.getAll(0, this.data.pageNum, this.data.openId);
     }
   },
+
+  // onShow() {
+  //   this.setData({});
+  //   //代表在已参与页面
+  //   if (this.data.tabs[0].isActive) {
+  //     this.getAll(1, this.data.pageNum, this.data.openId);
+  //   } else {
+  //     this.getAll(0, this.data.pageNum, this.data.openId);
+  //   }
+  // },
 
   async getAll(order, skip, openId) {
     //order==1表示在第一个已参与里面
@@ -90,8 +104,8 @@ Page({
       title: '加载中',
       mask: true,
     });
-    let addList=[];
-    if(order){
+    let addList = [];
+    if (order) {
       var res = await getParticipatePunch({
         openId: openId,
         skip: skip,
@@ -99,32 +113,36 @@ Page({
       });
       console.log(res);
       let punchData = null;
-      addList= res.data;
+      addList = res.data;
       const db = wx.cloud.database();
       await wx.cloud
         .callFunction({
-          name: "getPunchData",
+          name: 'getPunchData',
           data: {
             openId: openId,
           },
         })
         .then((res) => {
           punchData = res.result;
-          console.log("punchData: ", punchData);
+          console.log('punchData: ', punchData);
         });
       for (let i = 0; i < addList.length; i++) {
-        let res = await getSelfPunchedTimes(db, openId, addList[i]._id, punchData);
+        let res = await getSelfPunchedTimes(
+          db,
+          openId,
+          addList[i]._id,
+          punchData
+        );
         addList[i].isFinish = res.isFinish;
         addList[i].punchedTimes = res.punchedTimes;
       }
-    }
-    else{
+    } else {
       var res = await getOrganizePunch({
         openId: openId,
         skip: skip,
         limit: 9,
       });
-      addList=res.data;
+      addList = res.data;
     }
     addList = res.data.map((v) => ({
       ...v,
@@ -140,12 +158,11 @@ Page({
     wx.stopPullDownRefresh();
     wx.hideLoading();
   },
-  onReachBottom: function(e){
-    if(this.data.tabs[0].isActive){
-      this.getAll(1,this.data.pageNum,this.data.openId);
-    }
-    else{
-      this.getAll(0,this.data.pageNum,this.data.openId);
+  onReachBottom: function (e) {
+    if (this.data.tabs[0].isActive) {
+      this.getAll(1, this.data.pageNum, this.data.openId);
+    } else {
+      this.getAll(0, this.data.pageNum, this.data.openId);
     }
   },
 
@@ -156,59 +173,62 @@ Page({
       actList: [],
     });
     if (this.data.tabs[0].isActive) {
-      this.getAll(1,this.data.pageNum,this.data.openId);
-    }
-    else{
-      this.getAll(0,this.data.pageNum,this.data.openId);
+      this.getAll(1, this.data.pageNum, this.data.openId);
+    } else {
+      this.getAll(0, this.data.pageNum, this.data.openId);
     }
   },
 
   //搜索，按enter键返回值
   async inputBind(e) {
     wx.showLoading({
-      title: "加载中",
+      title: '加载中',
       mask: true,
     });
     this.setData({
       actList: [],
       pageNum: 0,
-    })
-    let addList=[];
-    let str= e.detail.value;
-    const {openId} = this.data;
-    if(this.data.tabs[0].isActive){
-      var res=await getSearch({
-        order:1,
-        openId:openId,
-        searchKey:str,
+    });
+    let addList = [];
+    let str = e.detail.value;
+    const { openId } = this.data;
+    if (this.data.tabs[0].isActive) {
+      var res = await getSearch({
+        order: 1,
+        openId: openId,
+        searchKey: str,
       });
       let punchData = null;
-      addList= res.data;
+      addList = res.data;
       const db = wx.cloud.database();
       await wx.cloud
         .callFunction({
-          name: "getPunchData",
+          name: 'getPunchData',
           data: {
             openId: openId,
           },
         })
         .then((res) => {
           punchData = res.result;
-          console.log("punchData: ", punchData);
+          console.log('punchData: ', punchData);
         });
       for (let i = 0; i < addList.length; i++) {
-        var res = await getSelfPunchedTimes(db, openId, addList[i]._id, punchData);
+        var res = await getSelfPunchedTimes(
+          db,
+          openId,
+          addList[i]._id,
+          punchData
+        );
         addList[i].isFinish = res.isFinish;
         addList[i].punchedTimes = res.punchedTimes;
       }
-    }
-    else{
-      let res=await getSearch({
-        order:0,
-        openId:this.data.openId,
-        searchKey:str
+    } else {
+      let res = await getSearch({
+        order: 0,
+        openId: this.data.openId,
+        searchKey: str,
       });
-      addList= res.data;
+      addList = res.data;
     }
     addList = addList.map((v) => ({
       ...v,
