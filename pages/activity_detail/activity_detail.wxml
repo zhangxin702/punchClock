@@ -9,7 +9,10 @@
 	{{activity.actTheme}}
 </view>
 <!-- 收藏 -->
-<view class="collect" bindtap="changeIsCollect">
+<view
+ class="collect"
+ bindtap="changeIsCollect"
+>
 	<text class="iconfont {{isCollect?'icon-shoucang':'icon-qita'}}">收藏</text>
 </view>
 
