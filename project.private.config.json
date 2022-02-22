@@ -293,6 +293,12 @@
           "pathName": "pages/activity_detail/activity_detail",
           "query": "actId=54ad1eea621483c3122ea1fe73aa6ba4",
           "scene": null
+        },
+        {
+          "name": "pages/activity_detail/activity_detail",
+          "pathName": "pages/activity_detail/activity_detail",
+          "query": "actId=bf4a0bf262148a3610bab48c05b029c0",
+          "scene": null
         }
       ]
     }

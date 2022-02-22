@@ -8,9 +8,10 @@ App({
       // env: wx.cloud.DYNAMIC_CURRENT_ENV,
     });
 
-    const openId = "user-1";
-    // const openId = await getOpenId(); //获取用户openID
+    // const openId = "user-1";
+    const openId = await getOpenId(); //获取用户openID
     console.log("app.js openId: ", openId);
+
 
     userInfo = await wx.getStorageSync("userInfo"); // 先查本地缓存
 

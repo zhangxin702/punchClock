@@ -29,13 +29,13 @@ Page({
     map: '', //位置
     word: '', //文字
 
-    actId:'',
-    name:""//文件名
+    actId: '',
+    name: '', //文件名
   },
-  onLoad(options){
-this.setData({
-actId:options.actId
-})
+  onLoad(options) {
+    this.setData({
+      actId: options.actId,
+    });
   },
   // 上传图片有关函数
   async chooseImage() {
@@ -45,6 +45,7 @@ actId:options.actId
       images: [...this.data.images, res.tempFilePaths[0]],
       addedCount: this.data.addedCount + 1,
     });
+    console.log(this.data.images);
   },
   // 删除图片
   deleteImage(e) {
@@ -60,17 +61,14 @@ actId:options.actId
     var res = await chooseMessageFile({});
     this.setData({
       filePath: res.tempFiles[0].path,
-      name:res.tempFiles[0].name.split('.')[0]
+      name: res.tempFiles[0].name.split('.')[0],
     });
-    await showToast({ title: '文件'+this.data.name+'上传成功' 
-
-  });
+    await showToast({ title: '文件' + this.data.name + '上传成功' });
     console.log(this.data.filePath);
     console.log(res);
   },
 
   onShow: function (e) {
-    
     this.getById();
     this.storage();
   },
@@ -152,6 +150,19 @@ actId:options.actId
         await showToast({ title: '您还未上传图片，请上传' });
         return false;
       }
+      for (var i = 0; i < this.data.images.length; i++) {
+        var imgUrl = this.data.images[i];
+        console.log('tu', imgUrl);
+        var res = await uploadFile({
+          tempFilePath: imgUrl,
+          cloudPath: 'actImage/' + imgUrl.split('/').pop(),
+        });
+        console.log('上传图片', res);
+        this.setData({
+          punchImages: [...this.data.punchImages, res.fileID],
+        });
+      }
+      console.log(this.data.punchImages);
     }
     if (this.data.bool[2] === true) {
       if (this.data.map === '') {
@@ -176,19 +187,6 @@ actId:options.actId
       if (this.data.filePath === '') {
         await showToast({ title: '您还未上传文件，请上传' });
         return false;
-      }
-      if (this.data.bool[1] === true) {
-        for (var i = 0; i < this.data.images.length; i++) {
-          var imgUrl = this.data.images[i];
-          var res = await uploadFile({
-            tempFilePath: imgUrl,
-            cloudPath: 'actImage/' + imgUrl.split('/').pop(),
-          });
-          this.setData({
-            punchImages: [...this.data.punchImages, res.fileID],
-          });
-        }
-        console.log(this.data.punchImages);
       }
       var ree = await uploadFile({
         tempFilePath: this.data.filePath,

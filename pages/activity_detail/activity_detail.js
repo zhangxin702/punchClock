@@ -1,7 +1,7 @@
 // pages/punch_detail/punch_detail.js
 import { actTableById, showToast } from '../../async/index.js';
 //获取收藏的函数
-import { getCollect, CollectPushDb, getOpenId } from '../../async/async';
+import { CollectPushDb } from '../../async/async';
 import { formatTime } from '../../utils/util.js';
 
 const app = getApp();
@@ -10,13 +10,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-
     // 是否是私人的
-    privite:false,
+    private: false,
     // 是否隐藏整个弹窗
-    modalHidden:false,
+    modalHidden: true,
     // 输入的验证码
-    inputCode:'',
+    inputCode: '',
 
     //商品
     activity: '',
@@ -35,34 +34,30 @@ Page({
     user: '',
   },
 
-  
-  handleIpt(e){
-
-this.setData({
-  inputCode:e.detail.value
-})
-
+  handleIpt(e) {
+    this.setData({
+      inputCode: e.detail.value,
+    });
   },
-  modalChange(e){
+  async modalChange(e) {
     // console.log(e);
     console.log(this.data.activity);
-    if(e.type === 'confirm'){
-      if(this.data.inputCode === this.data.activity.invitationCode){
-       this.setData({
-         privite:true,
-         modalHidden:true
-       })
-
+    if (e.type === 'confirm') {
+      if (this.data.inputCode === this.data.activity.invitationCode) {
+        this.setData({
+          private: true,
+          modalHidden: true,
+        });
+      } else {
+        await showToast({ title: '邀请码错误，请重新输入' });
       }
     }
-    if(e.type === 'cancel'){
-      setTimeout(function () {
-        wx.navigateBack({
-          delta: 1,
-        });
-      }, 1000);
-      
+    if (e.type === 'cancel') {
+      wx.navigateBack({
+        delta: 1,
+      });
     }
+    return false;
   },
 
   async submit() {
@@ -78,24 +73,16 @@ this.setData({
   onLoad: function (options) {
     // console.log("选择是："+options.isPrivite);
     let userInfo = wx.getStorageSync('userInfo'); // 先查本地缓存
-    console.log(userInfo);
+    console.log(options);
     this.setData({
       user: userInfo,
       actId: options.actId,
-      privite:options.privite,
-      modalHidden:options.modalHidden
+      private: options.private,
+      modalHidden: options.modalHidden,
     });
-
-
-  },
-  onShow: function () {
-   
     this.getById(this.data.actId);
     this.getIsCollectBefor(this.data.actId);
-
-   
   },
-
 
   async getById(actId) {
     var res = await actTableById({
@@ -105,11 +92,20 @@ this.setData({
     var start = formatTime({ date: res.data.startTime });
     var end = formatTime({ date: res.data.endTime });
 
+    var Pbool;
+    if (res.data.pubOrPri === 'public') {
+      Pbool = true;
+    } else {
+      Pbool = false;
+    }
+    console.log(Pbool);
     this.setData({
       activity: res.data,
       startTime: start,
       endTime: end,
       requires: res.data.requires,
+      private: Pbool,
+      modalHidden: Pbool,
     });
 
     let word, picture, location, file;
@@ -136,16 +132,6 @@ this.setData({
     this.setData({
       bool: bool,
     });
-
-    if (this.data.activity.invitationCode.length <=0){
-      this.setData({
-        privite:true,
-        modalHidden:true
-
-        
-      })
-
-    }
   },
 
   async changeIsCollect() {
@@ -158,7 +144,6 @@ this.setData({
     } else {
       await showToast({ title: '您还未注册，请注册' });
     }
-   
   },
 
   //获取是否收藏的函数
