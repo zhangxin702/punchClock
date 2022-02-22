@@ -8,7 +8,7 @@ App({
       // env: wx.cloud.DYNAMIC_CURRENT_ENV,
     });
 
-    const openId = "user-100";
+    const openId = "user-1";
     // const openId = await getOpenId(); //获取用户openID
     console.log("app.js openId: ", openId);
 

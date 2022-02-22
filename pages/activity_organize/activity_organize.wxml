@@ -140,8 +140,32 @@
 
 <view class="kongbai"></view>
 
+<view class="card">
+<view class="name">活动受众</view>
+<view class="kongbai"></view>
 
+  <view class="page-section">
+   <radio-group bindchange="radioChange">
+	  <label  class="radio">
+      <radio value="public"  color="#44d2eb"/>公开
+    </label>
+    <label  class="radio" >
+      <radio value="privite" color="#44d2eb"/>私人
+    </label>
+	 </radio-group>
 
+  </view>
+	<view wx:if="{{privite}}">
+		<form action=""  class="Invination">
+	 <input class="input" type="text" name='handleInvitationCode' placeholder="请填写活动的邀请码" bindinput="handleInvitationCode" ></input>
+
+	
+	 </form>
+	</view>
+
+</view>
+
+<view class="kongbai"></view>
 	<view class="card_1">
 		<addImage_1
 		 count="{{count}}"
@@ -150,6 +174,7 @@
 		 bind:chooseImage="chooseImage"
 		 bind:deleteImage="deleteImage"
 		></addImage_1>
+
 
 </view>
 

@@ -8,7 +8,7 @@
 		 class="actives_item"
 		 wx:for="{{actList}}"
 		 wx:key="actId"
-		 url="/pages/activity_detail/activity_detail?actId={{item._id}}">
+		 url="/pages/activity_detail/activity_detail?actId={{item._id}}&privite=true&modalHidden=true">
 
 			<view class="actives_img">
 				<image

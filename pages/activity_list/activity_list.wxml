@@ -41,6 +41,7 @@
 					<view class="actives_name">{{item.actTheme}}</view>
 					<view class="actives_price">创建时间：{{item.createTime}}</view>
 					<view class="actives_price">参与人数：{{item.userCounts}}</view>
+					<view class="actives_price">参加人数：{{item.userCounts}}</view>	<view class="actives_price">活动受众：{{item.pubOrPri}}</view>
 				</view>
 			</navigator>
 			<!-- 活动列表 -->
@@ -58,6 +59,7 @@
 			 wx:for="{{actList}}"
 			 wx:key="actId"
 			 url="/pages/activity_detail/activity_detail?actId={{item._id}}"
+			 
 			>
 				<view class="actives_img">
 					<image src="{{item.actImage?item.actImage:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"></image>
@@ -66,6 +68,7 @@
 					<view class="actives_name">{{item.actTheme}}</view>
 					<view class="actives_price">创建时间：{{item.createTime}}</view>
 					<view class="actives_price">参与人数：{{item.userCounts}}</view>
+					<view class="actives_price">参加人数：{{item.userCounts}}</view>	<view class="actives_price">活动受众：{{item.pubOrPri}}</view>
 				</view>
 			</navigator>
 		</scroll-view>

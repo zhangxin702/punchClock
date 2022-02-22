@@ -1,6 +1,38 @@
 page{
   background: #f3f7f7;
 }
+.Invination{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: 20rpx;
+  align-items: center;
+  justify-content: center;
+
+
+}
+.Invination .input{
+width: 100%rpx;
+
+height: 40rpx;
+line-height: 40rpx;
+font-size: 35rpx;
+margin: 10rpx;
+  padding: 10rpx;
+  border: gray 6rpx solid;
+  text-align: center;
+
+
+ 
+}
+
+.page-section{
+text-align: center;
+
+}
+.radio{
+  padding: 30rpx;
+}
 .select_box{
   background: #fff;
   width: 80%;

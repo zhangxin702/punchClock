@@ -7,6 +7,13 @@ Page({
    * 页面的初始数据
    */
   data: {
+
+
+// 活动受众
+  PuborPri:"",
+  privite:false,
+  // 邀请码
+  invitationCode:"",
     show: false, //控制下拉列表的显示隐藏，false隐藏、true显示
     selectData: ["考试", "健身", "考研", "英语", "阅读", "考勤", "其他"], //下拉列表的数据
     index: 0, //选择的下拉列表下标
@@ -64,6 +71,35 @@ Page({
 
     // 判断是否选择地图
     flag: true,
+  },
+  // 单选框的函数
+  radioChange(e) {
+    console.log('radio发生change事件，携带value值为：', e.detail.value)
+    this.setData({
+      PuborPri: e.detail.value
+    })
+    if(e.detail.value === 'privite'){
+      this.setData({
+        privite:true
+      })
+    
+     
+    }else
+    {
+      this.setData({
+        privite:false
+      })
+    }
+
+  },
+  handleInvitationCode(e){
+    console.log(e);
+    this.setData({
+      invitationCode:e.detail.value
+    })
+    console.log(this.data.invitationCode);
+  
+  
   },
 
   // 点击下拉显示框
@@ -180,6 +216,12 @@ Page({
       });
       return;
     }
+    if(this.data.privite === true && this.data.invitationCode === ''){
+      await showToast({
+        title:"请填写邀请码"
+      })
+      return
+    }
     if (this.data.selectList.length === 0) {
       await showToast({
         title: "当前打卡方式为空，请选取对应打卡方式",
@@ -216,6 +258,8 @@ Page({
       requires: this.data.selectList,
       actLocation: this.data.address,
       label: this.data.selectData[this.data.index],
+      pubOrPri:this.data.PuborPri,
+      invitationCode:this.data.invitationCode
     });
 
     const actInfo = wx.getStorageSync("actInfo");

@@ -1,4 +1,11 @@
-<view class="active_image">
+
+<view  class="befIptNavigationCode" wx:if="!{{privite}}" ><modal title="请填写活动邀请码" confirm-text="confirm" cancel-text="cancel" hidden="{{modalHidden}}" bindconfirm="modalChange" bindcancel="modalChange">
+<input type="text" placeholder="邀请码" 	bindinput="handleIpt"></input>
+</modal></view>
+
+<view class="befIptNavigationCode" wx:if="{{privite}}">
+
+	<view class="active_image">
 	<image src="{{activity.actImage?activity.actImage:'https://i1.hdslb.com/bfs/archive/c71a18199e04910e2c1f518d1c2c60649e15fcf7.jpg@309w_174h_1c_100q.webp'}}"></image>
 </view>
 <!-- 主题名 -->
@@ -37,3 +44,5 @@
 <view class="kongbai"></view>
 <view class="kongbai"></view>
 
+
+</view>

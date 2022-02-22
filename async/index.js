@@ -160,6 +160,8 @@ export const actTableInsert = ({
   requires,
   label,
   actLocation,
+  pubOrPri,
+  invitationCode
 }) => {
   return new Promise((resolve, reject) => {
     var db = wx.cloud.database().collection('ActTable');
@@ -178,6 +180,8 @@ export const actTableInsert = ({
         requires: requires,
         label: label,
         actLocation: actLocation,
+        pubOrPri:pubOrPri,
+        invitationCode:  invitationCode
       },
       success: (res) => {
         showToast({ title: '添加成功！！！' });

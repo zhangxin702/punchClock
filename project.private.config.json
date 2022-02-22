@@ -269,6 +269,30 @@
           "pathName": "pages/activity_list/activity_list",
           "query": "label=%E5%85%A8%E9%83%A8",
           "scene": null
+        },
+        {
+          "name": "pages/activity_list/activity_list",
+          "pathName": "pages/activity_list/activity_list",
+          "query": "label=%E5%85%A8%E9%83%A8",
+          "scene": null
+        },
+        {
+          "name": "pages/activity_detail/activity_detail",
+          "pathName": "pages/activity_detail/activity_detail",
+          "query": "actId=54ad1eea6214736e122821b7122f4294",
+          "scene": null
+        },
+        {
+          "name": "pages/activity_organize/activity_organize",
+          "pathName": "pages/activity_organize/activity_organize",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/activity_detail/activity_detail",
+          "pathName": "pages/activity_detail/activity_detail",
+          "query": "actId=54ad1eea621483c3122ea1fe73aa6ba4",
+          "scene": null
         }
       ]
     }

@@ -135,6 +135,7 @@ Page({
     }
   },
 
+
   //下拉刷新事件，存放在页面生命周期中
   onPullDownRefresh() {
     this.setData({
@@ -151,4 +152,8 @@ Page({
       this.GetAll(this.data.currentTab, this.data.pageNum);
     }
   },
+  handleNav(){
+  console.log("hhh");
+    
+  }
 });

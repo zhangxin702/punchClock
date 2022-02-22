@@ -10,6 +10,14 @@ Page({
    * 页面的初始数据
    */
   data: {
+
+    // 是否是私人的
+    privite:false,
+    // 是否隐藏整个弹窗
+    modalHidden:false,
+    // 输入的验证码
+    inputCode:'',
+
     //商品
     activity: '',
     startTime: '',
@@ -27,6 +35,36 @@ Page({
     user: '',
   },
 
+  
+  handleIpt(e){
+
+this.setData({
+  inputCode:e.detail.value
+})
+
+  },
+  modalChange(e){
+    // console.log(e);
+    console.log(this.data.activity);
+    if(e.type === 'confirm'){
+      if(this.data.inputCode === this.data.activity.invitationCode){
+       this.setData({
+         privite:true,
+         modalHidden:true
+       })
+
+      }
+    }
+    if(e.type === 'cancel'){
+      setTimeout(function () {
+        wx.navigateBack({
+          delta: 1,
+        });
+      }, 1000);
+      
+    }
+  },
+
   async submit() {
     if (this.data.user) {
       wx.navigateTo({
@@ -38,17 +76,26 @@ Page({
   },
 
   onLoad: function (options) {
+    // console.log("选择是："+options.isPrivite);
     let userInfo = wx.getStorageSync('userInfo'); // 先查本地缓存
     console.log(userInfo);
     this.setData({
       user: userInfo,
       actId: options.actId,
+      privite:options.privite,
+      modalHidden:options.modalHidden
     });
+
+
   },
   onShow: function () {
+   
     this.getById(this.data.actId);
     this.getIsCollectBefor(this.data.actId);
+
+   
   },
+
 
   async getById(actId) {
     var res = await actTableById({
@@ -64,6 +111,7 @@ Page({
       endTime: end,
       requires: res.data.requires,
     });
+
     let word, picture, location, file;
     let bool = [];
     location = this.data.requires.includes('map');
@@ -88,6 +136,16 @@ Page({
     this.setData({
       bool: bool,
     });
+
+    if (this.data.activity.invitationCode.length <=0){
+      this.setData({
+        privite:true,
+        modalHidden:true
+
+        
+      })
+
+    }
   },
 
   async changeIsCollect() {
@@ -100,6 +158,7 @@ Page({
     } else {
       await showToast({ title: '您还未注册，请注册' });
     }
+   
   },
 
   //获取是否收藏的函数

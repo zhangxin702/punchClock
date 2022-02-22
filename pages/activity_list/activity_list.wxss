@@ -69,7 +69,7 @@ navigator{
   margin: 30rpx;
   width: 100%;
   padding-bottom: 5rpx;
-  height: 140rpx;
+  height: 160rpx;
   
 
 }
@@ -86,7 +86,7 @@ navigator{
 .inner .actives_img image {
   width: 90%;
   border-radius: 20rpx;
-  height: 140rpx;
+  height: 160rpx;
 
   
 }
