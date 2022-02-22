@@ -1,3 +1,3 @@
 <view class="search_input">
-<navigator url="../../pages/search/search" open-type="navigate">活动搜索</navigator>
+<navigator url="../../pages/activity_search/activity_search" open-type="navigate">活动搜索</navigator>
 </view>

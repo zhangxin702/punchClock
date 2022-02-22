@@ -17,7 +17,7 @@
 		 class="actives_item"
 		 wx:for="{{resultData}}"
 		 wx:key="_id"
-		 url="/pages/punch_detail/punch_detail?actId={{item._id}}"
+		 url="/pages/activity_detail/activity_detail?actId={{item._id}}"
 		>
 			<view class="actives_img">
 				<image
