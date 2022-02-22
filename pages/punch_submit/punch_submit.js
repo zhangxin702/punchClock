@@ -150,19 +150,6 @@ Page({
         await showToast({ title: '您还未上传图片，请上传' });
         return false;
       }
-      for (var i = 0; i < this.data.images.length; i++) {
-        var imgUrl = this.data.images[i];
-        console.log('tu', imgUrl);
-        var res = await uploadFile({
-          tempFilePath: imgUrl,
-          cloudPath: 'actImage/' + imgUrl.split('/').pop(),
-        });
-        console.log('上传图片', res);
-        this.setData({
-          punchImages: [...this.data.punchImages, res.fileID],
-        });
-      }
-      console.log(this.data.punchImages);
     }
     if (this.data.bool[2] === true) {
       if (this.data.map === '') {
@@ -196,6 +183,21 @@ Page({
       this.setData({
         punchFile: ree.fileID,
       });
+    }
+    if (this.data.bool[1] === true) {
+      for (var i = 0; i < this.data.images.length; i++) {
+        var imgUrl = this.data.images[i];
+        console.log('tu', imgUrl);
+        var res = await uploadFile({
+          tempFilePath: imgUrl,
+          cloudPath: 'actImage/' + imgUrl.split('/').pop(),
+        });
+        console.log('上传图片', res);
+        this.setData({
+          punchImages: [...this.data.punchImages, res.fileID],
+        });
+      }
+      console.log(this.data.punchImages);
     }
 
     let red = await wx.getStorageSync('userInfo');

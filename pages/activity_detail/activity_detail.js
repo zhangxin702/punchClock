@@ -57,7 +57,7 @@ Page({
         delta: 1,
       });
     }
-    return false;
+    console.log(e);
   },
 
   async submit() {
@@ -73,7 +73,6 @@ Page({
   onLoad: function (options) {
     // console.log("选择是："+options.isPrivite);
     let userInfo = wx.getStorageSync('userInfo'); // 先查本地缓存
-    console.log(options);
     this.setData({
       user: userInfo,
       actId: options.actId,
@@ -92,20 +91,25 @@ Page({
     var start = formatTime({ date: res.data.startTime });
     var end = formatTime({ date: res.data.endTime });
 
-    var Pbool;
-    if (res.data.pubOrPri === 'public') {
-      Pbool = true;
-    } else {
-      Pbool = false;
+    if (this.data.private === undefined) {
+      var Pbool;
+      if (res.data.pubOrPri === 'public') {
+        Pbool = true;
+      } else {
+        Pbool = false;
+      }
+      this.setData({
+        private: Pbool,
+        modalHidden: Pbool,
+      });
     }
+
     console.log(Pbool);
     this.setData({
       activity: res.data,
       startTime: start,
       endTime: end,
       requires: res.data.requires,
-      private: Pbool,
-      modalHidden: Pbool,
     });
 
     let word, picture, location, file;
