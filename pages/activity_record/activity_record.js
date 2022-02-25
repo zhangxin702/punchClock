@@ -71,7 +71,7 @@ Page({
       i === index ? (v.isActive = true) : (v.isActive = false)
     );
     // const openId = app.globalData.userInfo._id;
-    // const openId = "user-1";
+    // const openId = "user-120";
     const openId = await getOpenId();
     this.setData({
       tabs,

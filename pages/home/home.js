@@ -17,12 +17,12 @@ Page({
     user: '',
   },
 
-  async onLoad() {
-    let userInfo = await wx.getStorageSync('userInfo'); // 先查本地缓存
-    this.setData({
-      user: userInfo,
-    });
-  },
+  // async onLoad() {
+  //   let userInfo = await wx.getStorageSync('userInfo'); // 先查本地缓存
+  //   this.setData({
+  //     user: userInfo,
+  //   });
+  // },
   async onShow() {
     //如果没看见上面的组件可以把下面的注释划掉
     //console.log(options);
@@ -54,24 +54,24 @@ Page({
     console.log('organizeList: ', this.data.organizeList);
   },
 
-  async handleMore_0(e) {
-    if (this.data.user) {
+  handleMore_0(e) {
+    // if (this.data.user) {
       wx.navigateTo({
         url: '../activity_record/activity_record?page_id=0',
       });
-    } else {
-      await showToast({ title: '您还未注册，请注册' });
-    }
+    // } else {
+    //   await showToast({ title: '您还未注册，请注册' });
+    // }
   },
 
-  async handleMore_1(e) {
-    if (this.data.user) {
+  handleMore_1(e) {
+    // if (this.data.user) {
       wx.navigateTo({
         url: '../activity_record/activity_record?page_id=1',
       });
-    } else {
-      await showToast({ title: '您还未注册，请注册' });
-    }
+    // } else {
+    //   await showToast({ title: '您还未注册，请注册' });
+    // }
   },
 
   async GetAll(order, skip) {
